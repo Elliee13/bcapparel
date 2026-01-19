@@ -1,79 +1,94 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import Container from "../components/Container";
 import Input from "../components/Input";
+import Select from "../components/Select";
 import Button from "../components/Button";
-import { supabase } from "../lib/supabaseClient";
+import { categories, products } from "../data/products";
 
-type RequestPayload = {
+type RequestForm = {
   name: string;
   email: string;
-  company: string;
   phone: string;
-  date_needed: string;
+  organization: string;
+  category: string;
+  product: string;
   quantity: string;
-  comments: string;
-  created_at?: string;
+  notes: string;
 };
 
+function Card({
+  children,
+  className = "",
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <div
+      className={[
+        "rounded-[28px] bg-white ring-1 ring-slate-200",
+        className,
+      ].join(" ")}
+    >
+      {children}
+    </div>
+  );
+}
+
 export default function RequestPage() {
-  const [form, setForm] = useState<RequestPayload>({
+  const [searchParams] = useSearchParams();
+  const productId = searchParams.get("product") ?? "";
+  const matchedProduct = products.find((product) => product.id === productId);
+  const prefilledProduct = matchedProduct ? matchedProduct.title : productId;
+
+  const [form, setForm] = useState<RequestForm>(() => ({
     name: "",
     email: "",
-    company: "",
     phone: "",
-    date_needed: "",
+    organization: "",
+    category: "",
+    product: prefilledProduct,
     quantity: "",
-    comments: "",
-  });
+    notes: "",
+  }));
 
-  const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const [status, setStatus] = useState<"idle" | "success">("idle");
+
+  useEffect(() => {
+    if (!productId || form.product) return;
+    const nextProduct = matchedProduct ? matchedProduct.title : productId;
+    setForm((prev) => ({ ...prev, product: nextProduct }));
+  }, [productId, matchedProduct, form.product]);
 
   const isValid = useMemo(() => {
-    return form.name.trim() && form.email.trim();
+    return form.name.trim().length > 0 && form.email.trim().length > 0;
   }, [form.name, form.email]);
 
-  function update<K extends keyof RequestPayload>(key: K, value: RequestPayload[K]) {
-    setForm((p) => ({ ...p, [key]: value }));
+  function update<K extends keyof RequestForm>(key: K, value: RequestForm[K]) {
+    setForm((prev) => ({ ...prev, [key]: value }));
   }
 
-  async function submit(e: React.FormEvent) {
+  function resetForm() {
+    setForm({
+      name: "",
+      email: "",
+      phone: "",
+      organization: "",
+      category: "",
+      product: prefilledProduct,
+      quantity: "",
+      notes: "",
+    });
+  }
+
+  function submit(e: React.FormEvent) {
     e.preventDefault();
     if (!isValid) return;
 
-    setStatus("submitting");
-
-    try {
-      // Optional: create a supabase table "quote_requests" to store these.
-      const { error } = await supabase.from("quote_requests").insert({
-        name: form.name.trim(),
-        email: form.email.trim(),
-        company: form.company.trim(),
-        phone: form.phone.trim(),
-        date_needed: form.date_needed || null,
-        quantity: form.quantity ? Number(form.quantity) : null,
-        comments: form.comments.trim(),
-      });
-
-      // If table isn't created yet, we still treat it as demo-success.
-      if (error) {
-        setStatus("success");
-      } else {
-        setStatus("success");
-      }
-    } catch {
-      setStatus("success");
-    } finally {
-      setForm({
-        name: "",
-        email: "",
-        company: "",
-        phone: "",
-        date_needed: "",
-        quantity: "",
-        comments: "",
-      });
-      window.setTimeout(() => setStatus("idle"), 1800);
-    }
+    setStatus("success");
+    resetForm();
+    window.setTimeout(() => setStatus("idle"), 2000);
   }
 
   return (
@@ -82,28 +97,28 @@ export default function RequestPage() {
         <div className="grid gap-10 lg:grid-cols-2">
           <div className="max-w-xl">
             <div className="text-[11px] uppercase tracking-[0.18em] text-slate-500">
-              Request
+              Request Quote
             </div>
             <h1 className="display-tight mt-3 text-4xl md:text-5xl leading-[0.95] text-slate-900">
-              This page is a placeholder.
+              Tell us what you need
             </h1>
             <p className="mt-6 text-sm leading-relaxed text-slate-600">
-              The original site uses a request-first workflow. This rebuilt version keeps that business flow,
-              while improving performance, clarity, and maintainability.
+              Share your quantity, category, and timeline. We will respond with
+              supplier options and a tailored quote.
             </p>
 
-            <div className="mt-10 rounded-[28px] bg-white p-6 md:p-8 ring-1 ring-slate-200">
+            <Card className="mt-10 p-6 md:p-8">
               <div className="text-[11px] uppercase tracking-[0.18em] text-slate-500">
-                Demo disclaimer
+                What happens next
               </div>
               <p className="mt-3 text-sm leading-relaxed text-slate-600">
-                This is a demo request form. You can later route submissions into your CRM, email, or internal
-                workflow. Supplier APIs and live pricing are not yet connected.
+                This is a demo request form. Submissions are not stored, but the
+                workflow mirrors a real quote intake experience.
               </p>
-            </div>
+            </Card>
           </div>
 
-          <div className="rounded-[28px] bg-white p-6 md:p-8 ring-1 ring-slate-200">
+          <Card className="p-6 md:p-8">
             <div className="text-[11px] uppercase tracking-[0.18em] text-slate-500">
               Request details
             </div>
@@ -118,6 +133,7 @@ export default function RequestPage() {
                     value={form.name}
                     onChange={(e) => update("name", e.target.value)}
                     required
+                    className="rounded-[14px]"
                   />
                 </div>
                 <div>
@@ -129,77 +145,102 @@ export default function RequestPage() {
                     onChange={(e) => update("email", e.target.value)}
                     required
                     type="email"
+                    className="rounded-[14px]"
                   />
                 </div>
               </div>
 
               <div className="grid gap-4 md:grid-cols-2">
-                <div>
-                  <div className="mb-1 text-[11px] uppercase tracking-[0.18em] text-slate-500">
-                    Company
-                  </div>
-                  <Input value={form.company} onChange={(e) => update("company", e.target.value)} />
-                </div>
                 <div>
                   <div className="mb-1 text-[11px] uppercase tracking-[0.18em] text-slate-500">
                     Phone
                   </div>
-                  <Input value={form.phone} onChange={(e) => update("phone", e.target.value)} />
+                  <Input
+                    value={form.phone}
+                    onChange={(e) => update("phone", e.target.value)}
+                    className="rounded-[14px]"
+                  />
+                </div>
+                <div>
+                  <div className="mb-1 text-[11px] uppercase tracking-[0.18em] text-slate-500">
+                    Organization
+                  </div>
+                  <Input
+                    value={form.organization}
+                    onChange={(e) => update("organization", e.target.value)}
+                    className="rounded-[14px]"
+                  />
                 </div>
               </div>
 
               <div className="grid gap-4 md:grid-cols-2">
                 <div>
                   <div className="mb-1 text-[11px] uppercase tracking-[0.18em] text-slate-500">
-                    Date needed
+                    Category
                   </div>
-                  <Input
-                    type="date"
-                    value={form.date_needed}
-                    onChange={(e) => update("date_needed", e.target.value)}
-                  />
+                  <Select
+                    value={form.category}
+                    onChange={(e) => update("category", e.target.value)}
+                    className="rounded-[14px]"
+                  >
+                    <option value="">Optional</option>
+                    {categories.map((item) => (
+                      <option key={item} value={item}>
+                        {item}
+                      </option>
+                    ))}
+                  </Select>
                 </div>
                 <div>
                   <div className="mb-1 text-[11px] uppercase tracking-[0.18em] text-slate-500">
-                    Quantity
+                    Product
                   </div>
                   <Input
-                    inputMode="numeric"
-                    placeholder="e.g., 100"
-                    value={form.quantity}
-                    onChange={(e) => update("quantity", e.target.value)}
+                    value={form.product}
+                    onChange={(e) => update("product", e.target.value)}
+                    placeholder="Optional product name or ID"
+                    className="rounded-[14px]"
                   />
                 </div>
               </div>
 
               <div>
                 <div className="mb-1 text-[11px] uppercase tracking-[0.18em] text-slate-500">
-                  Comments
+                  Quantity
+                </div>
+                <Input
+                  inputMode="numeric"
+                  placeholder="e.g., 100"
+                  value={form.quantity}
+                  onChange={(e) => update("quantity", e.target.value)}
+                  className="rounded-[14px]"
+                />
+              </div>
+
+              <div>
+                <div className="mb-1 text-[11px] uppercase tracking-[0.18em] text-slate-500">
+                  Notes
                 </div>
                 <textarea
-                  className="min-h-32 w-full rounded-[14px] bg-white px-3 py-2 text-sm ring-1 ring-slate-300 transition focus:outline-none focus:ring-2 focus:ring-slate-900"
-                  value={form.comments}
-                  onChange={(e) => update("comments", e.target.value)}
+                  className="min-h-32 w-full rounded-[14px] bg-white px-3 py-2 text-sm ring-1 ring-slate-300 transition placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900"
+                  value={form.notes}
+                  onChange={(e) => update("notes", e.target.value)}
                 />
               </div>
 
               <Button
                 className="w-full py-3 text-xs uppercase tracking-[0.18em]"
                 type="submit"
-                disabled={!isValid || status === "submitting"}
+                disabled={!isValid}
               >
-                {status === "submitting"
-                  ? "Submitting…"
-                  : status === "success"
-                  ? "Request submitted"
-                  : "Submit request"}
+                {status === "success" ? "Request received (demo)" : "Submit request"}
               </Button>
 
               <p className="text-xs text-slate-600">
-                Demo note: this can store to Supabase if you add a <code>quote_requests</code> table.
+                Demo note: no data is stored or sent from this form.
               </p>
             </form>
-          </div>
+          </Card>
         </div>
       </Container>
     </div>

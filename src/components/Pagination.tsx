@@ -22,7 +22,7 @@ export default function Pagination({
     <div className="flex items-center justify-between gap-3">
       <div className="text-sm text-slate-600">
         Page <span className="font-semibold text-slate-900">{safePage}</span> of{" "}
-        <span className="font-semibold text-slate-900">{totalPages}</span> •{" "}
+        <span className="font-semibold text-slate-900">{totalPages}</span> -{" "}
         <span className="font-semibold text-slate-900">{total}</span> items
       </div>
 

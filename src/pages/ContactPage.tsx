@@ -41,36 +41,32 @@ export default function ContactPage() {
     <div className="bg-[rgb(var(--bg))]">
       <Container className="py-12 md:py-16">
         <div className="grid gap-10 lg:grid-cols-2">
-          {/* LEFT: context */}
           <div className="max-w-xl">
             <div className="text-[11px] uppercase tracking-[0.18em] text-slate-500">
               Contact
             </div>
 
-            {/* Headline aligned with Home */}
             <h1 className="display-tight mt-4 text-4xl md:text-5xl leading-[0.95] text-slate-900">
-              Get in touch
+              Let us know what you need
             </h1>
 
             <p className="mt-6 text-sm leading-relaxed text-slate-600">
-              This demo page mirrors the original site’s contact intent. In production,
-              connect this to your real support inbox or CRM.
+              Share your timeline, quantities, and branding goals. We will follow
+              up with supplier options and a tailored quote.
             </p>
 
-            {/* Office card */}
             <Card className="mt-10 p-6 md:p-8">
               <div className="text-[11px] uppercase tracking-[0.18em] text-slate-500">
                 Office
               </div>
               <p className="mt-4 text-sm leading-relaxed text-slate-600">
-                Email: sales@bcapparel.com <span className="text-slate-400">(demo placeholder)</span>
+                Email: sales@bcapparel.com <span className="text-slate-400">(demo)</span>
                 <br />
-                Phone: (000) 000-0000 <span className="text-slate-400">(demo placeholder)</span>
+                Phone: (000) 000-0000 <span className="text-slate-400">(demo)</span>
               </p>
             </Card>
           </div>
 
-          {/* RIGHT: form */}
           <Card className="p-6 md:p-8">
             <div className="text-[11px] uppercase tracking-[0.18em] text-slate-500">
               Message
@@ -85,6 +81,7 @@ export default function ContactPage() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   required
+                  className="rounded-[14px]"
                 />
               </div>
 
@@ -97,6 +94,7 @@ export default function ContactPage() {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                   type="email"
+                  className="rounded-[14px]"
                 />
               </div>
 
@@ -105,7 +103,7 @@ export default function ContactPage() {
                   Message
                 </div>
                 <textarea
-                  className="min-h-32 w-full rounded-[14px] bg-white px-4 py-3 text-sm ring-1 ring-slate-300 transition focus:outline-none focus:ring-2 focus:ring-slate-900"
+                  className="min-h-32 w-full rounded-[14px] bg-white px-3 py-2 text-sm ring-1 ring-slate-300 transition placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900"
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   required

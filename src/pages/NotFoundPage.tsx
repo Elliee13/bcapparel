@@ -9,8 +9,8 @@ export default function NotFoundPage() {
         <h1 className="text-lg md:text-xl font-extrabold text-slate-900">Page not found</h1>
         <p className="mt-2 text-sm text-slate-600">The route you requested does not exist.</p>
         <div className="mt-6">
-          <Link to="/catalog">
-            <Button variant="secondary">Back to catalog</Button>
+          <Link to="/products">
+            <Button variant="secondary">Back to products</Button>
           </Link>
         </div>
       </div>

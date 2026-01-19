@@ -1,7 +1,7 @@
 import { Link, NavLink, Outlet } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import Container from "./Container";
-import { useCart } from "../store/cart";
+import logo from "../assets/webLogo/bacapparel.png";
 
 function NavItem({ to, children }: { to: string; children: React.ReactNode }) {
   return (
@@ -20,9 +20,6 @@ function NavItem({ to, children }: { to: string; children: React.ReactNode }) {
 }
 
 export default function Layout() {
-  const { items } = useCart();
-
-  // Hide-on-scroll behavior
   const [hidden, setHidden] = useState(false);
   const lastYRef = useRef(0);
   const tickingRef = useRef(false);
@@ -39,13 +36,11 @@ export default function Layout() {
         const last = lastYRef.current;
         const delta = y - last;
 
-        // Always show near the top
         if (y < 40) {
           setHidden(false);
         } else {
-          // Small threshold to avoid jitter
-          if (delta > 10) setHidden(true); // scrolling down
-          if (delta < -10) setHidden(false); // scrolling up
+          if (delta > 10) setHidden(true);
+          if (delta < -10) setHidden(false);
         }
 
         lastYRef.current = y;
@@ -59,7 +54,6 @@ export default function Layout() {
 
   return (
     <div className="min-h-dvh bg-[rgb(var(--bg))]">
-      {/* Navbar that hides on scroll down */}
       <header
         className={[
           "sticky top-0 z-40",
@@ -68,42 +62,38 @@ export default function Layout() {
         ].join(" ")}
       >
         <Container className="py-3">
-          {/* Reduced size navbar (compact) */}
-          <div className="rounded-[16px] bg-white px-5 py-3 ring-1 ring-slate-200">
+          <div className="rounded-[18px] bg-white/95 px-5 py-3 ring-1 ring-slate-200 shadow-sm backdrop-blur">
             <div className="flex items-center justify-between gap-6">
               <Link
                 to="/"
-                className="text-[11px] font-medium tracking-[0.22em] uppercase text-slate-900"
+                className="flex items-center gap-3"
               >
-                BC Apparel
+                <img src={logo} alt="BC Apparel" className="h-7 w-auto" />
+                <span className="text-[11px] font-semibold tracking-[0.22em] uppercase text-slate-900">
+                  BC Apparel
+                </span>
               </Link>
 
               <nav className="hidden items-center gap-6 md:flex">
                 <NavItem to="/">Home</NavItem>
                 <NavItem to="/about">About</NavItem>
-                <NavItem to="/catalog">Products</NavItem>
+                <NavItem to="/products">Products</NavItem>
                 <NavItem to="/request">Request</NavItem>
                 <NavItem to="/contact">Contact</NavItem>
               </nav>
 
               <Link
-                to="/cart"
-                className="inline-flex items-center gap-2 rounded-full px-2.5 py-1.5 text-[11px] uppercase tracking-[0.18em] text-slate-700 ring-1 ring-slate-200 hover:text-slate-900"
-                aria-label="Cart"
+                to="/request"
+                className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-4 py-2 text-[11px] uppercase tracking-[0.18em] text-white ring-1 ring-slate-900/10 hover:bg-slate-800"
               >
-                <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-[rgb(var(--bg))] ring-1 ring-slate-200">
-                  👜
-                </span>
-                <span className="hidden sm:inline">Cart</span>
-                <span className="text-slate-500">({items.length})</span>
+                Request Quote
               </Link>
             </div>
 
-            {/* Mobile nav */}
             <div className="mt-3 flex flex-wrap gap-4 md:hidden">
               <NavItem to="/">Home</NavItem>
               <NavItem to="/about">About</NavItem>
-              <NavItem to="/catalog">Products</NavItem>
+              <NavItem to="/products">Products</NavItem>
               <NavItem to="/request">Request</NavItem>
               <NavItem to="/contact">Contact</NavItem>
             </div>
@@ -115,48 +105,73 @@ export default function Layout() {
         <Outlet />
       </main>
 
-      {/* Footer (kept as your Canva layout) */}
-      <footer className="mt-16 bg-[rgb(var(--bg))]">
-        <Container className="pb-10">
-          <div className="rounded-[28px] bg-[#ECECEC] ring-1 ring-slate-200 overflow-hidden">
-            <div className="grid gap-10 px-8 py-10 md:grid-cols-[1.2fr_1fr] md:items-center">
-              <div className="text-[56px] md:text-[72px] leading-[0.9] font-semibold tracking-tight text-slate-900">
-                LETS TALK
-              </div>
-
-              <div className="md:justify-self-end w-full max-w-[520px]">
-                <div className="text-[11px] uppercase tracking-[0.18em] text-slate-700">
-                  Subscribe
-                </div>
-
-                <div className="mt-3 flex items-stretch gap-3">
-                  <input
-                    type="email"
-                    placeholder="Enter your Email Address"
-                    className="h-12 w-full rounded-[14px] bg-transparent px-4 text-sm text-slate-900 ring-1 ring-slate-400 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-900"
-                  />
-                  <button
-                    type="button"
-                    className="h-12 rounded-[14px] bg-slate-900 px-6 text-xs uppercase tracking-[0.18em] text-white"
-                  >
-                    Join
-                  </button>
-                </div>
-
-                <div className="mt-3 text-[11px] uppercase tracking-[0.18em] text-slate-600">
-                  Product drops, catalog updates, and pricing notes.
+      <footer className="mt-16">
+        <Container className="py-10">
+          <div className="rounded-[22px] bg-white/95 px-6 py-10 ring-1 ring-slate-200 shadow-sm backdrop-blur md:px-10">
+            <div className="grid gap-10 md:grid-cols-[1.2fr_1fr_1.1fr]">
+            <div>
+              <div className="flex items-center gap-3">
+                <img src={logo} alt="BC Apparel" className="h-8 w-auto" />
+                <div className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-900">
+                  BC Apparel
                 </div>
               </div>
+              <p className="mt-4 max-w-sm text-sm leading-relaxed text-slate-600">
+                Custom apparel and branded products built for teams, businesses, and
+                organizations that value consistent quality.
+              </p>
             </div>
 
-            <div className="h-px bg-slate-300/80" />
-
-            <div className="grid gap-6 px-8 py-6 md:grid-cols-2 md:items-center">
-              <div className="text-[11px] uppercase tracking-[0.18em] text-slate-700">
-                Copyright
+            <div className="grid gap-3 text-sm text-slate-600">
+              <div className="text-[11px] uppercase tracking-[0.18em] text-slate-500">
+                Company
               </div>
-              <div className="text-[11px] uppercase tracking-[0.18em] text-slate-700 md:text-right">
-                You can add whatever you want here
+              <Link to="/about" className="hover:text-slate-900">
+                About
+              </Link>
+              <Link to="/products" className="hover:text-slate-900">
+                Products
+              </Link>
+              <Link to="/request" className="hover:text-slate-900">
+                Request Quote
+              </Link>
+              <Link to="/contact" className="hover:text-slate-900">
+                Contact
+              </Link>
+            </div>
+
+            <div>
+              <div className="text-[11px] uppercase tracking-[0.18em] text-slate-500">
+                Subscribe
+              </div>
+              <div className="mt-3 flex items-stretch gap-3">
+                <input
+                  type="email"
+                  placeholder="Enter your Email Address"
+                  className="h-12 w-full rounded-[14px] bg-white px-4 text-sm text-slate-900 ring-1 ring-slate-300 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-900"
+                />
+                <button
+                  type="button"
+                  className="h-12 rounded-[14px] bg-slate-900 px-6 text-xs uppercase tracking-[0.18em] text-white hover:bg-slate-800"
+                >
+                  Join
+                </button>
+              </div>
+              <div className="mt-3 text-xs text-slate-500">
+                Product drops, catalog updates, and pricing notes.
+              </div>
+            </div>
+          </div>
+
+            <div className="mt-10 flex flex-wrap items-center justify-between gap-4 border-t border-slate-200 pt-6 text-xs text-slate-500">
+              <div>© {new Date().getFullYear()} BC Apparel. All rights reserved.</div>
+              <div className="flex items-center gap-4">
+                <Link to="/request" className="hover:text-slate-800">
+                  Start a quote
+                </Link>
+                <Link to="/contact" className="hover:text-slate-800">
+                  Support
+                </Link>
               </div>
             </div>
           </div>

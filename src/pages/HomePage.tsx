@@ -1,39 +1,173 @@
-import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Container from "../components/Container";
-import Input from "../components/Input";
-import Select from "../components/Select";
 import Button from "../components/Button";
 import CategoryCard from "../components/CategoryCard";
-import ProductCard from "../components/ProductCard";
-import Skeleton from "../components/Skeleton";
-import { fetchFeaturedProducts, type HomeFeaturedProduct } from "../lib/homeApi";
+import heroImage from "../assets/hero/hero.jpeg";
+import vendorBadger from "../assets/hero/vendor/badger.png";
+import vendorOutdoor from "../assets/hero/vendor/outdoor.png";
+import vendorRicha from "../assets/hero/vendor/richa.png";
+import vendorSS from "../assets/hero/vendor/s&s.png";
+import vendorSanmar from "../assets/hero/vendor/sanmar.png";
+import vendorStaton from "../assets/hero/vendor/staton.png";
+import catalogApparel from "../assets/hero/collection/apparel.jpg";
+import catalogBags from "../assets/hero/collection/bags.jpg";
+import catalogDrinkware from "../assets/hero/collection/drinkWares.jpg";
+import catalogTech from "../assets/hero/collection/techProducts.jpg";
+import catalogWriting from "../assets/hero/collection/writingInstruments.jpg";
+import brandAdams from "../assets/hero/brands/adams.png";
+import brandBayside from "../assets/hero/brands/bayside.png";
+import brandBerne from "../assets/hero/brands/berne.png";
+import brandCarhartt from "../assets/hero/brands/carhartt.jpg";
+import brandChef from "../assets/hero/brands/chef.png";
+import brandColumbia from "../assets/hero/brands/columbia.png";
+import brandCore from "../assets/hero/brands/core.png";
+import brandDickies from "../assets/hero/brands/dickies.png";
+import brandDistrict from "../assets/hero/brands/district.jpg";
+import brandFaribault from "../assets/hero/brands/faribault.png";
+import brandFruit from "../assets/hero/brands/fruit.png";
+import brandHanes from "../assets/hero/brands/hanes.jpg";
+import brandHilton from "../assets/hero/brands/hilton.png";
+import brandIgloo from "../assets/hero/brands/igloo.png";
+import brandJerzees from "../assets/hero/brands/jerzees.png";
+import brandLee from "../assets/hero/brands/lee.png";
+import brandLiberty from "../assets/hero/brands/liberty.png";
+import brandMvSport from "../assets/hero/brands/mvsport.png";
+import brandNike from "../assets/hero/brands/nike.jpg";
+import brandQuickflips from "../assets/hero/brands/quickflips.png";
+import brandRawlings from "../assets/hero/brands/rawlings.png";
+import brandRedKap from "../assets/hero/brands/redkap.png";
+import brandSocco from "../assets/hero/brands/socco.png";
+import brandTeam from "../assets/hero/brands/team.png";
+import brandTeam365 from "../assets/hero/brands/team365.png";
+import brandTieDye from "../assets/hero/brands/Tie-Dye.png";
+import brandUnderArmor from "../assets/hero/brands/underArmor.png";
+import brandYupoong from "../assets/hero/brands/yupoong.png";
 
-const HERO_IMAGE = "https://picsum.photos/seed/bcapparel-hero/2200/1100";
+const HERO_IMAGE = heroImage;
 
-const COLLECTIONS: Array<{
-  tag?: string;
-  title: string;
-  category: string;
-  imageUrl: string;
-}> = [
-  { tag: "Best Seller", title: "Jackets", category: "Jackets", imageUrl: "https://picsum.photos/seed/bcapparel-jackets/1400/900" },
-  { tag: "Premium", title: "Hoodies", category: "Hoodies", imageUrl: "https://picsum.photos/seed/bcapparel-hoodies/1400/900" },
-  { tag: "New", title: "Caps", category: "Caps", imageUrl: "https://picsum.photos/seed/bcapparel-caps/1400/900" },
-  { title: "Polos", category: "Polos", imageUrl: "https://picsum.photos/seed/bcapparel-polos/1400/900" },
-  { title: "T-Shirts", category: "T-Shirts", imageUrl: "https://picsum.photos/seed/bcapparel-tshirts/1400/900" },
+const CATALOGS: Array<{ title: string; imageUrl: string; href: string }> = [
+  {
+    title: "Apparel",
+    imageUrl: catalogApparel,
+    href: "https://bcapparel.espwebsite.com/ProductResults/?SearchTerms=apparel",
+  },
+  {
+    title: "Bags",
+    imageUrl: catalogBags,
+    href: "https://bcapparel.espwebsite.com/ProductResults/?SearchTerms=bags",
+  },
+  {
+    title: "Writing instruments",
+    imageUrl: catalogWriting,
+    href: "https://bcapparel.espwebsite.com/ProductResults/?SearchTerms=writing+instruments",
+  },
+  {
+    title: "Tech Products",
+    imageUrl: catalogTech,
+    href: "https://bcapparel.espwebsite.com/ProductResults/?SearchTerms=tech",
+  },
+  {
+    title: "Drinkware",
+    imageUrl: catalogDrinkware,
+    href: "https://bcapparel.espwebsite.com/ProductResults/?SearchTerms=drinkware",
+  },
 ];
 
-type PriceBand = "all" | "0-25" | "25-50" | "50-100" | "100+";
+const VENDORS = [
+  { name: "Staton", src: vendorStaton, widthClass: "w-28 md:w-32" },
+  { name: "SanMar", src: vendorSanmar, widthClass: "w-28 md:w-32" },
+  { name: "Badger Sport", src: vendorBadger, widthClass: "w-28 md:w-32" },
+  { name: "Outdoor Cap", src: vendorOutdoor, widthClass: "w-32 md:w-36" },
+  { name: "Richardson", src: vendorRicha, widthClass: "w-28 md:w-32" },
+  { name: "S&S Activewear", src: vendorSS, widthClass: "w-32 md:w-36" },
+];
 
-function priceBandToParams(band: PriceBand): { min?: string; max?: string } {
-  if (band === "0-25") return { min: "0", max: "25" };
-  if (band === "25-50") return { min: "25", max: "50" };
-  if (band === "50-100") return { min: "50", max: "100" };
-  if (band === "100+") return { min: "100" };
-  return {};
-}
+const SERVICES = {
+  screenPrinting: {
+    title: "Screen Printing",
+    description: "Bold, durable prints for large runs with consistent color and coverage.",
+    tone: "light",
+  },
+  customApparel: {
+    title: "Custom Apparel",
+    description: "Bold, durable prints for large runs with consistent color and coverage.",
+    tone: "dark",
+  },
+  embroidery: {
+    title: "Embroidery",
+    description: "Premium stitched logos that elevate polos, hats, and outerwear.",
+    tone: "dark",
+  },
+  brandingDesign: {
+    title: "Branding & Design",
+    description: "Artwork support to make sure your logo looks sharp in print.",
+    tone: "light",
+  },
+  promoDark: {
+    title: "Promotional Products",
+    description: "Branded giveaways and event items tailored to your audience.",
+    tone: "dark",
+  },
+  promoLight: {
+    title: "Promotional Products",
+    description: "Branded giveaways and event items tailored to your audience.",
+    tone: "light",
+  },
+};
 
+const HOW_IT_WORKS = [
+  {
+    step: "01",
+    title: "Browse products or services",
+    description: "Artwork support to make sure your logo looks sharp in print.",
+  },
+  {
+    step: "02",
+    title: "Request a quote",
+    description: "Share sizes, quantities, and timelines.",
+  },
+  {
+    step: "03",
+    title: "We confirm details and pricing",
+    description: "Artwork support to make sure your logo looks sharp in print.",
+  },
+  {
+    step: "04",
+    title: "Production & delivery",
+    description: "Reliable production and on-time delivery.",
+  },
+];
+
+const BRAND_LOGOS = [
+  { name: "Hilton", src: brandHilton },
+  { name: "Team 365", src: brandTeam365 },
+  { name: "Tie-Dye", src: brandTieDye },
+  { name: "Under Armour", src: brandUnderArmor },
+  { name: "Yupoong", src: brandYupoong },
+  { name: "Core 365", src: brandCore },
+  { name: "Chef Designs", src: brandChef },
+  { name: "Liberty", src: brandLiberty },
+  { name: "Igloo", src: brandIgloo },
+  { name: "Fruit of the Loom", src: brandFruit },
+  { name: "Socco", src: brandSocco },
+  { name: "Dickies", src: brandDickies },
+  { name: "Rawlings", src: brandRawlings },
+  { name: "Quickflips", src: brandQuickflips },
+  { name: "Jerzees", src: brandJerzees },
+  { name: "MV Sport", src: brandMvSport },
+  { name: "Columbia", src: brandColumbia },
+  { name: "Berne", src: brandBerne },
+  { name: "Lee", src: brandLee },
+  { name: "Bayside", src: brandBayside },
+  { name: "Adams", src: brandAdams },
+  { name: "Team", src: brandTeam },
+  { name: "Faribault", src: brandFaribault },
+  { name: "Red Kap", src: brandRedKap },
+  { name: "Nike", src: brandNike },
+  { name: "Hanes", src: brandHanes },
+  { name: "District", src: brandDistrict },
+  { name: "Carhartt", src: brandCarhartt },
+];
 function Card({
   children,
   className = "",
@@ -53,144 +187,15 @@ function Card({
   );
 }
 
-function SectionHeader({
-  eyebrow,
-  title,
-  action,
-}: {
-  eyebrow: string;
-  title: string;
-  action?: React.ReactNode;
-}) {
-  return (
-    <div className="flex items-end justify-between gap-6">
-      <div>
-        <div className="text-[11px] uppercase tracking-[0.18em] text-slate-500">{eyebrow}</div>
-        {/* UPDATED: use display font like LETS TALK */}
-        <h2 className="display mt-3 text-3xl leading-[1.05] text-slate-800 font-bold">
-          {title}
-        </h2>
-      </div>
-      {action}
-    </div>
-  );
-}
-
-type RoomKey = "Teams" | "Events" | "Corporate" | "School" | "Outdoor";
-const ROOMS: Array<{ key: RoomKey; title: string; subtitle: string }> = [
-  { key: "Teams", title: "Teams", subtitle: "Uniforms, staff, clubs" },
-  { key: "Events", title: "Events", subtitle: "Giveaways, activations" },
-  { key: "Corporate", title: "Corporate", subtitle: "Polos, jackets, kits" },
-  { key: "School", title: "School", subtitle: "Org shirts, merch" },
-  { key: "Outdoor", title: "Outdoor", subtitle: "Caps, outerwear" },
-];
-
-function ServiceIcons() {
-  const items = [
-    { title: "Made to Order", desc: "Decoration-ready workflows." },
-    { title: "Fast Turnaround", desc: "Built for quick quoting." },
-    { title: "Easy Exchange", desc: "Simple sizing adjustments." },
-  ];
-
-  return (
-    <div className="grid gap-6 sm:grid-cols-3">
-      {items.map((i) => (
-        <Card key={i.title} className="p-7">
-          <div className="text-[11px] uppercase tracking-[0.18em] text-slate-500">{i.title}</div>
-          <p className="mt-3 text-sm leading-relaxed text-slate-600">{i.desc}</p>
-        </Card>
-      ))}
-    </div>
-  );
-}
-
-function TestimonialRow() {
-  const items = [
-    { name: "Jordan M.", role: "Operations", quote: "Fast browsing and clean filtering. Feels premium and practical." },
-    { name: "Carmen R.", role: "Marketing", quote: "The new layout makes products easier to compare and request." },
-    { name: "Dylan S.", role: "Purchasing", quote: "Cart → request flow is clear. No clutter." },
-  ];
-
-  return (
-    <div className="grid gap-6 lg:grid-cols-3">
-      {items.map((t) => (
-        <Card key={t.name} className="p-7">
-          <div className="flex items-center gap-3">
-            <div className="h-11 w-11 rounded-full bg-slate-200" aria-hidden="true" />
-            <div>
-              <div className="text-sm font-semibold text-slate-800">{t.name}</div>
-              <div className="text-xs text-slate-600">{t.role}</div>
-            </div>
-          </div>
-          <p className="mt-4 text-sm leading-relaxed text-slate-600">“{t.quote}”</p>
-        </Card>
-      ))}
-    </div>
-  );
-}
 
 export default function HomePage() {
   const navigate = useNavigate();
 
-  // Hero search (A)
-  const [q, setQ] = useState("");
-  const [category, setCategory] = useState("");
-  const [priceBand, setPriceBand] = useState<PriceBand>("all");
-
-  const catalogQuery = useMemo(() => {
-    const params = new URLSearchParams();
-    if (q.trim()) params.set("q", q.trim());
-    if (category) params.set("category", category);
-
-    const { min, max } = priceBandToParams(priceBand);
-    if (min) params.set("min", min);
-    if (max) params.set("max", max);
-
-    const s = params.toString();
-    return s ? `/catalog?${s}` : "/catalog";
-  }, [q, category, priceBand]);
-
-  function goSearch() {
-    navigate(catalogQuery);
-  }
-
-  function goCollection(cat: string) {
-    const params = new URLSearchParams();
-    params.set("category", cat);
-    navigate(`/catalog?${params.toString()}`);
-  }
-
-  // Featured products
-  const [featured, setFeatured] = useState<HomeFeaturedProduct[]>([]);
-  const [loadingFeatured, setLoadingFeatured] = useState(true);
-
-  useEffect(() => {
-    let alive = true;
-    (async () => {
-      setLoadingFeatured(true);
-      try {
-        const items = await fetchFeaturedProducts(9);
-        if (!alive) return;
-        setFeatured(items);
-      } catch {
-        if (!alive) return;
-        setFeatured([]);
-      } finally {
-        if (alive) setLoadingFeatured(false);
-      }
-    })();
-    return () => {
-      alive = false;
-    };
-  }, []);
-
-  const [openRoom, setOpenRoom] = useState<RoomKey>("Teams");
-
   return (
     <div>
-      {/* HERO */}
-      <section className="bg-[rgb(var(--bg))]">
-        <Container className="py-8">
+      {/* HERO (adapted to match your design) */}
+      <section className="bg-white">
+        <Container className="py-12">
           <Card className="bg-slate-100">
             <div className="relative">
               <img
@@ -199,316 +204,310 @@ export default function HomePage() {
                 className="h-[520px] w-full object-cover md:h-[620px]"
                 decoding="async"
               />
-              <div className="pointer-events-none absolute inset-0 bg-black/15" />
 
-              <div className="absolute left-6 top-10 md:left-10 md:top-12">
-                <h1 className="display-tight text-white text-5xl md:text-7xl leading-[0.9] font-bold">
-                  APPAREL FOR TEAMS
-                </h1>
+              {/* Image legibility overlay (top heavier, like your screenshot) */}
+              <div className="pointer-events-none absolute inset-0">
+                <div className="absolute inset-0 bg-black/10" />
+                <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-black/10 to-transparent" />
               </div>
 
-              <div className="absolute left-4 right-4 bottom-5 md:left-10 md:right-10 md:bottom-8">
-                <div className="rounded-[22px] bg-white p-4 md:p-5 ring-1 ring-slate-200 shadow-[0_20px_60px_rgba(0,0,0,0.14)]">
-                  <div className="grid gap-3 md:grid-cols-[1.2fr_0.9fr_0.8fr_auto] md:gap-4">
-                    <div>
-                      <div className="mb-1 text-[10px] uppercase tracking-[0.18em] text-slate-500">
-                        Search
-                      </div>
-                      <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search products..." />
-                    </div>
+              {/* Centered content */}
+              <div className="absolute inset-0 flex items-start justify-center px-6">
+                <div className="mt-14 md:mt-16 w-full max-w-3xl text-center">
+                  <h1 className="display-tight text-white text-5xl md:text-7xl leading-[0.9] font-medium">
+                    Custom Apparel & Branded Products
+                  </h1>
 
-                    <div>
-                      <div className="mb-1 text-[10px] uppercase tracking-[0.18em] text-slate-500">
-                        Category
-                      </div>
-                      <Select value={category} onChange={(e) => setCategory(e.target.value)}>
-                        <option value="">All</option>
-                        <option value="T-Shirts">T-Shirts</option>
-                        <option value="Hoodies">Hoodies</option>
-                        <option value="Caps">Caps</option>
-                        <option value="Polos">Polos</option>
-                        <option value="Jackets">Jackets</option>
-                      </Select>
-                    </div>
+                  <p className="mx-auto mt-4 max-w-2xl text-sm md:text-base leading-relaxed text-white/90">
+                    High-quality custom apparel and promotional products for teams and businesses—fast turnaround, reliable services.
+                  </p>
 
-                    <div>
-                      <div className="mb-1 text-[10px] uppercase tracking-[0.18em] text-slate-500">
-                        Price
-                      </div>
-                      <Select value={priceBand} onChange={(e) => setPriceBand(e.target.value as PriceBand)}>
-                        <option value="all">All</option>
-                        <option value="0-25">$0 – $25</option>
-                        <option value="25-50">$25 – $50</option>
-                        <option value="50-100">$50 – $100</option>
-                        <option value="100+">$100+</option>
-                      </Select>
-                    </div>
-
-                    <div className="flex items-end">
-                      <Button onClick={goSearch} className="h-11 w-full px-8 text-xs uppercase tracking-[0.18em] rounded-md">
-                        Search
-                      </Button>
-                    </div>
-                  </div>
-
-                  <div className="mt-3 text-xs text-slate-500">
-                    Demo note: sample catalog (no supplier APIs yet).
+                  <div className="mt-7 flex items-center justify-center">
+                    {/* Pill CTA like the design */}
+                    <Button
+                      onClick={() => navigate("/products")}
+                      className="h-11 rounded-full bg-white px-8 text-xs uppercase tracking-[0.18em] text-slate-900 ring-1 ring-white/70 hover:bg-white/95"
+                    >
+                      <span className="flex items-center gap-3">
+                        Browse
+                        <span
+                          aria-hidden="true"
+                          className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-slate-900 text-white ring-1 ring-slate-900/20"
+                        >
+                          →
+                        </span>
+                      </span>
+                    </Button>
                   </div>
                 </div>
               </div>
+
+              {/* subtle bottom fade to mimic the screenshot’s clean edge */}
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/10 to-transparent" />
             </div>
           </Card>
         </Container>
       </section>
 
-      {/* COLLECTIONS */}
-      <section className="bg-[rgb(var(--bg))]">
-        <Container className="py-14">
-          <div className="flex items-start justify-between gap-6">
-            <div>
-              {/* UPDATED: display font like LETS TALK */}
-              <h2 className="display text-4xl leading-[1.0] text-slate-800 font-semibold">
-                OUR COLLECTIONS
-              </h2>
-              <div className="mt-2 text-sm uppercase tracking-[0.22em] text-slate-600">
-                Shop by category
-              </div>
+      {/* VENDORS */}
+      <section className="bg-white">
+        <Container className="py-16">
+          <div className="relative overflow-hidden rounded-[28px] bg-white px-6 py-12 md:px-12 md:py-14">
+            <div className="relative z-10 flex flex-wrap items-center justify-center gap-x-10 gap-y-6">
+              {VENDORS.map((vendor) => (
+                <img
+                  key={vendor.name}
+                  src={vendor.src}
+                  alt={vendor.name}
+                  className={`${vendor.widthClass} h-auto object-contain`}
+                  loading="lazy"
+                  decoding="async"
+                />
+              ))}
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      {/* WHAT WE DO */}
+      <section className="bg-white">
+        <Container className="py-16">
+          <div className="grid gap-10 lg:grid-cols-[1fr_0.6fr_1fr] lg:items-start">
+            <div className="grid gap-6">
+              {[SERVICES.screenPrinting, SERVICES.customApparel, SERVICES.brandingDesign].map(
+                (item) => (
+                  <div
+                    key={item.title}
+                    className="group rounded-[22px] border border-slate-300 bg-white px-6 py-6 text-slate-900 transition-colors duration-300 hover:border-slate-900 hover:bg-slate-900 hover:text-white md:px-7 md:py-7"
+                  >
+                    <div className="flex items-center justify-between gap-4">
+                      <h3 className="text-lg md:text-xl font-semibold">{item.title}</h3>
+                      <span
+                        className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-slate-400 text-sm text-slate-900 transition-colors duration-300 group-hover:border-white/70 group-hover:text-white"
+                        aria-hidden="true"
+                      >
+                        →
+                      </span>
+                    </div>
+                    <p
+                      className="mt-4 text-sm leading-relaxed text-slate-700 transition-colors duration-300 group-hover:text-white/85"
+                    >
+                      {item.description}
+                    </p>
+                  </div>
+                )
+              )}
             </div>
 
-            <Button
-              variant="secondary"
-              onClick={() => navigate("/catalog")}
-              className="mt-1 rounded-full px-6 py-3 text-xs uppercase tracking-[0.18em]"
-            >
-              View all
-            </Button>
+            <div className="text-center lg:pt-4">
+              <h2 className="text-3xl md:text-4xl font-semibold text-slate-800">
+                What We Do
+              </h2>
+              <p className="mx-auto mt-4 max-w-xs text-sm leading-relaxed text-slate-600">
+                We help businesses, teams, and organizations bring their brand to life.
+              </p>
+            </div>
+
+            <div className="grid gap-6">
+              {[SERVICES.embroidery, SERVICES.promoDark, SERVICES.promoLight].map((item) => (
+                <div
+                  key={`${item.title}-${item.tone}`}
+                  className="group rounded-[22px] border border-slate-300 bg-white px-6 py-6 text-slate-900 transition-colors duration-300 hover:border-slate-900 hover:bg-slate-900 hover:text-white md:px-7 md:py-7"
+                >
+                  <div className="flex items-center justify-between gap-4">
+                    <h3 className="text-lg md:text-xl font-semibold">{item.title}</h3>
+                    <span
+                    className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-slate-400 text-sm text-slate-900 transition-colors duration-300 group-hover:border-white/70 group-hover:text-white"
+                      aria-hidden="true"
+                    >
+                      →
+                    </span>
+                  </div>
+                  <p
+                  className="mt-4 text-sm leading-relaxed text-slate-700 transition-colors duration-300 group-hover:text-white/85"
+                  >
+                    {item.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      {/* COLLECTIONS */}
+      <section className="bg-white">
+        <Container className="py-20">
+          <div className="text-center">
+            <h2 className="text-3xl md:text-5xl font-semibold text-slate-800">
+              Our Popular Catalogs
+            </h2>
+            <p className="mx-auto mt-4 max-w-2xl text-sm md:text-base text-slate-600">
+              Explore some of the most requested apparel and product options our customers
+              love.
+            </p>
           </div>
 
           <div className="mt-10 grid gap-6 md:grid-cols-3">
-            {COLLECTIONS.slice(0, 3).map((c) => (
-              <CategoryCard
-                key={c.title}
-                tag={c.tag}
-                title={c.title}
-                imageUrl={c.imageUrl}
-                onClick={() => goCollection(c.category)}
-              />
+            {CATALOGS.slice(0, 3).map((item) => (
+              <a
+                key={item.title}
+                href={item.href}
+                target="_blank"
+                rel="noreferrer"
+                className="group relative overflow-hidden rounded-[26px] bg-slate-100 text-left"
+              >
+                <img
+                  src={item.imageUrl}
+                  alt=""
+                  className="h-[260px] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03] md:h-[320px]"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <div className="absolute inset-0 bg-black/10 transition-colors duration-300 group-hover:bg-black/20" />
+                <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between gap-4">
+                  <div className="text-white">
+                    <div className="text-[11px] uppercase tracking-[0.18em] text-white/80">
+                      Catalog
+                    </div>
+                    <div className="display mt-2 text-2xl leading-[1.05]">
+                      {item.title}
+                    </div>
+                  </div>
+                  <div className="flex flex-col items-end gap-2">
+                    <span className="text-xs text-white/80 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                      Click to view
+                    </span>
+                    <span className="rounded-full bg-white/90 px-4 py-2 text-xs uppercase tracking-[0.18em] text-slate-900 ring-1 ring-white/70">
+                      View
+                    </span>
+                  </div>
+                </div>
+              </a>
             ))}
           </div>
 
           <div className="mt-6 grid gap-6 md:grid-cols-2">
-            {COLLECTIONS.slice(3, 5).map((c) => (
-              <CategoryCard
-                key={c.title}
-                tag={c.tag}
-                title={c.title}
-                imageUrl={c.imageUrl}
-                onClick={() => goCollection(c.category)}
-              />
-            ))}
-          </div>
-        </Container>
-      </section>
-
-      {/* QUALITY */}
-      <section className="bg-[rgb(var(--bg))]">
-        <Container className="py-16">
-          <SectionHeader eyebrow="Quality" title="Built for decoration and durability." />
-
-          <div className="mt-10 grid gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:items-stretch">
-            <Card className="p-8 bg-white">
-              <div className="text-[11px] uppercase tracking-[0.18em] text-slate-500">Quality</div>
-              <p className="mt-3 text-sm leading-relaxed text-slate-600">
-                Minimal copy, strong visuals. This rebuild stays focused on browsing speed and clean selection.
-              </p>
-              <div className="mt-6">
-                <Button
-                  onClick={() => navigate("/catalog")}
-                  className="rounded-full px-6 py-3 text-xs uppercase tracking-[0.18em]"
-                >
-                  Browse catalog
-                </Button>
-              </div>
-            </Card>
-
-            <Card className="bg-slate-100">
-              <div className="relative h-full">
+            {CATALOGS.slice(3).map((item) => (
+              <a
+                key={item.title}
+                href={item.href}
+                target="_blank"
+                rel="noreferrer"
+                className="group relative overflow-hidden rounded-[26px] bg-slate-100 text-left"
+              >
                 <img
-                  src="https://picsum.photos/seed/bcapparel-quality/1600/1000"
+                  src={item.imageUrl}
                   alt=""
-                  className="h-[320px] w-full object-cover md:h-full"
+                  className="h-[300px] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03] md:h-[360px]"
                   loading="lazy"
                   decoding="async"
                 />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <button
-                    type="button"
-                    className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-white/90 ring-1 ring-slate-200"
-                    aria-label="Play"
-                  >
-                    <span className="ml-1 inline-block border-y-8 border-l-12 border-y-transparent border-l-slate-900" />
-                  </button>
-                </div>
-              </div>
-            </Card>
-          </div>
-        </Container>
-      </section>
-
-      {/* SHOP OUR BEST */}
-      <section className="bg-[rgb(var(--bg))]">
-        <Container className="py-16">
-          <SectionHeader
-            eyebrow="Shop our best"
-            title="Featured picks from the demo catalog."
-            action={
-              <Button
-                variant="secondary"
-                onClick={() => navigate("/catalog")}
-                className="rounded-full px-6 py-3 text-xs uppercase tracking-[0.18em]"
-              >
-                View all
-              </Button>
-            }
-          />
-
-          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {loadingFeatured ? (
-              Array.from({ length: 6 }).map((_, i) => (
-                <Card key={i}>
-                  <Skeleton className="aspect-[4/3] w-full" />
-                  <div className="p-6">
-                    <Skeleton className="h-3 w-1/2" />
-                    <Skeleton className="mt-3 h-7 w-4/5" />
-                    <Skeleton className="mt-4 h-4 w-1/3" />
-                  </div>
-                </Card>
-              ))
-            ) : (
-              featured.slice(0, 6).map((p) => (
-                <Card key={p.id} className="overflow-hidden">
-                  <div className="h-full">
-                    <ProductCard product={p as any} />
-                  </div>
-                </Card>
-              ))
-            )}
-          </div>
-        </Container>
-      </section>
-
-      {/* RECOMMENDED */}
-      <section className="bg-[rgb(var(--bg))]">
-        <Container className="py-16">
-          <SectionHeader eyebrow="Recommended" title="Curated for you." />
-
-          <div className="mt-10 grid gap-6 lg:grid-cols-2">
-            {[
-              { title: "Corporate Kits", img: "https://picsum.photos/seed/bcapparel-rec1/1600/1000" },
-              { title: "Event Essentials", img: "https://picsum.photos/seed/bcapparel-rec2/1600/1000" },
-            ].map((t) => (
-              <Card key={t.title} className="bg-slate-100">
-                <div className="relative">
-                  <img src={t.img} alt="" className="h-[340px] w-full object-cover" loading="lazy" />
-                  <div className="absolute inset-0 bg-black/10" />
-                  <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between gap-6">
-                    <div className="text-white">
-                      <div className="text-[11px] uppercase tracking-[0.18em] text-white/85">Collection</div>
-                      <div className="display mt-2 text-2xl leading-[1.05]">{t.title}</div>
+                <div className="absolute inset-0 bg-black/10 transition-colors duration-300 group-hover:bg-black/20" />
+                <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between gap-4">
+                  <div className="text-white">
+                    <div className="text-[11px] uppercase tracking-[0.18em] text-white/80">
+                      Catalog
                     </div>
-                    <Button
-                      variant="secondary"
-                      onClick={() => navigate("/catalog")}
-                      className="rounded-full px-6 py-3 text-xs uppercase tracking-[0.18em]"
-                    >
-                      Shop
-                    </Button>
+                    <div className="display mt-2 text-2xl leading-[1.05]">
+                      {item.title}
+                    </div>
+                  </div>
+                  <div className="flex flex-col items-end gap-2">
+                    <span className="text-xs text-white/80 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                      Click to view
+                    </span>
+                    <span className="rounded-full bg-white/90 px-4 py-2 text-xs uppercase tracking-[0.18em] text-slate-900 ring-1 ring-white/70">
+                      View
+                    </span>
                   </div>
                 </div>
-              </Card>
+              </a>
             ))}
           </div>
         </Container>
       </section>
 
-      {/* SHOP BY USE */}
-      <section className="bg-[rgb(var(--bg))]">
-        <Container className="py-16">
-          <SectionHeader eyebrow="Shop by use" title="Shop by scenario." />
+      {/* HOW IT WORKS */}
+      <section className="bg-white">
+        <Container className="py-20">
+          <div className="text-center">
+            <h2 className="text-3xl md:text-5xl font-semibold text-slate-800">
+              How It Works
+            </h2>
+          </div>
 
-          <div className="mt-10 grid gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:items-stretch">
-            <Card>
-              <div className="divide-y divide-slate-200">
-                {ROOMS.map((r, idx) => {
-                  const isOpen = r.key === openRoom;
-                  return (
-                    <button
-                      key={r.key}
-                      type="button"
-                      onClick={() => setOpenRoom(r.key)}
-                      className="w-full p-6 text-left"
-                    >
-                      <div className="flex items-center justify-between gap-4">
-                        <div className="flex items-baseline gap-3">
-                          <div className="text-xs text-slate-400">{String(idx + 1).padStart(2, "0")}</div>
-                          <div>
-                            <div className="text-sm font-semibold text-slate-800">{r.title}</div>
-                            <div className="text-xs text-slate-600">{r.subtitle}</div>
-                          </div>
-                        </div>
-                        <span className="text-slate-500">{isOpen ? "—" : "+"}</span>
-                      </div>
-
-                      {isOpen ? (
-                        <div className="mt-4 text-sm text-slate-600">
-                          Curated items for {r.title.toLowerCase()} workflows.
-                          <div className="mt-4">
-                            <Button
-                              onClick={() => navigate("/catalog")}
-                              className="rounded-full px-6 py-3 text-xs uppercase tracking-[0.18em]"
-                            >
-                              Browse
-                            </Button>
-                          </div>
-                        </div>
-                      ) : null}
-                    </button>
-                  );
-                })}
-              </div>
-            </Card>
-
-            <Card className="bg-slate-100">
-              <div className="relative h-full">
-                <img
-                  src="https://picsum.photos/seed/bcapparel-room/1600/1000"
-                  alt=""
-                  className="h-[420px] w-full object-cover md:h-full"
-                  loading="lazy"
-                />
-                <div className="absolute bottom-6 left-6 rounded-full bg-white/90 px-4 py-2 text-[11px] uppercase tracking-[0.18em] text-slate-800 ring-1 ring-slate-200">
-                  {openRoom}
+          <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {HOW_IT_WORKS.map((item, index) => (
+              <div
+                key={item.step}
+                className={[
+                  "group rounded-[22px] border border-slate-300 bg-white px-6 py-6 text-slate-900 transition-colors duration-300 hover:border-slate-900 hover:bg-slate-900 hover:text-white md:px-7 md:py-7",
+                  index % 2 === 1 ? "lg:translate-y-6" : "lg:translate-y-0",
+                ].join(" ")}
+              >
+                <div className="flex items-start gap-4">
+                  <div className="text-3xl font-semibold">{item.step}</div>
+                  <div>
+                    <h3 className="text-base font-semibold leading-snug">{item.title}</h3>
+                    <p className="mt-4 text-sm leading-relaxed text-slate-700 transition-colors duration-300 group-hover:text-white/85">
+                      {item.description}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </Card>
-          </div>
-
-          {/* KEPT: Service icons section (previously under Let's Talk) */}
-          <div className="mt-10">
-            <ServiceIcons />
+            ))}
           </div>
         </Container>
       </section>
 
-      {/* CUSTOMERS */}
-      <section className="bg-[rgb(var(--bg))]">
-        <Container className="py-16">
-          <SectionHeader eyebrow="Customers" title="What buyers say." />
-          <div className="mt-10">
-            <TestimonialRow />
+      {/* TRUSTED BRANDS */}
+      <section className="bg-white">
+        <Container className="py-20">
+          <div className="text-center">
+            <h2 className="text-3xl md:text-5xl font-semibold text-slate-800">
+              Trusted by our brands
+            </h2>
+            <p className="mx-auto mt-3 max-w-2xl text-sm md:text-base text-slate-600">
+              Brands trust BC Apparel for consistent quality and dependable service.
+            </p>
+          </div>
+
+          <div className="mt-10 grid gap-8">
+            {[
+              BRAND_LOGOS.slice(0, Math.ceil(BRAND_LOGOS.length / 2)),
+              BRAND_LOGOS.slice(Math.ceil(BRAND_LOGOS.length / 2)),
+            ].map((row, index) => (
+              <div key={row[0]?.name ?? index} className="marquee">
+                <div className="marquee-fade marquee-fade-left" aria-hidden="true" />
+                <div className="marquee-fade marquee-fade-right" aria-hidden="true" />
+                <div
+                  className={[
+                    "marquee-track",
+                    index % 2 === 1 ? "marquee-track-right" : "",
+                  ].join(" ")}
+                >
+                  {[...row, ...row].map((brand, itemIndex) => (
+                    <div
+                      key={`${brand.name}-${itemIndex}`}
+                      className="flex items-center justify-center"
+                    >
+                      <img
+                        src={brand.src}
+                        alt={brand.name}
+                        className="h-10 md:h-12 w-auto object-contain"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
           </div>
         </Container>
       </section>
+
     </div>
   );
 }
