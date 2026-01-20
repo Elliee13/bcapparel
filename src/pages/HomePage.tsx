@@ -1,7 +1,7 @@
-import { useNavigate } from "react-router-dom";
+import { useRef } from "react";
 import Container from "../components/Container";
 import Button from "../components/Button";
-import CategoryCard from "../components/CategoryCard";
+import { useHeroIntro, useReveal, useGsapScope } from "../motion";
 import heroImage from "../assets/hero/hero.jpeg";
 import vendorBadger from "../assets/hero/vendor/badger.png";
 import vendorOutdoor from "../assets/hero/vendor/outdoor.png";
@@ -14,6 +14,10 @@ import catalogBags from "../assets/hero/collection/bags.jpg";
 import catalogDrinkware from "../assets/hero/collection/drinkWares.jpg";
 import catalogTech from "../assets/hero/collection/techProducts.jpg";
 import catalogWriting from "../assets/hero/collection/writingInstruments.jpg";
+import bcCarhartt from "../assets/brochures&catalogs/bcCarhartt.jpg";
+import bcGiftguide from "../assets/brochures&catalogs/bcGiftguide.jpg";
+import bcNorthface from "../assets/brochures&catalogs/bcNorthface.jpg";
+import bcWinterstyle from "../assets/brochures&catalogs/bcWinterstyle.jpg";
 import brandAdams from "../assets/hero/brands/adams.png";
 import brandBayside from "../assets/hero/brands/bayside.png";
 import brandBerne from "../assets/hero/brands/berne.png";
@@ -42,6 +46,8 @@ import brandTeam365 from "../assets/hero/brands/team365.png";
 import brandTieDye from "../assets/hero/brands/Tie-Dye.png";
 import brandUnderArmor from "../assets/hero/brands/underArmor.png";
 import brandYupoong from "../assets/hero/brands/yupoong.png";
+
+import { Brush, Gift, Shirt, Sticker } from "lucide-react";
 
 const HERO_IMAGE = heroImage;
 
@@ -108,11 +114,6 @@ const SERVICES = {
     description: "Branded giveaways and event items tailored to your audience.",
     tone: "dark",
   },
-  promoLight: {
-    title: "Promotional Products",
-    description: "Branded giveaways and event items tailored to your audience.",
-    tone: "light",
-  },
 };
 
 const HOW_IT_WORKS = [
@@ -168,6 +169,13 @@ const BRAND_LOGOS = [
   { name: "District", src: brandDistrict },
   { name: "Carhartt", src: brandCarhartt },
 ];
+
+const BROCHURES = [
+  { title: "BC Carhartt Catalog", imageUrl: bcCarhartt },
+  { title: "BC Northface Winter 2022", imageUrl: bcNorthface },
+  { title: "Gift Guide 2021", imageUrl: bcGiftguide },
+  { title: "BC Winter Style Guide 2022", imageUrl: bcWinterstyle },
+];
 function Card({
   children,
   className = "",
@@ -187,15 +195,65 @@ function Card({
   );
 }
 
+function BrochureCard({
+  title,
+  imageUrl,
+}: {
+  title: string;
+  imageUrl: string;
+}) {
+  return (
+    <div className="group relative overflow-hidden rounded-[28px] bg-slate-100 ring-1 ring-slate-200 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_50px_rgba(2,6,23,0.14)]">
+      <img
+        src={imageUrl}
+        alt={title}
+        className="h-[260px] w-full object-cover transition-transform duration-700 group-hover:scale-[1.03] sm:h-[300px] lg:h-[360px]"
+        loading="lazy"
+        decoding="async"
+      />
+      <div className="absolute inset-0 bg-black/10 transition-colors duration-300 group-hover:bg-black/20" />
+
+      <div className="absolute bottom-6 left-6 right-6">
+        <div className="mt-2 text-lg font-semibold leading-[1.1] text-white md:text-xl">
+          {title}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 
 export default function HomePage() {
-  const navigate = useNavigate();
+  const heroScopeRef = useGsapScope<HTMLDivElement>();
+  const eyebrowRef = useRef<HTMLDivElement>(null);
+  const headlineRef = useRef<HTMLHeadingElement>(null);
+  const paragraphRef = useRef<HTMLParagraphElement>(null);
+  const ctaRef = useRef<HTMLDivElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
+
+  // Hero intro timeline
+  useHeroIntro({
+    elements: [
+      { ref: eyebrowRef, delay: 0, y: 10, opacity: 0 },
+      { ref: headlineRef, delay: 0.1, y: 24, opacity: 0 },
+      { ref: paragraphRef, delay: 0.2, y: 16, opacity: 0 },
+      { ref: ctaRef, delay: 0.35, y: 12, opacity: 0 },
+      { ref: overlayRef, delay: 0.1, opacity: 0 },
+    ],
+  });
+
+  // Scroll reveals for catalog cards
+  useReveal({
+    elements: ".catalog-card",
+    stagger: 0.1,
+    start: "top 85%",
+  });
 
   return (
-    <div>
+    <div ref={heroScopeRef}>
       {/* HERO (adapted to match your design) */}
       <section className="bg-white">
-        <Container className="py-12">
+        <Container className="py-16">
           <Card className="bg-slate-100">
             <div className="relative">
               <img
@@ -206,7 +264,7 @@ export default function HomePage() {
               />
 
               {/* Image legibility overlay (top heavier, like your screenshot) */}
-              <div className="pointer-events-none absolute inset-0">
+              <div ref={overlayRef} className="pointer-events-none absolute inset-0">
                 <div className="absolute inset-0 bg-black/10" />
                 <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-black/10 to-transparent" />
               </div>
@@ -214,25 +272,33 @@ export default function HomePage() {
               {/* Centered content */}
               <div className="absolute inset-0 flex items-start justify-center px-6">
                 <div className="mt-14 md:mt-16 w-full max-w-3xl text-center">
-                  <h1 className="display-tight text-white text-5xl md:text-7xl leading-[0.9] font-medium">
+                  {/* Subtle eyebrow */}
+                  <div ref={eyebrowRef} className="text-[10px] uppercase tracking-[0.24em] text-white/70 mb-2">
+                    Custom Branding Solutions
+                  </div>
+
+                  <h1 ref={headlineRef} className="display-tight text-white text-5xl md:text-7xl leading-[0.9] font-medium">
                     Custom Apparel & Branded Products
                   </h1>
 
-                  <p className="mx-auto mt-4 max-w-2xl text-sm md:text-base leading-relaxed text-white/90">
+                  <p ref={paragraphRef} className="mx-auto mt-4 max-w-2xl text-sm md:text-base leading-relaxed text-white/90">
                     High-quality custom apparel and promotional products for teams and businesses—fast turnaround, reliable services.
                   </p>
 
-                  <div className="mt-7 flex items-center justify-center">
+                  <div ref={ctaRef} className="mt-7 flex items-center justify-center">
                     {/* Pill CTA like the design */}
                     <Button
-                      onClick={() => navigate("/products")}
+                      onClick={() => {
+                        const section = document.getElementById("what-we-do");
+                        section?.scrollIntoView({ behavior: "smooth", block: "start" });
+                      }}
                       className="h-11 rounded-full bg-white px-8 text-xs uppercase tracking-[0.18em] text-slate-900 ring-1 ring-white/70 hover:bg-white/95"
                     >
                       <span className="flex items-center gap-3">
                         Browse
                         <span
                           aria-hidden="true"
-                          className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-slate-900 text-white ring-1 ring-slate-900/20"
+                          className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-[rgb(var(--navy-950))] text-white ring-1 ring-[rgb(var(--navy-950))]/20"
                         >
                           →
                         </span>
@@ -250,8 +316,8 @@ export default function HomePage() {
       </section>
 
       {/* VENDORS */}
-      <section className="bg-white">
-        <Container className="py-16">
+      <section className="bg-white" id="what-we-do">
+        <Container className="py-20">
           <div className="relative overflow-hidden rounded-[28px] bg-white px-6 py-12 md:px-12 md:py-14">
             <div className="relative z-10 flex flex-wrap items-center justify-center gap-x-10 gap-y-6">
               {VENDORS.map((vendor) => (
@@ -269,78 +335,90 @@ export default function HomePage() {
         </Container>
       </section>
 
-      {/* WHAT WE DO */}
-      <section className="bg-white">
-        <Container className="py-16">
-          <div className="grid gap-10 lg:grid-cols-[1fr_0.6fr_1fr] lg:items-start">
-            <div className="grid gap-6">
-              {[SERVICES.screenPrinting, SERVICES.customApparel, SERVICES.brandingDesign].map(
-                (item) => (
-                  <div
-                    key={item.title}
-                    className="group rounded-[22px] border border-slate-300 bg-white px-6 py-6 text-slate-900 transition-colors duration-300 hover:border-slate-900 hover:bg-slate-900 hover:text-white md:px-7 md:py-7"
-                  >
-                    <div className="flex items-center justify-between gap-4">
-                      <h3 className="text-lg md:text-xl font-semibold">{item.title}</h3>
-                      <span
-                        className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-slate-400 text-sm text-slate-900 transition-colors duration-300 group-hover:border-white/70 group-hover:text-white"
-                        aria-hidden="true"
-                      >
-                        →
-                      </span>
-                    </div>
-                    <p
-                      className="mt-4 text-sm leading-relaxed text-slate-700 transition-colors duration-300 group-hover:text-white/85"
-                    >
-                      {item.description}
-                    </p>
-                  </div>
-                )
-              )}
-            </div>
+    {/* WHAT WE DO */}
+    <section className="bg-white">
+      <Container className="py-20">
+        {/* Header */}
+        <div className="text-center">
+          <h2 className="text-3xl md:text-4xl font-semibold tracking-[-0.01em] text-slate-900">
+            What We Do
+          </h2>
+          <p className="mx-auto mt-4 max-w-md text-sm leading-relaxed text-slate-600">
+            We help businesses, teams, and organizations bring their brand to life.
+          </p>
+        </div>
 
-            <div className="text-center lg:pt-4">
-              <h2 className="text-3xl md:text-4xl font-semibold text-slate-800">
-                What We Do
-              </h2>
-              <p className="mx-auto mt-4 max-w-xs text-sm leading-relaxed text-slate-600">
-                We help businesses, teams, and organizations bring their brand to life.
-              </p>
-            </div>
+        {/* Cards (true-centered last row on desktop) */}
+        <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-6">
+          {(
+            [
+              { key: "screenPrinting", step: "01", icon: <Sticker className="h-5 w-5" /> },
+              { key: "embroidery", step: "02", icon: <Shirt className="h-5 w-5" /> },
+              { key: "customApparel", step: "03", icon: <Shirt className="h-5 w-5" /> },
+              { key: "brandingDesign", step: "04", icon: <Brush className="h-5 w-5" /> },
+              { key: "promoDark", step: "05", icon: <Gift className="h-5 w-5" /> },
+            ] as const
+          ).map(({ key, step, icon }, index) => {
+            const item = SERVICES[key];
 
-            <div className="grid gap-6">
-              {[SERVICES.embroidery, SERVICES.promoDark, SERVICES.promoLight].map((item) => (
-                <div
-                  key={`${item.title}-${item.tone}`}
-                  className="group rounded-[22px] border border-slate-300 bg-white px-6 py-6 text-slate-900 transition-colors duration-300 hover:border-slate-900 hover:bg-slate-900 hover:text-white md:px-7 md:py-7"
-                >
-                  <div className="flex items-center justify-between gap-4">
-                    <h3 className="text-lg md:text-xl font-semibold">{item.title}</h3>
-                    <span
-                    className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-slate-400 text-sm text-slate-900 transition-colors duration-300 group-hover:border-white/70 group-hover:text-white"
-                      aria-hidden="true"
-                    >
-                      →
-                    </span>
+            // Desktop grid is 6 columns; each card spans 2 columns:
+            // Row 1: [1-2] [3-4] [5-6]
+            // Row 2 (2 items) centered: start at 2 and 4 -> equal whitespace left/right
+            const centerPair =
+              index === 3 ? "lg:col-start-2" : index === 4 ? "lg:col-start-4" : "";
+
+            return (
+              <div
+                key={key}
+                className={[
+                  "lg:col-span-2",
+                  centerPair,
+                  "group relative overflow-hidden",
+                  "rounded-[18px] border border-slate-200 bg-white",
+                  "p-7 md:p-8",
+                  "text-center",
+                  "transition-all duration-300",
+                  "hover:-translate-y-[2px] hover:shadow-[0_18px_50px_rgba(2,6,23,0.08)]",
+                ].join(" ")}
+              >
+                {/* top area */}
+                <div className="relative flex flex-col items-center">
+                  {/* icon chip */}
+                  <div className="inline-flex h-10 w-10 items-center justify-center rounded-[12px] bg-slate-50 ring-1 ring-slate-200 text-slate-700">
+                    {icon}
                   </div>
-                  <p
-                  className="mt-4 text-sm leading-relaxed text-slate-700 transition-colors duration-300 group-hover:text-white/85"
-                  >
+
+                  {/* huge faint number */}
+                  <div className="pointer-events-none absolute right-0 top-0 select-none text-6xl font-semibold leading-none text-slate-900/[0.05]">
+                    {step}
+                  </div>
+                </div>
+
+                {/* content */}
+                <div className="mt-6">
+                  <h3 className="text-xl font-semibold tracking-[-0.01em] text-slate-900">
+                    {item.title}
+                  </h3>
+
+                  <p className="mx-auto mt-3 max-w-[36ch] text-sm leading-relaxed text-slate-600">
                     {item.description}
                   </p>
                 </div>
-              ))}
-            </div>
-          </div>
-        </Container>
-      </section>
+              </div>
+            );
+          })}
+        </div>
+      </Container>
+    </section>
+
+
 
       {/* COLLECTIONS */}
       <section className="bg-white">
-        <Container className="py-20">
+        <Container className="py-24">
           <div className="text-center">
             <h2 className="text-3xl md:text-5xl font-semibold text-slate-800">
-              Our Popular Catalogs
+              Our Popular Products
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-sm md:text-base text-slate-600">
               Explore some of the most requested apparel and product options our customers
@@ -355,7 +433,7 @@ export default function HomePage() {
                 href={item.href}
                 target="_blank"
                 rel="noreferrer"
-                className="group relative overflow-hidden rounded-[26px] bg-slate-100 text-left"
+                className="catalog-card group relative overflow-hidden rounded-[26px] bg-slate-100 text-left"
               >
                 <img
                   src={item.imageUrl}
@@ -367,9 +445,6 @@ export default function HomePage() {
                 <div className="absolute inset-0 bg-black/10 transition-colors duration-300 group-hover:bg-black/20" />
                 <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between gap-4">
                   <div className="text-white">
-                    <div className="text-[11px] uppercase tracking-[0.18em] text-white/80">
-                      Catalog
-                    </div>
                     <div className="display mt-2 text-2xl leading-[1.05]">
                       {item.title}
                     </div>
@@ -394,7 +469,7 @@ export default function HomePage() {
                 href={item.href}
                 target="_blank"
                 rel="noreferrer"
-                className="group relative overflow-hidden rounded-[26px] bg-slate-100 text-left"
+                className="catalog-card group relative overflow-hidden rounded-[26px] bg-slate-100 text-left"
               >
                 <img
                   src={item.imageUrl}
@@ -406,9 +481,6 @@ export default function HomePage() {
                 <div className="absolute inset-0 bg-black/10 transition-colors duration-300 group-hover:bg-black/20" />
                 <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between gap-4">
                   <div className="text-white">
-                    <div className="text-[11px] uppercase tracking-[0.18em] text-white/80">
-                      Catalog
-                    </div>
                     <div className="display mt-2 text-2xl leading-[1.05]">
                       {item.title}
                     </div>
@@ -428,9 +500,38 @@ export default function HomePage() {
         </Container>
       </section>
 
+      {/* BROCHURES / CATALOGS */}
+      <section className="bg-white">
+        <Container className="py-24">
+          <div className="text-center">
+            <h2 className="display-tight mt-4 text-4xl md:text-5xl lg:text-6xl leading-[0.95] text-slate-900 font-medium">
+              Browse Our Catalog
+            </h2>
+
+            <p className="mx-auto mt-4 max-w-2xl text-sm md:text-base text-slate-600">
+              Explore seasonal brochures and brand catalogs for apparel and promotional options.
+            </p>
+          </div>
+
+          {/* IMPORTANT: match your catalogs page sizing */}
+          <div className="mt-14 mx-auto w-full max-w-[1500px]">
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+              {BROCHURES.map((item) => (
+                <BrochureCard
+                  key={item.title}
+                  title={item.title}
+                  imageUrl={item.imageUrl}
+                />
+              ))}
+            </div>
+          </div>
+        </Container>
+      </section>
+
+
       {/* HOW IT WORKS */}
       <section className="bg-white">
-        <Container className="py-20">
+        <Container className="py-24">
           <div className="text-center">
             <h2 className="text-3xl md:text-5xl font-semibold text-slate-800">
               How It Works
@@ -442,7 +543,7 @@ export default function HomePage() {
               <div
                 key={item.step}
                 className={[
-                  "group rounded-[22px] border border-slate-300 bg-white px-6 py-6 text-slate-900 transition-colors duration-300 hover:border-slate-900 hover:bg-slate-900 hover:text-white md:px-7 md:py-7",
+                  "group rounded-[22px] border border-slate-300 bg-white px-6 py-6 text-slate-900 transition-colors duration-300 hover:border-[rgb(var(--navy-950))] hover:bg-[rgb(var(--navy-950))] hover:text-white md:px-7 md:py-7",
                   index % 2 === 1 ? "lg:translate-y-6" : "lg:translate-y-0",
                 ].join(" ")}
               >
@@ -463,7 +564,7 @@ export default function HomePage() {
 
       {/* TRUSTED BRANDS */}
       <section className="bg-white">
-        <Container className="py-20">
+        <Container className="py-24">
           <div className="text-center">
             <h2 className="text-3xl md:text-5xl font-semibold text-slate-800">
               Trusted by our brands

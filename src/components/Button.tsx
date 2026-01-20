@@ -9,12 +9,12 @@ export default function Button({
 }) {
   const base =
     "inline-flex items-center justify-center rounded-none px-4 py-2 text-sm font-semibold tracking-wide transition " +
-    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-2 " +
+    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgb(var(--navy-800))] focus-visible:ring-offset-2 " +
     "disabled:cursor-not-allowed disabled:opacity-50";
 
   const styles =
     variant === "primary"
-      ? "bg-slate-900 text-white hover:bg-slate-800 hover:-translate-y-[1px] hover:shadow-[var(--shadow)]"
+      ? "bg-[rgb(var(--navy-950))] text-white hover:bg-[rgb(var(--navy-800))] hover:-translate-y-[1px] hover:shadow-[var(--shadow)]"
       : variant === "secondary"
       ? "bg-white text-slate-900 ring-1 ring-slate-300 hover:-translate-y-[1px] hover:shadow-[var(--shadow)]"
       : variant === "danger"

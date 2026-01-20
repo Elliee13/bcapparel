@@ -1,26 +1,8 @@
 import { useState } from "react";
 import Container from "../components/Container";
-import Input from "../components/Input";
 import Button from "../components/Button";
-
-function Card({
-  children,
-  className = "",
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) {
-  return (
-    <div
-      className={[
-        "rounded-[28px] bg-white ring-1 ring-slate-200",
-        className,
-      ].join(" ")}
-    >
-      {children}
-    </div>
-  );
-}
+import contactImage from "../assets/contact/contact.png";
+import logo from "../assets/webLogo/bacapparel.png";
 
 export default function ContactPage() {
   const [name, setName] = useState("");
@@ -38,92 +20,185 @@ export default function ContactPage() {
   }
 
   return (
-    <div className="bg-[rgb(var(--bg))]">
-      <Container className="py-12 md:py-16">
-        <div className="grid gap-10 lg:grid-cols-2">
-          <div className="max-w-xl">
-            <div className="text-[11px] uppercase tracking-[0.18em] text-slate-500">
-              Contact
+    <div className="bg-white">
+      <section className="bg-white">
+        <Container className="py-24">
+          <div className="text-center text-[11px] uppercase tracking-[0.24em] text-slate-500">
+            Contact
+          </div>
+          <h1 className="display-tight mt-4 text-center text-4xl md:text-5xl lg:text-6xl leading-[0.95] text-slate-900 font-medium">
+            Ready to start a project or have a question?
+          </h1>
+
+          <div className="mt-12 grid gap-8 lg:grid-cols-[1fr_0.9fr] lg:items-stretch">
+            <div className="relative overflow-hidden rounded-[28px]">
+              <img
+                src={contactImage}
+                alt="Mountain landscape at sunset"
+                className="h-full min-h-[520px] w-full object-cover"
+                loading="lazy"
+                decoding="async"
+              />
+              <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/10 to-black/40" />
+
+              <div className="absolute bottom-6 left-6 right-6 text-white">
+                <div className="text-2xl font-semibold leading-tight">“Serving teams and businesses nationwide.”</div>
+                <div className="mt-2 text-sm text-white/80">Custom apparel and branded products built for reliability.</div>
+              </div>
             </div>
 
-            <h1 className="display-tight mt-4 text-4xl md:text-5xl leading-[0.95] text-slate-900">
-              Let us know what you need
-            </h1>
-
-            <p className="mt-6 text-sm leading-relaxed text-slate-600">
-              Share your timeline, quantities, and branding goals. We will follow
-              up with supplier options and a tailored quote.
-            </p>
-
-            <Card className="mt-10 p-6 md:p-8">
-              <div className="text-[11px] uppercase tracking-[0.18em] text-slate-500">
-                Office
+            <div className="rounded-[28px] bg-[rgb(var(--navy-950))] p-8 text-white shadow-sm">
+              <div className="flex items-center gap-3">
+                <img src={logo} alt="BC Apparel" className="h-8 w-auto" />
+                <div className="text-xs uppercase tracking-[0.22em] text-white/80">
+                  BC Apparel
+                </div>
               </div>
-              <p className="mt-4 text-sm leading-relaxed text-slate-600">
-                Email: sales@bcapparel.com <span className="text-slate-400">(demo)</span>
+
+              <div className="mt-6 text-xl font-semibold leading-tight">
+                Reach out and
                 <br />
-                Phone: (000) 000-0000 <span className="text-slate-400">(demo)</span>
-              </p>
-            </Card>
+                our team will
+                <br />
+                follow up.
+              </div>
+
+              <form className="mt-8 space-y-6" onSubmit={submit}>
+                <label className="block">
+                  <span className="text-[11px] uppercase tracking-[0.18em] text-white/70">
+                    Name
+                  </span>
+                  <input
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                    placeholder="Fullname"
+                    className="mt-2 w-full border-b border-white/40 bg-transparent pb-2 text-sm text-white placeholder:text-white/50 focus:outline-none focus:border-white"
+                  />
+                </label>
+
+                <label className="block">
+                  <span className="text-[11px] uppercase tracking-[0.18em] text-white/70">
+                    Email
+                  </span>
+                  <input
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    type="email"
+                    placeholder="you@company.com"
+                    className="mt-2 w-full border-b border-white/40 bg-transparent pb-2 text-sm text-white placeholder:text-white/50 focus:outline-none focus:border-white"
+                  />
+                </label>
+
+                <label className="block">
+                  <span className="text-[11px] uppercase tracking-[0.18em] text-white/70">
+                    Message
+                  </span>
+                  <textarea
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    required
+                    placeholder="Tell us what you need"
+                    className="mt-2 min-h-28 w-full border-b border-white/40 bg-transparent pb-2 text-sm text-white placeholder:text-white/50 focus:outline-none focus:border-white"
+                  />
+                </label>
+
+                <Button
+                  type="submit"
+                  className="h-12 w-full rounded-full bg-[rgb(var(--navy-700))] text-xs uppercase tracking-[0.18em] text-white hover:bg-[rgb(var(--navy-800))]"
+                >
+                  {sent ? "Sent" : "Send Message"}
+                </Button>
+              </form>
+            </div>
           </div>
 
-          <Card className="p-6 md:p-8">
-            <div className="text-[11px] uppercase tracking-[0.18em] text-slate-500">
-              Message
+          <div className="mt-16 rounded-[28px] border border-slate-200 bg-white px-6 py-10 md:px-12">
+            <div className="text-center">
+              <div className="text-xl font-semibold text-slate-900">
+                For business enquires
+              </div>
             </div>
 
-            <form className="mt-6 space-y-5" onSubmit={submit}>
-              <div>
-                <div className="mb-1 text-[11px] uppercase tracking-[0.18em] text-slate-500">
-                  Name
+            <div className="mt-8 grid gap-8 md:grid-cols-3">
+              <div className="rounded-[20px] border border-slate-200 bg-white p-6 text-sm text-slate-600 shadow-sm">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 text-slate-700">
+                  <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
+                    <path
+                      d="M4 6h16v12H4z"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.6"
+                    />
+                    <path
+                      d="M4 7l8 6 8-6"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.6"
+                    />
+                  </svg>
                 </div>
-                <Input
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  required
-                  className="rounded-[14px]"
-                />
+                <div className="mt-4">
+                  For all inquiries, please send an email to{" "}
+                  <span className="font-semibold text-slate-900">
+                    sales@bcapparel.com
+                  </span>{" "}
+                  |{" "}
+                  <span className="font-semibold text-slate-900">
+                    artwork@bcapparel.com
+                  </span>
+                </div>
               </div>
 
-              <div>
-                <div className="mb-1 text-[11px] uppercase tracking-[0.18em] text-slate-500">
-                  Email
+              <div className="rounded-[20px] border border-slate-200 bg-white p-6 text-sm text-slate-600 shadow-sm">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 text-slate-700">
+                  <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
+                    <path
+                      d="M5 4h14a2 2 0 0 1 2 2v12a0 0 0 0 1 0 0H3a0 0 0 0 1 0 0V6a2 2 0 0 1 2-2z"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.6"
+                    />
+                    <path
+                      d="M8 20h8"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.6"
+                    />
+                  </svg>
                 </div>
-                <Input
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  type="email"
-                  className="rounded-[14px]"
-                />
+                <div className="mt-4">
+                  or call us at{" "}
+                  <span className="font-semibold text-slate-900">Local</span>: (405)
+                  573-9118 &{" "}
+                  <span className="font-semibold text-slate-900">toll free</span>{" "}
+                  (877) 783-0422
+                </div>
               </div>
 
-              <div>
-                <div className="mb-1 text-[11px] uppercase tracking-[0.18em] text-slate-500">
-                  Message
+              <div className="rounded-[20px] border border-slate-200 bg-white p-6 text-sm text-slate-600 shadow-sm">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 text-slate-700">
+                  <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
+                    <path
+                      d="M12 3a6 6 0 0 1 6 6c0 4.5-6 12-6 12S6 13.5 6 9a6 6 0 0 1 6-6z"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.6"
+                    />
+                    <circle cx="12" cy="9" r="2.4" fill="none" stroke="currentColor" strokeWidth="1.6" />
+                  </svg>
                 </div>
-                <textarea
-                  className="min-h-32 w-full rounded-[14px] bg-white px-3 py-2 text-sm ring-1 ring-slate-300 transition placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900"
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  required
-                />
+                <div className="mt-4">
+                  <span className="font-semibold text-slate-900">Address:</span>
+                  <br />
+                  2506 N Moore Ave, Moore, OK 73160, United States.
+                </div>
               </div>
-
-              <Button
-                className="w-full rounded-full py-3 text-xs uppercase tracking-[0.18em]"
-                type="submit"
-              >
-                {sent ? "Sent" : "Send message"}
-              </Button>
-
-              <p className="text-xs text-slate-600">
-                Demo note: This form is not connected to email yet.
-              </p>
-            </form>
-          </Card>
-        </div>
-      </Container>
+            </div>
+          </div>
+        </Container>
+      </section>
     </div>
   );
 }

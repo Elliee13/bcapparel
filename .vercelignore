@@ -1,0 +1,21 @@
+# Development files
+node_modules
+.vscode
+.idea
+*.log
+.DS_Store
+
+# Build artifacts (Vercel will build these)
+dist
+dist-ssr
+
+# Documentation
+README.md
+PROGRESS_REPORT.md
+
+# Supabase files (if not needed in deployment)
+supabase
+
+# Git
+.git
+.gitignore

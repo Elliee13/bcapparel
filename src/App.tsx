@@ -8,6 +8,7 @@ const AboutPage = lazy(() => import("./pages/AboutPage"));
 const ContactPage = lazy(() => import("./pages/ContactPage"));
 const RequestPage = lazy(() => import("./pages/RequestPage"));
 const ProductsPage = lazy(() => import("./pages/ProductsPage"));
+const BrochuresCatalogsPage = lazy(() => import("./pages/BrochuresCatalogsPage"));
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
 
 function Loading() {
@@ -55,20 +56,29 @@ export default function App() {
             }
           />
 
-          <Route
-            path="/products"
-            element={
-              <Suspense fallback={<Loading />}>
-                <ProductsPage />
-              </Suspense>
-            }
-          />
+        <Route
+          path="/products"
+          element={
+            <Suspense fallback={<Loading />}>
+              <ProductsPage />
+            </Suspense>
+          }
+        />
 
-          <Route
-            path="*"
-            element={
-              <Suspense fallback={<Loading />}>
-                <NotFoundPage />
+        <Route
+          path="/brochures-catalogs"
+          element={
+            <Suspense fallback={<Loading />}>
+              <BrochuresCatalogsPage />
+            </Suspense>
+          }
+        />
+
+        <Route
+          path="*"
+          element={
+            <Suspense fallback={<Loading />}>
+              <NotFoundPage />
               </Suspense>
             }
           />

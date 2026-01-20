@@ -1,6 +1,7 @@
 import { Link, NavLink, Outlet } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import Container from "./Container";
+import MotionLayout from "./MotionLayout";
 import logo from "../assets/webLogo/bacapparel.png";
 
 function NavItem({ to, children }: { to: string; children: React.ReactNode }) {
@@ -78,15 +79,14 @@ export default function Layout() {
                 <NavItem to="/">Home</NavItem>
                 <NavItem to="/about">About</NavItem>
                 <NavItem to="/products">Products</NavItem>
-                <NavItem to="/request">Request</NavItem>
-                <NavItem to="/contact">Contact</NavItem>
+                <NavItem to="/brochures-catalogs">Brochures/Catalog</NavItem>
               </nav>
 
               <Link
-                to="/request"
-                className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-4 py-2 text-[11px] uppercase tracking-[0.18em] text-white ring-1 ring-slate-900/10 hover:bg-slate-800"
+                to="/contact"
+                className="inline-flex items-center gap-2 rounded-full bg-[rgb(var(--navy-950))] px-4 py-2 text-[11px] uppercase tracking-[0.18em] text-white ring-1 ring-[rgb(var(--navy-950))]/10 hover:bg-[rgb(var(--navy-800))]"
               >
-                Request Quote
+                Contact
               </Link>
             </div>
 
@@ -94,15 +94,16 @@ export default function Layout() {
               <NavItem to="/">Home</NavItem>
               <NavItem to="/about">About</NavItem>
               <NavItem to="/products">Products</NavItem>
-              <NavItem to="/request">Request</NavItem>
-              <NavItem to="/contact">Contact</NavItem>
+              <NavItem to="/brochures-catalogs">Brochures/Catalog</NavItem>
             </div>
           </div>
         </Container>
       </header>
 
       <main>
-        <Outlet />
+        <MotionLayout>
+          <Outlet />
+        </MotionLayout>
       </main>
 
       <footer className="mt-16">
@@ -148,17 +149,17 @@ export default function Layout() {
                 <input
                   type="email"
                   placeholder="Enter your Email Address"
-                  className="h-12 w-full rounded-[14px] bg-white px-4 text-sm text-slate-900 ring-1 ring-slate-300 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-900"
+                  className="h-12 w-full rounded-[14px] bg-white px-4 text-sm text-slate-900 ring-1 ring-slate-300 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-[rgb(var(--navy-800))]"
                 />
                 <button
                   type="button"
-                  className="h-12 rounded-[14px] bg-slate-900 px-6 text-xs uppercase tracking-[0.18em] text-white hover:bg-slate-800"
+                  className="h-12 rounded-[14px] bg-[rgb(var(--navy-950))] px-6 text-xs uppercase tracking-[0.18em] text-white hover:bg-[rgb(var(--navy-800))]"
                 >
                   Join
                 </button>
               </div>
               <div className="mt-3 text-xs text-slate-500">
-                Product drops, catalog updates, and pricing notes.
+                Product drops, product updates, and pricing notes.
               </div>
             </div>
           </div>

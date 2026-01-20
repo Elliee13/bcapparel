@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import type { Product } from "../data/products";
 
 export default function ProductCard({ product }: { product: Product }) {
-  const badge = product.badge && product.badge !== "" ? product.badge : null;
+  const badge = product.badge || null;
 
   return (
     <div className="group rounded-[22px] bg-white ring-1 ring-slate-200 shadow-[0_12px_30px_rgba(15,23,42,0.08)] overflow-hidden">

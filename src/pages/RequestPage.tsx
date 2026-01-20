@@ -222,7 +222,7 @@ export default function RequestPage() {
                   Notes
                 </div>
                 <textarea
-                  className="min-h-32 w-full rounded-[14px] bg-white px-3 py-2 text-sm ring-1 ring-slate-300 transition placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900"
+                  className="min-h-32 w-full rounded-[14px] bg-white px-3 py-2 text-sm ring-1 ring-slate-300 transition placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[rgb(var(--navy-800))]"
                   value={form.notes}
                   onChange={(e) => update("notes", e.target.value)}
                 />
