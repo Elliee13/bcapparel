@@ -1,4 +1,28 @@
 # Progress Reports
+## 2026-01-21 - Web v3 (visual refresh + page rebuilds)
+- Summary: Major visual refresh aligned to new Figma direction, new brochure section/page, and content rewrites.
+- Scope: Home, About, Products, Contact, Layout, styles, assets, routing.
+- Key changes:
+  - Home page rebuilt with new hero, vendors, What We Do, Popular Products, brochures mosaic, How It Works, and Trusted Brands marquee.
+  - About page redesigned to match Figma and added GSAP + ScrollTrigger animations with scroll-driven line reveals.
+  - Products page repurposed into a product landing with catalog-style cards.
+  - Added Brochures/Catalogs page and routing; updated nav to include it.
+  - Contact page redesigned to match Figma (image + dark form) and added business enquiries cards.
+  - Navbar/footer refreshed, logo wired, and CTA switched to Contact.
+  - Unified dark palette using new navy tokens in `src/styles.css`.
+- Assets/Content:
+  - Added brochure covers in `src/assets/brochures&catalogs/*`.
+  - Added contact hero image in `src/assets/contact/contact.png`.
+  - Added brand/vendor/collection imagery and logo in `src/assets/*`.
+- Data/Backend:
+  - No backend changes; static content/images only.
+- Known gaps / TODO:
+  - None noted.
+- Next steps:
+  - Optional: wire brochure cards to real PDF/links.
+  - Optional: fine-tune animation timings if needed.
+
+---
 
 ## 2026-01-20 — Web v2 (incomplete)
 - Summary: Refactor toward a more visual, asset-rich storefront with updated layout and simplified data flow.
@@ -61,3 +85,4 @@
   - Iterate on visuals and feature depth.
 - Links/Refs:
   - Commit: e935c6e
+

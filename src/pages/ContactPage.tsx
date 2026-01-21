@@ -3,6 +3,12 @@ import Container from "../components/Container";
 import Button from "../components/Button";
 import contactImage from "../assets/contact/contact.png";
 import logo from "../assets/webLogo/bacapparel.png";
+import contactAvif800 from "../assets/optimized/contact/contact-800.avif";
+import contactAvif1200 from "../assets/optimized/contact/contact-1200.avif";
+import contactAvif1600 from "../assets/optimized/contact/contact-1600.avif";
+import contactWebp800 from "../assets/optimized/contact/contact-800.webp";
+import contactWebp1200 from "../assets/optimized/contact/contact-1200.webp";
+import contactWebp1600 from "../assets/optimized/contact/contact-1600.webp";
 
 export default function ContactPage() {
   const [name, setName] = useState("");
@@ -32,13 +38,28 @@ export default function ContactPage() {
 
           <div className="mt-12 grid gap-8 lg:grid-cols-[1fr_0.9fr] lg:items-stretch">
             <div className="relative overflow-hidden rounded-[28px]">
-              <img
-                src={contactImage}
-                alt="Mountain landscape at sunset"
-                className="h-full min-h-[520px] w-full object-cover"
-                loading="lazy"
-                decoding="async"
-              />
+              <picture>
+                <source
+                  type="image/avif"
+                  srcSet={`${contactAvif800} 800w, ${contactAvif1200} 1200w, ${contactAvif1600} 1600w`}
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                />
+                <source
+                  type="image/webp"
+                  srcSet={`${contactWebp800} 800w, ${contactWebp1200} 1200w, ${contactWebp1600} 1600w`}
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                />
+                <img
+                  src={contactImage}
+                  alt="Mountain landscape at sunset"
+                  width={1200}
+                  height={1600}
+                  className="h-full min-h-[520px] w-full object-cover"
+                  loading="eager"
+                  decoding="async"
+                  fetchPriority="high"
+                />
+              </picture>
               <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/10 to-black/40" />
 
               <div className="absolute bottom-6 left-6 right-6 text-white">

@@ -3,30 +3,99 @@ import bcCarhartt from "../assets/brochures&catalogs/bcCarhartt.jpg";
 import bcGiftguide from "../assets/brochures&catalogs/bcGiftguide.jpg";
 import bcNorthface from "../assets/brochures&catalogs/bcNorthface.jpg";
 import bcWinterstyle from "../assets/brochures&catalogs/bcWinterstyle.jpg";
+import bcCarharttAvif400 from "../assets/optimized/brochures/bcCarhartt-400.avif";
+import bcCarharttAvif800 from "../assets/optimized/brochures/bcCarhartt-800.avif";
+import bcCarharttWebp400 from "../assets/optimized/brochures/bcCarhartt-400.webp";
+import bcCarharttWebp800 from "../assets/optimized/brochures/bcCarhartt-800.webp";
+import bcGiftguideAvif400 from "../assets/optimized/brochures/bcGiftguide-400.avif";
+import bcGiftguideAvif800 from "../assets/optimized/brochures/bcGiftguide-800.avif";
+import bcGiftguideWebp400 from "../assets/optimized/brochures/bcGiftguide-400.webp";
+import bcGiftguideWebp800 from "../assets/optimized/brochures/bcGiftguide-800.webp";
+import bcNorthfaceAvif400 from "../assets/optimized/brochures/bcNorthface-400.avif";
+import bcNorthfaceAvif800 from "../assets/optimized/brochures/bcNorthface-800.avif";
+import bcNorthfaceWebp400 from "../assets/optimized/brochures/bcNorthface-400.webp";
+import bcNorthfaceWebp800 from "../assets/optimized/brochures/bcNorthface-800.webp";
+import bcWinterstyleAvif400 from "../assets/optimized/brochures/bcWinterstyle-400.avif";
+import bcWinterstyleAvif800 from "../assets/optimized/brochures/bcWinterstyle-800.avif";
+import bcWinterstyleWebp400 from "../assets/optimized/brochures/bcWinterstyle-400.webp";
+import bcWinterstyleWebp800 from "../assets/optimized/brochures/bcWinterstyle-800.webp";
 
 const BROCHURES = [
-  { title: "BC Carhartt Catalog", imageUrl: bcCarhartt },
-  { title: "BC Northface Winter 2022", imageUrl: bcNorthface },
-  { title: "Gift Guide 2021", imageUrl: bcGiftguide },
-  { title: "BC Winter Style Guide 2022", imageUrl: bcWinterstyle },
+  {
+    title: "BC Carhartt Catalog",
+    imageUrl: bcCarhartt,
+    avif400: bcCarharttAvif400,
+    avif800: bcCarharttAvif800,
+    webp400: bcCarharttWebp400,
+    webp800: bcCarharttWebp800,
+  },
+  {
+    title: "BC Northface Winter 2022",
+    imageUrl: bcNorthface,
+    avif400: bcNorthfaceAvif400,
+    avif800: bcNorthfaceAvif800,
+    webp400: bcNorthfaceWebp400,
+    webp800: bcNorthfaceWebp800,
+  },
+  {
+    title: "Gift Guide 2021",
+    imageUrl: bcGiftguide,
+    avif400: bcGiftguideAvif400,
+    avif800: bcGiftguideAvif800,
+    webp400: bcGiftguideWebp400,
+    webp800: bcGiftguideWebp800,
+  },
+  {
+    title: "BC Winter Style Guide 2022",
+    imageUrl: bcWinterstyle,
+    avif400: bcWinterstyleAvif400,
+    avif800: bcWinterstyleAvif800,
+    webp400: bcWinterstyleWebp400,
+    webp800: bcWinterstyleWebp800,
+  },
 ];
 
 function BrochureCard({
   title,
   imageUrl,
+  avif400,
+  avif800,
+  webp400,
+  webp800,
+  priority = false,
 }: {
   title: string;
   imageUrl: string;
+  avif400: string;
+  avif800: string;
+  webp400: string;
+  webp800: string;
+  priority?: boolean;
 }) {
   return (
     <div className="group relative overflow-hidden rounded-[28px] bg-slate-100 ring-1 ring-slate-200 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_50px_rgba(2,6,23,0.14)]">
-      <img
-        src={imageUrl}
-        alt={title}
-        className="h-[260px] w-full object-cover transition-transform duration-700 group-hover:scale-[1.03] sm:h-[300px] lg:h-[360px]"
-        loading="lazy"
-        decoding="async"
-      />
+      <picture>
+        <source
+          type="image/avif"
+          srcSet={`${avif400} 400w, ${avif800} 800w`}
+          sizes="(max-width: 640px) 100vw, 25vw"
+        />
+        <source
+          type="image/webp"
+          srcSet={`${webp400} 400w, ${webp800} 800w`}
+          sizes="(max-width: 640px) 100vw, 25vw"
+        />
+        <img
+          src={imageUrl}
+          alt={title}
+          width={800}
+          height={600}
+          className="h-[260px] w-full object-cover transition-transform duration-700 group-hover:scale-[1.03] sm:h-[300px] lg:h-[360px]"
+          loading={priority ? "eager" : "lazy"}
+          decoding="async"
+          fetchPriority={priority ? "high" : "auto"}
+        />
+      </picture>
 
       <div className="absolute inset-0 bg-black/10 transition-colors duration-300 group-hover:bg-black/20" />
 
@@ -62,11 +131,16 @@ export default function BrochuresCatalogsPage() {
 
           <div className="mt-14 mx-auto w-full max-w-[1500px]">
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
-              {BROCHURES.map((item) => (
+              {BROCHURES.map((item, index) => (
                 <BrochureCard
                   key={item.title}
                   title={item.title}
                   imageUrl={item.imageUrl}
+                  avif400={item.avif400}
+                  avif800={item.avif800}
+                  webp400={item.webp400}
+                  webp800={item.webp800}
+                  priority={index === 0}
                 />
               ))}
             </div>

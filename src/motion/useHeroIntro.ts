@@ -55,38 +55,52 @@ export function useHeroIntro(options: UseHeroIntroOptions) {
       return;
     }
 
-    // Set initial state
-    validElements.forEach((el) => {
-      if (!el.ref.current) return;
-      gsap.set(el.ref.current, {
-        [useAutoAlpha ? "autoAlpha" : "opacity"]: el.opacity ?? 0,
-        y: el.y ?? 20,
+    // Delay animation initialization until after first paint to avoid blocking LCP
+    // Use requestIdleCallback if available, otherwise setTimeout with minimal delay
+    const initAnimation = () => {
+      // Set initial state
+      validElements.forEach((el) => {
+        if (!el.ref.current) return;
+        gsap.set(el.ref.current, {
+          [useAutoAlpha ? "autoAlpha" : "opacity"]: el.opacity ?? 0,
+          y: el.y ?? 20,
+        });
       });
-    });
 
-    // Create timeline
-    const tl = gsap.timeline({ defaults: { ease: EASE.out } });
-    timelineRef.current = tl;
+      // Create timeline
+      const tl = gsap.timeline({ defaults: { ease: EASE.out } });
+      timelineRef.current = tl;
 
-    // Add each element to timeline
-    validElements.forEach((el, index) => {
-      if (!el.ref.current) return;
+      // Add each element to timeline
+      validElements.forEach((el, index) => {
+        if (!el.ref.current) return;
 
-      const delay = el.delay ?? (index === 0 ? 0 : 0.15);
-      const duration = el.duration ?? DURATIONS.base;
-      const ease = el.ease ?? EASE.out;
+        const delay = el.delay ?? (index === 0 ? 0 : 0.15);
+        const duration = el.duration ?? DURATIONS.base;
+        const ease = el.ease ?? EASE.out;
 
-      tl.to(
-        el.ref.current,
-        {
-          [useAutoAlpha ? "autoAlpha" : "opacity"]: 1,
-          y: 0,
-          duration,
-          ease,
-        },
-        delay
-      );
-    });
+        tl.to(
+          el.ref.current,
+          {
+            [useAutoAlpha ? "autoAlpha" : "opacity"]: 1,
+            y: 0,
+            duration,
+            ease,
+          },
+          delay
+        );
+      });
+    };
+
+    // Delay until after first paint
+    if (typeof requestIdleCallback !== "undefined") {
+      requestIdleCallback(initAnimation, { timeout: 100 });
+    } else {
+      // Fallback: wait for next frame + small delay
+      requestAnimationFrame(() => {
+        setTimeout(initAnimation, 0);
+      });
+    }
 
     return () => {
       timelineRef.current?.kill();

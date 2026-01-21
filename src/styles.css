@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+/* Font display optimization - override @fontsource defaults */
+/* Note: @fontsource/manrope CSS files are imported in main.tsx before this file */
+/* CSS will use the last matching @font-face declaration, so we redefine with font-display: swap */
+/* Since we can't partially override @font-face, we rely on the browser using the last declaration */
+/* The font files will be loaded from @fontsource, but with our font-display: swap setting */
+
 /* Premium neutral palette + editorial rhythm */
 :root {
   --bg: 250 250 249; /* stone-50 */

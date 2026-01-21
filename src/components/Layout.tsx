@@ -22,6 +22,7 @@ function NavItem({ to, children }: { to: string; children: React.ReactNode }) {
 
 export default function Layout() {
   const [hidden, setHidden] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const lastYRef = useRef(0);
   const tickingRef = useRef(false);
 
@@ -64,12 +65,12 @@ export default function Layout() {
       >
         <Container className="py-3">
           <div className="rounded-[18px] bg-white/95 px-5 py-3 ring-1 ring-slate-200 shadow-sm backdrop-blur">
-            <div className="flex items-center justify-between gap-6">
+            <div className="flex items-center justify-between gap-4">
               <Link
                 to="/"
                 className="flex items-center gap-3"
               >
-                <img src={logo} alt="BC Apparel" className="h-7 w-auto" />
+                <img src={logo} alt="BC Apparel" className="h-7 w-auto" width={112} height={28} />
                 <span className="text-[11px] font-semibold tracking-[0.22em] uppercase text-slate-900">
                   BC Apparel
                 </span>
@@ -82,19 +83,60 @@ export default function Layout() {
                 <NavItem to="/brochures-catalogs">Brochures/Catalog</NavItem>
               </nav>
 
-              <Link
-                to="/contact"
-                className="inline-flex items-center gap-2 rounded-full bg-[rgb(var(--navy-950))] px-4 py-2 text-[11px] uppercase tracking-[0.18em] text-white ring-1 ring-[rgb(var(--navy-950))]/10 hover:bg-[rgb(var(--navy-800))]"
-              >
-                Contact
-              </Link>
+              <div className="flex items-center gap-3">
+                <Link
+                  to="/contact"
+                  className="hidden items-center gap-2 rounded-full bg-[rgb(var(--navy-950))] px-4 py-2 text-[11px] uppercase tracking-[0.18em] text-white ring-1 ring-[rgb(var(--navy-950))]/10 hover:bg-[rgb(var(--navy-800))] md:inline-flex"
+                >
+                  Contact
+                </Link>
+                <button
+                  type="button"
+                  aria-label={menuOpen ? "Close menu" : "Open menu"}
+                  onClick={() => setMenuOpen((prev) => !prev)}
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-700 transition hover:border-slate-300 hover:text-slate-900 md:hidden"
+                >
+                  <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
+                    {menuOpen ? (
+                      <path
+                        d="M6 6l12 12M18 6l-12 12"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.8"
+                        strokeLinecap="round"
+                      />
+                    ) : (
+                      <path
+                        d="M4 7h16M4 12h16M4 17h16"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.8"
+                        strokeLinecap="round"
+                      />
+                    )}
+                  </svg>
+                </button>
+              </div>
             </div>
 
-            <div className="mt-3 flex flex-wrap gap-4 md:hidden">
-              <NavItem to="/">Home</NavItem>
-              <NavItem to="/about">About</NavItem>
-              <NavItem to="/products">Products</NavItem>
-              <NavItem to="/brochures-catalogs">Brochures/Catalog</NavItem>
+            <div
+              className={[
+                "overflow-hidden transition-all duration-300 md:hidden",
+                menuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0",
+              ].join(" ")}
+            >
+              <div className="mt-4 grid gap-3 rounded-[16px] border border-slate-200 bg-white p-4">
+                <NavItem to="/">Home</NavItem>
+                <NavItem to="/about">About</NavItem>
+                <NavItem to="/products">Products</NavItem>
+                <NavItem to="/brochures-catalogs">Brochures/Catalog</NavItem>
+                <Link
+                  to="/contact"
+                  className="inline-flex items-center justify-center rounded-full bg-[rgb(var(--navy-950))] px-4 py-2 text-[11px] uppercase tracking-[0.18em] text-white hover:bg-[rgb(var(--navy-800))]"
+                >
+                  Contact
+                </Link>
+              </div>
             </div>
           </div>
         </Container>
@@ -112,7 +154,7 @@ export default function Layout() {
             <div className="grid gap-10 md:grid-cols-[1.2fr_1fr_1.1fr]">
             <div>
               <div className="flex items-center gap-3">
-                <img src={logo} alt="BC Apparel" className="h-8 w-auto" />
+                <img src={logo} alt="BC Apparel" className="h-8 w-auto" width={128} height={32} />
                 <div className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-900">
                   BC Apparel
                 </div>

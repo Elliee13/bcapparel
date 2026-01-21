@@ -2,7 +2,14 @@ import { useRef } from "react";
 import Container from "../components/Container";
 import Button from "../components/Button";
 import { useHeroIntro, useReveal, useGsapScope } from "../motion";
+import { useLcpInstrumentation } from "../hooks/useLcpInstrumentation";
 import heroImage from "../assets/hero/hero.jpeg";
+import heroAvif800 from "../assets/optimized/hero/hero-800.avif";
+import heroAvif1200 from "../assets/optimized/hero/hero-1200.avif";
+import heroAvif1600 from "../assets/optimized/hero/hero-1600.avif";
+import heroWebp800 from "../assets/optimized/hero/hero-800.webp";
+import heroWebp1200 from "../assets/optimized/hero/hero-1200.webp";
+import heroWebp1600 from "../assets/optimized/hero/hero-1600.webp";
 import vendorBadger from "../assets/hero/vendor/badger.png";
 import vendorOutdoor from "../assets/hero/vendor/outdoor.png";
 import vendorRicha from "../assets/hero/vendor/richa.png";
@@ -14,10 +21,46 @@ import catalogBags from "../assets/hero/collection/bags.jpg";
 import catalogDrinkware from "../assets/hero/collection/drinkWares.jpg";
 import catalogTech from "../assets/hero/collection/techProducts.jpg";
 import catalogWriting from "../assets/hero/collection/writingInstruments.jpg";
+import apparelAvif400 from "../assets/optimized/collection/apparel-400.avif";
+import apparelAvif800 from "../assets/optimized/collection/apparel-800.avif";
+import apparelWebp400 from "../assets/optimized/collection/apparel-400.webp";
+import apparelWebp800 from "../assets/optimized/collection/apparel-800.webp";
+import bagsAvif400 from "../assets/optimized/collection/bags-400.avif";
+import bagsAvif800 from "../assets/optimized/collection/bags-800.avif";
+import bagsWebp400 from "../assets/optimized/collection/bags-400.webp";
+import bagsWebp800 from "../assets/optimized/collection/bags-800.webp";
+import drinkwareAvif400 from "../assets/optimized/collection/drinkWares-400.avif";
+import drinkwareAvif800 from "../assets/optimized/collection/drinkWares-800.avif";
+import drinkwareWebp400 from "../assets/optimized/collection/drinkWares-400.webp";
+import drinkwareWebp800 from "../assets/optimized/collection/drinkWares-800.webp";
+import techAvif400 from "../assets/optimized/collection/techProducts-400.avif";
+import techAvif800 from "../assets/optimized/collection/techProducts-800.avif";
+import techWebp400 from "../assets/optimized/collection/techProducts-400.webp";
+import techWebp800 from "../assets/optimized/collection/techProducts-800.webp";
+import writingAvif400 from "../assets/optimized/collection/writingInstruments-400.avif";
+import writingAvif800 from "../assets/optimized/collection/writingInstruments-800.avif";
+import writingWebp400 from "../assets/optimized/collection/writingInstruments-400.webp";
+import writingWebp800 from "../assets/optimized/collection/writingInstruments-800.webp";
 import bcCarhartt from "../assets/brochures&catalogs/bcCarhartt.jpg";
 import bcGiftguide from "../assets/brochures&catalogs/bcGiftguide.jpg";
 import bcNorthface from "../assets/brochures&catalogs/bcNorthface.jpg";
 import bcWinterstyle from "../assets/brochures&catalogs/bcWinterstyle.jpg";
+import bcCarharttAvif400 from "../assets/optimized/brochures/bcCarhartt-400.avif";
+import bcCarharttAvif800 from "../assets/optimized/brochures/bcCarhartt-800.avif";
+import bcCarharttWebp400 from "../assets/optimized/brochures/bcCarhartt-400.webp";
+import bcCarharttWebp800 from "../assets/optimized/brochures/bcCarhartt-800.webp";
+import bcGiftguideAvif400 from "../assets/optimized/brochures/bcGiftguide-400.avif";
+import bcGiftguideAvif800 from "../assets/optimized/brochures/bcGiftguide-800.avif";
+import bcGiftguideWebp400 from "../assets/optimized/brochures/bcGiftguide-400.webp";
+import bcGiftguideWebp800 from "../assets/optimized/brochures/bcGiftguide-800.webp";
+import bcNorthfaceAvif400 from "../assets/optimized/brochures/bcNorthface-400.avif";
+import bcNorthfaceAvif800 from "../assets/optimized/brochures/bcNorthface-800.avif";
+import bcNorthfaceWebp400 from "../assets/optimized/brochures/bcNorthface-400.webp";
+import bcNorthfaceWebp800 from "../assets/optimized/brochures/bcNorthface-800.webp";
+import bcWinterstyleAvif400 from "../assets/optimized/brochures/bcWinterstyle-400.avif";
+import bcWinterstyleAvif800 from "../assets/optimized/brochures/bcWinterstyle-800.avif";
+import bcWinterstyleWebp400 from "../assets/optimized/brochures/bcWinterstyle-400.webp";
+import bcWinterstyleWebp800 from "../assets/optimized/brochures/bcWinterstyle-800.webp";
 import brandAdams from "../assets/hero/brands/adams.png";
 import brandBayside from "../assets/hero/brands/bayside.png";
 import brandBerne from "../assets/hero/brands/berne.png";
@@ -51,31 +94,59 @@ import { Brush, Gift, Shirt, Sticker } from "lucide-react";
 
 const HERO_IMAGE = heroImage;
 
-const CATALOGS: Array<{ title: string; imageUrl: string; href: string }> = [
+const CATALOGS: Array<{
+  title: string;
+  imageUrl: string;
+  href: string;
+  avif400: string;
+  avif800: string;
+  webp400: string;
+  webp800: string;
+}> = [
   {
     title: "Apparel",
     imageUrl: catalogApparel,
     href: "https://bcapparel.espwebsite.com/ProductResults/?SearchTerms=apparel",
+    avif400: apparelAvif400,
+    avif800: apparelAvif800,
+    webp400: apparelWebp400,
+    webp800: apparelWebp800,
   },
   {
     title: "Bags",
     imageUrl: catalogBags,
     href: "https://bcapparel.espwebsite.com/ProductResults/?SearchTerms=bags",
+    avif400: bagsAvif400,
+    avif800: bagsAvif800,
+    webp400: bagsWebp400,
+    webp800: bagsWebp800,
   },
   {
     title: "Writing instruments",
     imageUrl: catalogWriting,
     href: "https://bcapparel.espwebsite.com/ProductResults/?SearchTerms=writing+instruments",
+    avif400: writingAvif400,
+    avif800: writingAvif800,
+    webp400: writingWebp400,
+    webp800: writingWebp800,
   },
   {
     title: "Tech Products",
     imageUrl: catalogTech,
     href: "https://bcapparel.espwebsite.com/ProductResults/?SearchTerms=tech",
+    avif400: techAvif400,
+    avif800: techAvif800,
+    webp400: techWebp400,
+    webp800: techWebp800,
   },
   {
     title: "Drinkware",
     imageUrl: catalogDrinkware,
     href: "https://bcapparel.espwebsite.com/ProductResults/?SearchTerms=drinkware",
+    avif400: drinkwareAvif400,
+    avif800: drinkwareAvif800,
+    webp400: drinkwareWebp400,
+    webp800: drinkwareWebp800,
   },
 ];
 
@@ -171,10 +242,38 @@ const BRAND_LOGOS = [
 ];
 
 const BROCHURES = [
-  { title: "BC Carhartt Catalog", imageUrl: bcCarhartt },
-  { title: "BC Northface Winter 2022", imageUrl: bcNorthface },
-  { title: "Gift Guide 2021", imageUrl: bcGiftguide },
-  { title: "BC Winter Style Guide 2022", imageUrl: bcWinterstyle },
+  {
+    title: "BC Carhartt Catalog",
+    imageUrl: bcCarhartt,
+    avif400: bcCarharttAvif400,
+    avif800: bcCarharttAvif800,
+    webp400: bcCarharttWebp400,
+    webp800: bcCarharttWebp800,
+  },
+  {
+    title: "BC Northface Winter 2022",
+    imageUrl: bcNorthface,
+    avif400: bcNorthfaceAvif400,
+    avif800: bcNorthfaceAvif800,
+    webp400: bcNorthfaceWebp400,
+    webp800: bcNorthfaceWebp800,
+  },
+  {
+    title: "Gift Guide 2021",
+    imageUrl: bcGiftguide,
+    avif400: bcGiftguideAvif400,
+    avif800: bcGiftguideAvif800,
+    webp400: bcGiftguideWebp400,
+    webp800: bcGiftguideWebp800,
+  },
+  {
+    title: "BC Winter Style Guide 2022",
+    imageUrl: bcWinterstyle,
+    avif400: bcWinterstyleAvif400,
+    avif800: bcWinterstyleAvif800,
+    webp400: bcWinterstyleWebp400,
+    webp800: bcWinterstyleWebp800,
+  },
 ];
 function Card({
   children,
@@ -198,19 +297,45 @@ function Card({
 function BrochureCard({
   title,
   imageUrl,
+  avif400,
+  avif800,
+  webp400,
+  webp800,
+  priority = false,
 }: {
   title: string;
   imageUrl: string;
+  avif400: string;
+  avif800: string;
+  webp400: string;
+  webp800: string;
+  priority?: boolean;
 }) {
   return (
     <div className="group relative overflow-hidden rounded-[28px] bg-slate-100 ring-1 ring-slate-200 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_50px_rgba(2,6,23,0.14)]">
-      <img
-        src={imageUrl}
-        alt={title}
-        className="h-[260px] w-full object-cover transition-transform duration-700 group-hover:scale-[1.03] sm:h-[300px] lg:h-[360px]"
-        loading="lazy"
-        decoding="async"
-      />
+      <picture>
+        <source
+          type="image/avif"
+          srcSet={`${avif400} 400w, ${avif800} 800w`}
+          sizes="(max-width: 640px) 100vw, 50vw"
+        />
+        <source
+          type="image/webp"
+          srcSet={`${webp400} 400w, ${webp800} 800w`}
+          sizes="(max-width: 640px) 100vw, 50vw"
+        />
+        <img
+          src={imageUrl}
+          alt={title}
+          width={800}
+          height={600}
+          style={{ aspectRatio: "800 / 600" }}
+          className="h-[260px] w-full object-cover transition-transform duration-700 group-hover:scale-[1.03] sm:h-[300px] lg:h-[360px]"
+          loading={priority ? "eager" : "lazy"}
+          decoding="async"
+          fetchPriority={priority ? "high" : "auto"}
+        />
+      </picture>
       <div className="absolute inset-0 bg-black/10 transition-colors duration-300 group-hover:bg-black/20" />
 
       <div className="absolute bottom-6 left-6 right-6">
@@ -224,6 +349,9 @@ function BrochureCard({
 
 
 export default function HomePage() {
+  // LCP instrumentation (dev-only)
+  useLcpInstrumentation();
+
   const heroScopeRef = useGsapScope<HTMLDivElement>();
   const eyebrowRef = useRef<HTMLDivElement>(null);
   const headlineRef = useRef<HTMLHeadingElement>(null);
@@ -231,7 +359,7 @@ export default function HomePage() {
   const ctaRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
 
-  // Hero intro timeline
+  // Hero intro timeline - delayed until after first paint
   useHeroIntro({
     elements: [
       { ref: eyebrowRef, delay: 0, y: 10, opacity: 0 },
@@ -256,12 +384,29 @@ export default function HomePage() {
         <Container className="py-16">
           <Card className="bg-slate-100">
             <div className="relative">
-              <img
-                src={HERO_IMAGE}
-                alt=""
-                className="h-[520px] w-full object-cover md:h-[620px]"
-                decoding="async"
-              />
+              <picture>
+                <source
+                  type="image/avif"
+                  srcSet={`${heroAvif800} 800w, ${heroAvif1200} 1200w, ${heroAvif1600} 1600w`}
+                  sizes="(max-width: 768px) 100vw, 1600px"
+                />
+                <source
+                  type="image/webp"
+                  srcSet={`${heroWebp800} 800w, ${heroWebp1200} 1200w, ${heroWebp1600} 1600w`}
+                  sizes="(max-width: 768px) 100vw, 1600px"
+                />
+                <img
+                  src={HERO_IMAGE}
+                  alt=""
+                  width={2200}
+                  height={1100}
+                  className="h-[520px] w-full object-cover md:h-[620px]"
+                  style={{ aspectRatio: "2200 / 1100" }}
+                  decoding="async"
+                  fetchPriority="high"
+                  loading="eager"
+                />
+              </picture>
 
               {/* Image legibility overlay (top heavier, like your screenshot) */}
               <div ref={overlayRef} className="pointer-events-none absolute inset-0">
@@ -328,6 +473,7 @@ export default function HomePage() {
                   className={`${vendor.widthClass} h-auto object-contain`}
                   loading="lazy"
                   decoding="async"
+                  style={{ aspectRatio: "auto" }}
                 />
               ))}
             </div>
@@ -435,13 +581,28 @@ export default function HomePage() {
                 rel="noreferrer"
                 className="catalog-card group relative overflow-hidden rounded-[26px] bg-slate-100 text-left"
               >
-                <img
-                  src={item.imageUrl}
-                  alt=""
-                  className="h-[260px] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03] md:h-[320px]"
-                  loading="lazy"
-                  decoding="async"
-                />
+                <picture>
+                  <source
+                    type="image/avif"
+                    srcSet={`${item.avif400} 400w, ${item.avif800} 800w`}
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                  />
+                  <source
+                    type="image/webp"
+                    srcSet={`${item.webp400} 400w, ${item.webp800} 800w`}
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                  />
+                  <img
+                    src={item.imageUrl}
+                    alt=""
+                    width={800}
+                    height={600}
+                    style={{ aspectRatio: "800 / 600" }}
+                    className="h-[260px] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03] md:h-[320px]"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </picture>
                 <div className="absolute inset-0 bg-black/10 transition-colors duration-300 group-hover:bg-black/20" />
                 <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between gap-4">
                   <div className="text-white">
@@ -471,13 +632,27 @@ export default function HomePage() {
                 rel="noreferrer"
                 className="catalog-card group relative overflow-hidden rounded-[26px] bg-slate-100 text-left"
               >
-                <img
-                  src={item.imageUrl}
-                  alt=""
-                  className="h-[300px] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03] md:h-[360px]"
-                  loading="lazy"
-                  decoding="async"
-                />
+                <picture>
+                  <source
+                    type="image/avif"
+                    srcSet={`${item.avif400} 400w, ${item.avif800} 800w`}
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
+                  <source
+                    type="image/webp"
+                    srcSet={`${item.webp400} 400w, ${item.webp800} 800w`}
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
+                  <img
+                    src={item.imageUrl}
+                    alt=""
+                    width={800}
+                    height={600}
+                    className="h-[300px] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03] md:h-[360px]"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </picture>
                 <div className="absolute inset-0 bg-black/10 transition-colors duration-300 group-hover:bg-black/20" />
                 <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between gap-4">
                   <div className="text-white">
@@ -516,11 +691,16 @@ export default function HomePage() {
           {/* IMPORTANT: match your catalogs page sizing */}
           <div className="mt-14 mx-auto w-full max-w-[1500px]">
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
-              {BROCHURES.map((item) => (
+              {BROCHURES.map((item, index) => (
                 <BrochureCard
                   key={item.title}
                   title={item.title}
                   imageUrl={item.imageUrl}
+                  avif400={item.avif400}
+                  avif800={item.avif800}
+                  webp400={item.webp400}
+                  webp800={item.webp800}
+                  priority={index === 0}
                 />
               ))}
             </div>
@@ -599,6 +779,7 @@ export default function HomePage() {
                         className="h-10 md:h-12 w-auto object-contain"
                         loading="lazy"
                         decoding="async"
+                        style={{ aspectRatio: "auto" }}
                       />
                     </div>
                   ))}
