@@ -73,45 +73,60 @@ export function useReveal(options: UseRevealOptions = {}) {
       return;
     }
 
-    // Set initial state
-    gsap.set(targets, {
-      [useAutoAlpha ? "autoAlpha" : "opacity"]: opacity,
-      y: y,
-    });
+    let cancelled = false;
 
-    // Create ScrollTriggers
-    if (targets.length === 1) {
-      // Single element - simple reveal
-      const trigger = ScrollTrigger.create({
-        trigger: targets[0],
-        start,
-        animation: gsap.to(targets[0], {
-          [useAutoAlpha ? "autoAlpha" : "opacity"]: 1,
-          y: 0,
-          duration,
-          ease,
-        }),
+    const init = () => {
+      if (cancelled) return;
+
+      // Set initial state
+      gsap.set(targets, {
+        [useAutoAlpha ? "autoAlpha" : "opacity"]: opacity,
+        y: y,
       });
-      triggersRef.current.push(trigger);
-    } else {
-      // Multiple elements - staggered reveal
-      targets.forEach((target, index) => {
+
+      // Create ScrollTriggers
+      if (targets.length === 1) {
+        // Single element - simple reveal
         const trigger = ScrollTrigger.create({
-          trigger: target,
+          trigger: targets[0],
           start,
-          animation: gsap.to(target, {
+          animation: gsap.to(targets[0], {
             [useAutoAlpha ? "autoAlpha" : "opacity"]: 1,
             y: 0,
             duration,
             ease,
-            delay: index * stagger,
           }),
         });
         triggersRef.current.push(trigger);
+      } else {
+        // Multiple elements - staggered reveal
+        targets.forEach((target, index) => {
+          const trigger = ScrollTrigger.create({
+            trigger: target,
+            start,
+            animation: gsap.to(target, {
+              [useAutoAlpha ? "autoAlpha" : "opacity"]: 1,
+              y: 0,
+              duration,
+              ease,
+              delay: index * stagger,
+            }),
+          });
+          triggersRef.current.push(trigger);
+        });
+      }
+    };
+
+    if (typeof requestIdleCallback !== "undefined") {
+      requestIdleCallback(init, { timeout: 120 });
+    } else {
+      requestAnimationFrame(() => {
+        setTimeout(init, 0);
       });
     }
 
     return () => {
+      cancelled = true;
       triggersRef.current.forEach((trigger) => trigger.kill());
       triggersRef.current = [];
     };

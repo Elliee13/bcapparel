@@ -5,6 +5,7 @@ import Input from "../components/Input";
 import Select from "../components/Select";
 import Button from "../components/Button";
 import { categories, products } from "../data/products";
+import { useReveal } from "../motion";
 
 type RequestForm = {
   name: string;
@@ -37,6 +38,14 @@ function Card({
 }
 
 export default function RequestPage() {
+  useReveal({
+    elements: ".reveal-on-scroll",
+    y: 12,
+    duration: 0.5,
+    stagger: 0.08,
+    start: "top 80%",
+  });
+
   const [searchParams] = useSearchParams();
   const productId = searchParams.get("product") ?? "";
   const matchedProduct = products.find((product) => product.id === productId);
@@ -95,7 +104,7 @@ export default function RequestPage() {
     <div className="bg-[rgb(var(--bg))]">
       <Container className="py-12 md:py-16">
         <div className="grid gap-10 lg:grid-cols-2">
-          <div className="max-w-xl">
+          <div className="reveal-on-scroll max-w-xl">
             <div className="text-[11px] uppercase tracking-[0.18em] text-slate-500">
               Request Quote
             </div>
@@ -118,7 +127,7 @@ export default function RequestPage() {
             </Card>
           </div>
 
-          <Card className="p-6 md:p-8">
+          <Card className="reveal-on-scroll p-6 md:p-8">
             <div className="text-[11px] uppercase tracking-[0.18em] text-slate-500">
               Request details
             </div>

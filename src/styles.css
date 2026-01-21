@@ -30,6 +30,7 @@ body {
   background: rgb(var(--bg));
   color: rgb(var(--text));
   font-family: var(--font-sans);
+  line-height: 1.5;
   letter-spacing: -0.005em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

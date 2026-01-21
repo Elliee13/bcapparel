@@ -58,20 +58,35 @@ export function useParallax(options: UseParallaxOptions) {
     // Use none ease for scrubbed animations, or provided ease
     const finalEase = ease ?? (scrub ? EASE.none : EASE.out);
 
-    const animation = gsap.to(element.current, {
-      ...props,
-      ease: finalEase,
-    });
+    let cancelled = false;
 
-    triggerRef.current = ScrollTrigger.create({
-      trigger: element.current,
-      start,
-      end,
-      scrub: typeof scrub === "number" ? scrub : scrub ? 1 : false,
-      animation,
-    });
+    const init = () => {
+      if (cancelled || !element.current) return;
+
+      const animation = gsap.to(element.current, {
+        ...props,
+        ease: finalEase,
+      });
+
+      triggerRef.current = ScrollTrigger.create({
+        trigger: element.current,
+        start,
+        end,
+        scrub: typeof scrub === "number" ? scrub : scrub ? 1 : false,
+        animation,
+      });
+    };
+
+    if (typeof requestIdleCallback !== "undefined") {
+      requestIdleCallback(init, { timeout: 120 });
+    } else {
+      requestAnimationFrame(() => {
+        setTimeout(init, 0);
+      });
+    }
 
     return () => {
+      cancelled = true;
       triggerRef.current?.kill();
       triggerRef.current = null;
     };

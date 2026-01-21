@@ -1,4 +1,5 @@
 import Container from "../components/Container";
+import { useReveal } from "../motion";
 import bcCarhartt from "../assets/brochures&catalogs/bcCarhartt.jpg";
 import bcGiftguide from "../assets/brochures&catalogs/bcGiftguide.jpg";
 import bcNorthface from "../assets/brochures&catalogs/bcNorthface.jpg";
@@ -73,29 +74,31 @@ function BrochureCard({
   priority?: boolean;
 }) {
   return (
-    <div className="group relative overflow-hidden rounded-[28px] bg-slate-100 ring-1 ring-slate-200 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_50px_rgba(2,6,23,0.14)]">
-      <picture>
-        <source
-          type="image/avif"
-          srcSet={`${avif400} 400w, ${avif800} 800w`}
-          sizes="(max-width: 640px) 100vw, 25vw"
-        />
-        <source
-          type="image/webp"
-          srcSet={`${webp400} 400w, ${webp800} 800w`}
-          sizes="(max-width: 640px) 100vw, 25vw"
-        />
-        <img
-          src={imageUrl}
-          alt={title}
-          width={800}
-          height={600}
-          className="h-[260px] w-full object-cover transition-transform duration-700 group-hover:scale-[1.03] sm:h-[300px] lg:h-[360px]"
-          loading={priority ? "eager" : "lazy"}
-          decoding="async"
-          fetchPriority={priority ? "high" : "auto"}
-        />
-      </picture>
+    <div className="reveal-on-scroll group relative overflow-hidden rounded-[28px] bg-slate-100 ring-1 ring-slate-200 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_50px_rgba(2,6,23,0.14)]">
+      <div className="relative h-[260px] w-full bg-slate-100 sm:h-[300px] lg:h-[360px] aspect-[4/3]">
+        <picture className="block h-full w-full">
+          <source
+            type="image/avif"
+            srcSet={`${avif400} 400w, ${avif800} 800w`}
+            sizes="(max-width: 640px) 100vw, 25vw"
+          />
+          <source
+            type="image/webp"
+            srcSet={`${webp400} 400w, ${webp800} 800w`}
+            sizes="(max-width: 640px) 100vw, 25vw"
+          />
+          <img
+            src={imageUrl}
+            alt={title}
+            width={800}
+            height={600}
+            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+            loading={priority ? "eager" : "lazy"}
+            decoding="async"
+            fetchPriority={priority ? "high" : "auto"}
+          />
+        </picture>
+      </div>
 
       <div className="absolute inset-0 bg-black/10 transition-colors duration-300 group-hover:bg-black/20" />
 
@@ -110,11 +113,19 @@ function BrochureCard({
 }
 
 export default function BrochuresCatalogsPage() {
+  useReveal({
+    elements: ".reveal-on-scroll",
+    y: 12,
+    duration: 0.5,
+    stagger: 0.08,
+    start: "top 80%",
+  });
+
   return (
     <div className="bg-white">
       <section className="bg-white">
         <Container className="py-24">
-          <div className="text-center">
+          <div className="reveal-on-scroll text-center">
             <div className="text-[11px] uppercase tracking-[0.24em] text-slate-500">
               Brochures / Catalogs
             </div>

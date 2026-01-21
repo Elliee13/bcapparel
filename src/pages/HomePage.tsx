@@ -151,12 +151,12 @@ const CATALOGS: Array<{
 ];
 
 const VENDORS = [
-  { name: "Staton", src: vendorStaton, widthClass: "w-28 md:w-32" },
-  { name: "SanMar", src: vendorSanmar, widthClass: "w-28 md:w-32" },
-  { name: "Badger Sport", src: vendorBadger, widthClass: "w-28 md:w-32" },
-  { name: "Outdoor Cap", src: vendorOutdoor, widthClass: "w-32 md:w-36" },
-  { name: "Richardson", src: vendorRicha, widthClass: "w-28 md:w-32" },
-  { name: "S&S Activewear", src: vendorSS, widthClass: "w-32 md:w-36" },
+  { name: "Staton", src: vendorStaton, widthClass: "w-28 md:w-32", width: 300, height: 93 },
+  { name: "SanMar", src: vendorSanmar, widthClass: "w-28 md:w-32", width: 289, height: 70 },
+  { name: "Badger Sport", src: vendorBadger, widthClass: "w-28 md:w-32", width: 400, height: 178 },
+  { name: "Outdoor Cap", src: vendorOutdoor, widthClass: "w-32 md:w-36", width: 863, height: 165 },
+  { name: "Richardson", src: vendorRicha, widthClass: "w-28 md:w-32", width: 442, height: 120 },
+  { name: "S&S Activewear", src: vendorSS, widthClass: "w-32 md:w-36", width: 192, height: 29 },
 ];
 
 const SERVICES = {
@@ -211,34 +211,34 @@ const HOW_IT_WORKS = [
 ];
 
 const BRAND_LOGOS = [
-  { name: "Hilton", src: brandHilton },
-  { name: "Team 365", src: brandTeam365 },
-  { name: "Tie-Dye", src: brandTieDye },
-  { name: "Under Armour", src: brandUnderArmor },
-  { name: "Yupoong", src: brandYupoong },
-  { name: "Core 365", src: brandCore },
-  { name: "Chef Designs", src: brandChef },
-  { name: "Liberty", src: brandLiberty },
-  { name: "Igloo", src: brandIgloo },
-  { name: "Fruit of the Loom", src: brandFruit },
-  { name: "Socco", src: brandSocco },
-  { name: "Dickies", src: brandDickies },
-  { name: "Rawlings", src: brandRawlings },
-  { name: "Quickflips", src: brandQuickflips },
-  { name: "Jerzees", src: brandJerzees },
-  { name: "MV Sport", src: brandMvSport },
-  { name: "Columbia", src: brandColumbia },
-  { name: "Berne", src: brandBerne },
-  { name: "Lee", src: brandLee },
-  { name: "Bayside", src: brandBayside },
-  { name: "Adams", src: brandAdams },
-  { name: "Team", src: brandTeam },
-  { name: "Faribault", src: brandFaribault },
-  { name: "Red Kap", src: brandRedKap },
-  { name: "Nike", src: brandNike },
-  { name: "Hanes", src: brandHanes },
-  { name: "District", src: brandDistrict },
-  { name: "Carhartt", src: brandCarhartt },
+  { name: "Hilton", src: brandHilton, width: 400, height: 180 },
+  { name: "Team 365", src: brandTeam365, width: 228, height: 110 },
+  { name: "Tie-Dye", src: brandTieDye, width: 228, height: 110 },
+  { name: "Under Armour", src: brandUnderArmor, width: 228, height: 110 },
+  { name: "Yupoong", src: brandYupoong, width: 228, height: 110 },
+  { name: "Core 365", src: brandCore, width: 228, height: 110 },
+  { name: "Chef Designs", src: brandChef, width: 400, height: 180 },
+  { name: "Liberty", src: brandLiberty, width: 228, height: 110 },
+  { name: "Igloo", src: brandIgloo, width: 228, height: 110 },
+  { name: "Fruit of the Loom", src: brandFruit, width: 228, height: 110 },
+  { name: "Socco", src: brandSocco, width: 400, height: 180 },
+  { name: "Dickies", src: brandDickies, width: 228, height: 110 },
+  { name: "Rawlings", src: brandRawlings, width: 400, height: 180 },
+  { name: "Quickflips", src: brandQuickflips, width: 400, height: 180 },
+  { name: "Jerzees", src: brandJerzees, width: 461, height: 122 },
+  { name: "MV Sport", src: brandMvSport, width: 400, height: 180 },
+  { name: "Columbia", src: brandColumbia, width: 228, height: 110 },
+  { name: "Berne", src: brandBerne, width: 228, height: 110 },
+  { name: "Lee", src: brandLee, width: 400, height: 180 },
+  { name: "Bayside", src: brandBayside, width: 228, height: 110 },
+  { name: "Adams", src: brandAdams, width: 228, height: 110 },
+  { name: "Team", src: brandTeam, width: 228, height: 110 },
+  { name: "Faribault", src: brandFaribault, width: 400, height: 180 },
+  { name: "Red Kap", src: brandRedKap, width: 391, height: 247 },
+  { name: "Nike", src: brandNike, width: 751, height: 751 },
+  { name: "Hanes", src: brandHanes, width: 751, height: 751 },
+  { name: "District", src: brandDistrict, width: 750, height: 751 },
+  { name: "Carhartt", src: brandCarhartt, width: 751, height: 751 },
 ];
 
 const BROCHURES = [
@@ -312,30 +312,32 @@ function BrochureCard({
   priority?: boolean;
 }) {
   return (
-    <div className="group relative overflow-hidden rounded-[28px] bg-slate-100 ring-1 ring-slate-200 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_50px_rgba(2,6,23,0.14)]">
-      <picture>
-        <source
-          type="image/avif"
-          srcSet={`${avif400} 400w, ${avif800} 800w`}
-          sizes="(max-width: 640px) 100vw, 50vw"
-        />
-        <source
-          type="image/webp"
-          srcSet={`${webp400} 400w, ${webp800} 800w`}
-          sizes="(max-width: 640px) 100vw, 50vw"
-        />
-        <img
-          src={imageUrl}
-          alt={title}
-          width={800}
-          height={600}
-          style={{ aspectRatio: "800 / 600" }}
-          className="h-[260px] w-full object-cover transition-transform duration-700 group-hover:scale-[1.03] sm:h-[300px] lg:h-[360px]"
-          loading={priority ? "eager" : "lazy"}
-          decoding="async"
-          fetchPriority={priority ? "high" : "auto"}
-        />
-      </picture>
+    <div className="reveal-on-scroll-fast group relative overflow-hidden rounded-[28px] bg-slate-100 ring-1 ring-slate-200 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_50px_rgba(2,6,23,0.14)]">
+      <div className="relative h-[260px] w-full bg-slate-100 sm:h-[300px] lg:h-[360px] aspect-[4/3]">
+        <picture className="block h-full w-full">
+          <source
+            type="image/avif"
+            srcSet={`${avif400} 400w, ${avif800} 800w`}
+            sizes="(max-width: 640px) 100vw, 50vw"
+          />
+          <source
+            type="image/webp"
+            srcSet={`${webp400} 400w, ${webp800} 800w`}
+            sizes="(max-width: 640px) 100vw, 50vw"
+          />
+          <img
+            src={imageUrl}
+            alt={title}
+            width={800}
+            height={600}
+            style={{ aspectRatio: "800 / 600" }}
+            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+            loading={priority ? "eager" : "lazy"}
+            decoding="async"
+            fetchPriority={priority ? "high" : "auto"}
+          />
+        </picture>
+      </div>
       <div className="absolute inset-0 bg-black/10 transition-colors duration-300 group-hover:bg-black/20" />
 
       <div className="absolute bottom-6 left-6 right-6">
@@ -358,23 +360,27 @@ export default function HomePage() {
   const paragraphRef = useRef<HTMLParagraphElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
+  const heroImageRef = useRef<HTMLDivElement>(null);
 
   // Hero intro timeline - delayed until after first paint
   useHeroIntro({
     elements: [
+      { ref: heroImageRef, delay: 0, y: 10, opacity: 0 },
+      { ref: overlayRef, delay: 0, opacity: 0 },
       { ref: eyebrowRef, delay: 0, y: 10, opacity: 0 },
-      { ref: headlineRef, delay: 0.1, y: 24, opacity: 0 },
-      { ref: paragraphRef, delay: 0.2, y: 16, opacity: 0 },
-      { ref: ctaRef, delay: 0.35, y: 12, opacity: 0 },
-      { ref: overlayRef, delay: 0.1, opacity: 0 },
+      { ref: headlineRef, delay: 0, y: 24, opacity: 0 },
+      { ref: paragraphRef, delay: 0, y: 16, opacity: 0 },
+      { ref: ctaRef, delay: 0, y: 12, opacity: 0 },
     ],
   });
 
   // Scroll reveals for catalog cards
   useReveal({
-    elements: ".catalog-card",
-    stagger: 0.1,
-    start: "top 85%",
+    elements: ".reveal-on-scroll-fast",
+    y: 8,
+    duration: 0.22,
+    stagger: 0.04,
+    start: "top 90%",
   });
 
   return (
@@ -383,30 +389,32 @@ export default function HomePage() {
       <section className="bg-white">
         <Container className="py-16">
           <Card className="bg-slate-100">
-            <div className="relative">
-              <picture>
-                <source
-                  type="image/avif"
-                  srcSet={`${heroAvif800} 800w, ${heroAvif1200} 1200w, ${heroAvif1600} 1600w`}
-                  sizes="(max-width: 768px) 100vw, 1600px"
-                />
-                <source
-                  type="image/webp"
-                  srcSet={`${heroWebp800} 800w, ${heroWebp1200} 1200w, ${heroWebp1600} 1600w`}
-                  sizes="(max-width: 768px) 100vw, 1600px"
-                />
-                <img
-                  src={HERO_IMAGE}
-                  alt=""
-                  width={2200}
-                  height={1100}
-                  className="h-[520px] w-full object-cover md:h-[620px]"
-                  style={{ aspectRatio: "2200 / 1100" }}
-                  decoding="async"
-                  fetchPriority="high"
-                  loading="eager"
-                />
-              </picture>
+            <div ref={heroImageRef} className="relative">
+              <div className="relative h-[520px] w-full bg-slate-100 md:h-[620px] aspect-[2/1]">
+                <picture className="block h-full w-full">
+                  <source
+                    type="image/avif"
+                    srcSet={`${heroAvif800} 800w, ${heroAvif1200} 1200w, ${heroAvif1600} 1600w`}
+                    sizes="(max-width: 768px) 100vw, 1600px"
+                  />
+                  <source
+                    type="image/webp"
+                    srcSet={`${heroWebp800} 800w, ${heroWebp1200} 1200w, ${heroWebp1600} 1600w`}
+                    sizes="(max-width: 768px) 100vw, 1600px"
+                  />
+                  <img
+                    src={HERO_IMAGE}
+                    alt=""
+                    width={2200}
+                    height={1100}
+                    className="h-full w-full object-cover"
+                    style={{ aspectRatio: "2200 / 1100" }}
+                    decoding="async"
+                    fetchPriority="high"
+                    loading="eager"
+                  />
+                </picture>
+              </div>
 
               {/* Image legibility overlay (top heavier, like your screenshot) */}
               <div ref={overlayRef} className="pointer-events-none absolute inset-0">
@@ -463,7 +471,7 @@ export default function HomePage() {
       {/* VENDORS */}
       <section className="bg-white" id="what-we-do">
         <Container className="py-20">
-          <div className="relative overflow-hidden rounded-[28px] bg-white px-6 py-12 md:px-12 md:py-14">
+          <div className="reveal-on-scroll-fast relative overflow-hidden rounded-[28px] bg-white px-6 py-12 md:px-12 md:py-14">
             <div className="relative z-10 flex flex-wrap items-center justify-center gap-x-10 gap-y-6">
               {VENDORS.map((vendor) => (
                 <img
@@ -473,6 +481,8 @@ export default function HomePage() {
                   className={`${vendor.widthClass} h-auto object-contain`}
                   loading="lazy"
                   decoding="async"
+                  width={vendor.width}
+                  height={vendor.height}
                   style={{ aspectRatio: "auto" }}
                 />
               ))}
@@ -485,7 +495,7 @@ export default function HomePage() {
     <section className="bg-white">
       <Container className="py-20">
         {/* Header */}
-        <div className="text-center">
+        <div className="reveal-on-scroll-fast text-center">
           <h2 className="text-3xl md:text-4xl font-semibold tracking-[-0.01em] text-slate-900">
             What We Do
           </h2>
@@ -517,6 +527,7 @@ export default function HomePage() {
               <div
                 key={key}
                 className={[
+                  "reveal-on-scroll-fast",
                   "lg:col-span-2",
                   centerPair,
                   "group relative overflow-hidden",
@@ -562,7 +573,7 @@ export default function HomePage() {
       {/* COLLECTIONS */}
       <section className="bg-white">
         <Container className="py-24">
-          <div className="text-center">
+          <div className="reveal-on-scroll-fast text-center">
             <h2 className="text-3xl md:text-5xl font-semibold text-slate-800">
               Our Popular Products
             </h2>
@@ -579,30 +590,32 @@ export default function HomePage() {
                 href={item.href}
                 target="_blank"
                 rel="noreferrer"
-                className="catalog-card group relative overflow-hidden rounded-[26px] bg-slate-100 text-left"
+                className="reveal-on-scroll-fast catalog-card group relative overflow-hidden rounded-[26px] bg-slate-100 text-left"
               >
-                <picture>
-                  <source
-                    type="image/avif"
-                    srcSet={`${item.avif400} 400w, ${item.avif800} 800w`}
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                  />
-                  <source
-                    type="image/webp"
-                    srcSet={`${item.webp400} 400w, ${item.webp800} 800w`}
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                  />
-                  <img
-                    src={item.imageUrl}
-                    alt=""
-                    width={800}
-                    height={600}
-                    style={{ aspectRatio: "800 / 600" }}
-                    className="h-[260px] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03] md:h-[320px]"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </picture>
+                <div className="relative h-[260px] w-full bg-slate-100 md:h-[320px] aspect-[4/3]">
+                  <picture className="block h-full w-full">
+                    <source
+                      type="image/avif"
+                      srcSet={`${item.avif400} 400w, ${item.avif800} 800w`}
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                    />
+                    <source
+                      type="image/webp"
+                      srcSet={`${item.webp400} 400w, ${item.webp800} 800w`}
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                    />
+                    <img
+                      src={item.imageUrl}
+                      alt=""
+                      width={800}
+                      height={600}
+                      style={{ aspectRatio: "800 / 600" }}
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </picture>
+                </div>
                 <div className="absolute inset-0 bg-black/10 transition-colors duration-300 group-hover:bg-black/20" />
                 <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between gap-4">
                   <div className="text-white">
@@ -630,29 +643,31 @@ export default function HomePage() {
                 href={item.href}
                 target="_blank"
                 rel="noreferrer"
-                className="catalog-card group relative overflow-hidden rounded-[26px] bg-slate-100 text-left"
+                className="reveal-on-scroll-fast catalog-card group relative overflow-hidden rounded-[26px] bg-slate-100 text-left"
               >
-                <picture>
-                  <source
-                    type="image/avif"
-                    srcSet={`${item.avif400} 400w, ${item.avif800} 800w`}
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                  />
-                  <source
-                    type="image/webp"
-                    srcSet={`${item.webp400} 400w, ${item.webp800} 800w`}
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                  />
-                  <img
-                    src={item.imageUrl}
-                    alt=""
-                    width={800}
-                    height={600}
-                    className="h-[300px] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03] md:h-[360px]"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </picture>
+                <div className="relative h-[300px] w-full bg-slate-100 md:h-[360px] aspect-[4/3]">
+                  <picture className="block h-full w-full">
+                    <source
+                      type="image/avif"
+                      srcSet={`${item.avif400} 400w, ${item.avif800} 800w`}
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                    />
+                    <source
+                      type="image/webp"
+                      srcSet={`${item.webp400} 400w, ${item.webp800} 800w`}
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                    />
+                    <img
+                      src={item.imageUrl}
+                      alt=""
+                      width={800}
+                      height={600}
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </picture>
+                </div>
                 <div className="absolute inset-0 bg-black/10 transition-colors duration-300 group-hover:bg-black/20" />
                 <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between gap-4">
                   <div className="text-white">
@@ -678,7 +693,7 @@ export default function HomePage() {
       {/* BROCHURES / CATALOGS */}
       <section className="bg-white">
         <Container className="py-24">
-          <div className="text-center">
+          <div className="reveal-on-scroll-fast text-center">
             <h2 className="display-tight mt-4 text-4xl md:text-5xl lg:text-6xl leading-[0.95] text-slate-900 font-medium">
               Browse Our Catalog
             </h2>
@@ -690,10 +705,10 @@ export default function HomePage() {
 
           {/* IMPORTANT: match your catalogs page sizing */}
           <div className="mt-14 mx-auto w-full max-w-[1500px]">
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
-              {BROCHURES.map((item, index) => (
-                <BrochureCard
-                  key={item.title}
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+                {BROCHURES.map((item, index) => (
+                  <BrochureCard
+                    key={item.title}
                   title={item.title}
                   imageUrl={item.imageUrl}
                   avif400={item.avif400}
@@ -712,7 +727,7 @@ export default function HomePage() {
       {/* HOW IT WORKS */}
       <section className="bg-white">
         <Container className="py-24">
-          <div className="text-center">
+          <div className="reveal-on-scroll-fast text-center">
             <h2 className="text-3xl md:text-5xl font-semibold text-slate-800">
               How It Works
             </h2>
@@ -723,6 +738,7 @@ export default function HomePage() {
               <div
                 key={item.step}
                 className={[
+                  "reveal-on-scroll-fast",
                   "group rounded-[22px] border border-slate-300 bg-white px-6 py-6 text-slate-900 transition-colors duration-300 hover:border-[rgb(var(--navy-950))] hover:bg-[rgb(var(--navy-950))] hover:text-white md:px-7 md:py-7",
                   index % 2 === 1 ? "lg:translate-y-6" : "lg:translate-y-0",
                 ].join(" ")}
@@ -745,7 +761,7 @@ export default function HomePage() {
       {/* TRUSTED BRANDS */}
       <section className="bg-white">
         <Container className="py-24">
-          <div className="text-center">
+          <div className="reveal-on-scroll-fast text-center">
             <h2 className="text-3xl md:text-5xl font-semibold text-slate-800">
               Trusted by our brands
             </h2>
@@ -759,7 +775,7 @@ export default function HomePage() {
               BRAND_LOGOS.slice(0, Math.ceil(BRAND_LOGOS.length / 2)),
               BRAND_LOGOS.slice(Math.ceil(BRAND_LOGOS.length / 2)),
             ].map((row, index) => (
-              <div key={row[0]?.name ?? index} className="marquee">
+              <div key={row[0]?.name ?? index} className="marquee reveal-on-scroll-fast">
                 <div className="marquee-fade marquee-fade-left" aria-hidden="true" />
                 <div className="marquee-fade marquee-fade-right" aria-hidden="true" />
                 <div
@@ -780,6 +796,8 @@ export default function HomePage() {
                         loading="lazy"
                         decoding="async"
                         style={{ aspectRatio: "auto" }}
+                        width={brand.width}
+                        height={brand.height}
                       />
                     </div>
                   ))}

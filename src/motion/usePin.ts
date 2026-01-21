@@ -54,32 +54,47 @@ export function usePin(options: UsePinOptions) {
       };
     }
 
-    // Create animation if props provided
-    let animation: gsap.core.Tween | null = null;
-    if (animationProps) {
-      animation = gsap.to(element.current, {
-        ...animationProps,
-        ease: animationProps.ease ?? EASE.none,
+    let cancelled = false;
+
+    const init = () => {
+      if (cancelled || !element.current) return;
+
+      // Create animation if props provided
+      let animation: gsap.core.Tween | null = null;
+      if (animationProps) {
+        animation = gsap.to(element.current, {
+          ...animationProps,
+          ease: animationProps.ease ?? EASE.none,
+        });
+        animationRef.current = animation;
+      }
+
+      // Create pin with optional animation
+      triggerRef.current = ScrollTrigger.create({
+        trigger: element.current,
+        start,
+        end,
+        pin: true,
+        scrub: typeof scrub === "number" ? scrub : scrub ? 1 : false,
+        animation: animation || undefined,
+        onUpdate: onUpdate
+          ? (self) => {
+              onUpdate(self.progress);
+            }
+          : undefined,
       });
-      animationRef.current = animation;
+    };
+
+    if (typeof requestIdleCallback !== "undefined") {
+      requestIdleCallback(init, { timeout: 120 });
+    } else {
+      requestAnimationFrame(() => {
+        setTimeout(init, 0);
+      });
     }
 
-    // Create pin with optional animation
-    triggerRef.current = ScrollTrigger.create({
-      trigger: element.current,
-      start,
-      end,
-      pin: true,
-      scrub: typeof scrub === "number" ? scrub : scrub ? 1 : false,
-      animation: animation || undefined,
-      onUpdate: onUpdate
-        ? (self) => {
-            onUpdate(self.progress);
-          }
-        : undefined,
-    });
-
     return () => {
+      cancelled = true;
       triggerRef.current?.kill();
       animationRef.current?.kill();
       triggerRef.current = null;

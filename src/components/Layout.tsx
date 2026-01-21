@@ -175,8 +175,8 @@ export default function Layout() {
               <Link to="/products" className="hover:text-slate-900">
                 Products
               </Link>
-              <Link to="/request" className="hover:text-slate-900">
-                Request Quote
+              <Link to="/brochures-catalogs" className="hover:text-slate-900">
+                Brochures/Catalog
               </Link>
               <Link to="/contact" className="hover:text-slate-900">
                 Contact
@@ -185,23 +185,13 @@ export default function Layout() {
 
             <div>
               <div className="text-[11px] uppercase tracking-[0.18em] text-slate-500">
-                Subscribe
+                Contact
               </div>
-              <div className="mt-3 flex items-stretch gap-3">
-                <input
-                  type="email"
-                  placeholder="Enter your Email Address"
-                  className="h-12 w-full rounded-[14px] bg-white px-4 text-sm text-slate-900 ring-1 ring-slate-300 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-[rgb(var(--navy-800))]"
-                />
-                <button
-                  type="button"
-                  className="h-12 rounded-[14px] bg-[rgb(var(--navy-950))] px-6 text-xs uppercase tracking-[0.18em] text-white hover:bg-[rgb(var(--navy-800))]"
-                >
-                  Join
-                </button>
-              </div>
-              <div className="mt-3 text-xs text-slate-500">
-                Product drops, product updates, and pricing notes.
+              <div className="mt-3 space-y-2 text-sm text-slate-600">
+                <div>2506 N Moore Ave</div>
+                <div>Moore, OK 73160</div>
+                <div>Phone: (877) 783-0422</div>
+                <div>E-mail: sales@bcapparel.com</div>
               </div>
             </div>
           </div>
@@ -209,8 +199,8 @@ export default function Layout() {
             <div className="mt-10 flex flex-wrap items-center justify-between gap-4 border-t border-slate-200 pt-6 text-xs text-slate-500">
               <div>© {new Date().getFullYear()} BC Apparel. All rights reserved.</div>
               <div className="flex items-center gap-4">
-                <Link to="/request" className="hover:text-slate-800">
-                  Start a quote
+                <Link to="/brochures-catalogs" className="hover:text-slate-800">
+                  Brochures/Catalog
                 </Link>
                 <Link to="/contact" className="hover:text-slate-800">
                   Support

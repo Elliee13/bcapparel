@@ -85,16 +85,18 @@ const PRODUCTS: Array<{
 export default function ProductsPage() {
   // Scroll reveal for catalog cards
   useReveal({
-    elements: ".product-card",
-    stagger: 0.1,
-    start: "top 85%",
+    elements: ".reveal-on-scroll",
+    y: 12,
+    duration: 0.5,
+    stagger: 0.08,
+    start: "top 80%",
   });
 
   return (
     <div className="bg-white">
       <section className="bg-white">
         <Container className="py-24">
-          <div className="text-center">
+          <div className="reveal-on-scroll text-center">
             <div className="text-[11px] uppercase tracking-[0.24em] text-slate-500">
               Products
             </div>
@@ -114,30 +116,32 @@ export default function ProductsPage() {
                 href={item.href}
                 target="_blank"
                 rel="noreferrer"
-                className="product-card group relative overflow-hidden rounded-[26px] bg-slate-100 text-left"
+                className="reveal-on-scroll product-card group relative overflow-hidden rounded-[26px] bg-slate-100 text-left"
               >
-                <picture>
-                  <source
-                    type="image/avif"
-                    srcSet={`${item.avif400} 400w, ${item.avif800} 800w`}
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                  />
-                  <source
-                    type="image/webp"
-                    srcSet={`${item.webp400} 400w, ${item.webp800} 800w`}
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                  />
-                  <img
-                    src={item.imageUrl}
-                    alt=""
-                    width={800}
-                    height={600}
-                    className="h-[260px] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03] md:h-[320px]"
-                    loading={index === 0 ? "eager" : "lazy"}
-                    decoding="async"
-                    fetchPriority={index === 0 ? "high" : "auto"}
-                  />
-                </picture>
+                <div className="relative h-[260px] w-full bg-slate-100 md:h-[320px] aspect-[4/3]">
+                  <picture className="block h-full w-full">
+                    <source
+                      type="image/avif"
+                      srcSet={`${item.avif400} 400w, ${item.avif800} 800w`}
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                    />
+                    <source
+                      type="image/webp"
+                      srcSet={`${item.webp400} 400w, ${item.webp800} 800w`}
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                    />
+                    <img
+                      src={item.imageUrl}
+                      alt=""
+                      width={800}
+                      height={600}
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                      loading={index === 0 ? "eager" : "lazy"}
+                      decoding="async"
+                      fetchPriority={index === 0 ? "high" : "auto"}
+                    />
+                  </picture>
+                </div>
                 <div className="absolute inset-0 bg-black/10 transition-colors duration-300 group-hover:bg-black/20" />
                 <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between gap-4">
                   <div className="text-white">
@@ -168,29 +172,31 @@ export default function ProductsPage() {
                 href={item.href}
                 target="_blank"
                 rel="noreferrer"
-                className="product-card group relative overflow-hidden rounded-[26px] bg-slate-100 text-left"
+                className="reveal-on-scroll product-card group relative overflow-hidden rounded-[26px] bg-slate-100 text-left"
               >
-                <picture>
-                  <source
-                    type="image/avif"
-                    srcSet={`${item.avif400} 400w, ${item.avif800} 800w`}
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                  />
-                  <source
-                    type="image/webp"
-                    srcSet={`${item.webp400} 400w, ${item.webp800} 800w`}
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                  />
-                  <img
-                    src={item.imageUrl}
-                    alt=""
-                    width={800}
-                    height={600}
-                    className="h-[300px] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03] md:h-[360px]"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </picture>
+                <div className="relative h-[300px] w-full bg-slate-100 md:h-[360px] aspect-[4/3]">
+                  <picture className="block h-full w-full">
+                    <source
+                      type="image/avif"
+                      srcSet={`${item.avif400} 400w, ${item.avif800} 800w`}
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                    />
+                    <source
+                      type="image/webp"
+                      srcSet={`${item.webp400} 400w, ${item.webp800} 800w`}
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                    />
+                    <img
+                      src={item.imageUrl}
+                      alt=""
+                      width={800}
+                      height={600}
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </picture>
+                </div>
                 <div className="absolute inset-0 bg-black/10 transition-colors duration-300 group-hover:bg-black/20" />
                 <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between gap-4">
                   <div className="text-white">

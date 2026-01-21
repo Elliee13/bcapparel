@@ -64,35 +64,59 @@ export default function AboutPage() {
       return;
     }
 
-    const ctx = gsap.context(() => {
-      // Hide scroll hint when line section enters
-      if (lineWrapRef.current && scrollHintRef.current) {
-        ScrollTrigger.create({
-          trigger: lineWrapRef.current,
-          start: "top top+=80",
-          onEnter: () => {
-            gsap.to(scrollHintRef.current, { opacity: 0, duration: 0.4 });
-          },
-        });
-      }
+    let cancelled = false;
 
-      // Progress line scrub animation
-      if (lineWrapRef.current && lineProgressRef.current) {
-        gsap.set(lineProgressRef.current, { scaleY: 0, transformOrigin: "top" });
-        ScrollTrigger.create({
-          trigger: lineWrapRef.current,
-          start: "top center",
-          end: "bottom center",
-          scrub: true,
-          animation: gsap.to(lineProgressRef.current, {
-            scaleY: 1,
-            ease: "none",
-          }),
-        });
-      }
-    }, scopeRef);
+    const init = () => {
+      if (cancelled) return;
 
-    return () => ctx.revert();
+      const ctx = gsap.context(() => {
+        // Hide scroll hint when line section enters
+        if (lineWrapRef.current && scrollHintRef.current) {
+          ScrollTrigger.create({
+            trigger: lineWrapRef.current,
+            start: "top top+=80",
+            onEnter: () => {
+              gsap.to(scrollHintRef.current, { opacity: 0, duration: 0.4 });
+            },
+          });
+        }
+
+        // Progress line scrub animation
+        if (lineWrapRef.current && lineProgressRef.current) {
+          gsap.set(lineProgressRef.current, { scaleY: 0, transformOrigin: "top" });
+          ScrollTrigger.create({
+            trigger: lineWrapRef.current,
+            start: "top center",
+            end: "bottom center",
+            scrub: true,
+            animation: gsap.to(lineProgressRef.current, {
+              scaleY: 1,
+              ease: "none",
+            }),
+          });
+        }
+      }, scopeRef);
+
+      return () => ctx.revert();
+    };
+
+    let cleanup: (() => void) | undefined;
+    if (typeof requestIdleCallback !== "undefined") {
+      requestIdleCallback(() => {
+        cleanup = init() || undefined;
+      }, { timeout: 120 });
+    } else {
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          cleanup = init() || undefined;
+        }, 0);
+      });
+    }
+
+    return () => {
+      cancelled = true;
+      cleanup?.();
+    };
   }, [scopeRef, prefersReducedMotion]);
 
   // Paragraph reveals - using refs array
@@ -102,18 +126,42 @@ export default function AboutPage() {
     const paragraphs = paragraphRefs.current.filter(Boolean) as HTMLElement[];
     if (paragraphs.length === 0) return;
 
-    const ctx = gsap.context(() => {
-      paragraphs.forEach((el) => {
-        gsap.set(el, { opacity: 0, y: 12 });
-        ScrollTrigger.create({
-          trigger: el,
-          start: "top center+=40",
-          animation: gsap.to(el, { opacity: 1, y: 0, duration: 0.5 }),
-        });
-      });
-    }, scopeRef);
+    let cancelled = false;
 
-    return () => ctx.revert();
+    const init = () => {
+      if (cancelled) return;
+
+      const ctx = gsap.context(() => {
+        paragraphs.forEach((el) => {
+          gsap.set(el, { opacity: 0, y: 12 });
+          ScrollTrigger.create({
+            trigger: el,
+            start: "top center+=40",
+            animation: gsap.to(el, { opacity: 1, y: 0, duration: 0.5 }),
+          });
+        });
+      }, scopeRef);
+
+      return () => ctx.revert();
+    };
+
+    let cleanup: (() => void) | undefined;
+    if (typeof requestIdleCallback !== "undefined") {
+      requestIdleCallback(() => {
+        cleanup = init() || undefined;
+      }, { timeout: 120 });
+    } else {
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          cleanup = init() || undefined;
+        }, 0);
+      });
+    }
+
+    return () => {
+      cancelled = true;
+      cleanup?.();
+    };
   }, [scopeRef, prefersReducedMotion]);
 
   // Stats reveal with stagger
@@ -123,23 +171,47 @@ export default function AboutPage() {
     const stats = statRefs.current.filter(Boolean) as HTMLElement[];
     if (stats.length === 0) return;
 
-    const ctx = gsap.context(() => {
-      stats.forEach((el, index) => {
-        gsap.set(el, { opacity: 0, y: 12 });
-        ScrollTrigger.create({
-          trigger: el,
-          start: "top center+=80",
-          animation: gsap.to(el, {
-            opacity: 1,
-            y: 0,
-            duration: 0.45,
-            delay: index * 0.08,
-          }),
-        });
-      });
-    }, scopeRef);
+    let cancelled = false;
 
-    return () => ctx.revert();
+    const init = () => {
+      if (cancelled) return;
+
+      const ctx = gsap.context(() => {
+        stats.forEach((el, index) => {
+          gsap.set(el, { opacity: 0, y: 12 });
+          ScrollTrigger.create({
+            trigger: el,
+            start: "top center+=80",
+            animation: gsap.to(el, {
+              opacity: 1,
+              y: 0,
+              duration: 0.45,
+              delay: index * 0.08,
+            }),
+          });
+        });
+      }, scopeRef);
+
+      return () => ctx.revert();
+    };
+
+    let cleanup: (() => void) | undefined;
+    if (typeof requestIdleCallback !== "undefined") {
+      requestIdleCallback(() => {
+        cleanup = init() || undefined;
+      }, { timeout: 120 });
+    } else {
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          cleanup = init() || undefined;
+        }, 0);
+      });
+    }
+
+    return () => {
+      cancelled = true;
+      cleanup?.();
+    };
   }, [scopeRef, prefersReducedMotion]);
 
   // Mission section reveal
@@ -153,23 +225,47 @@ export default function AboutPage() {
 
     if (missionElements.length === 0) return;
 
-    const ctx = gsap.context(() => {
-      missionElements.forEach((el, index) => {
-        gsap.set(el, { opacity: 0, y: 16 });
-        ScrollTrigger.create({
-          trigger: missionWrapRef.current || el,
-          start: "top 75%",
-          animation: gsap.to(el, {
-            opacity: 1,
-            y: 0,
-            duration: 0.6,
-            delay: index * 0.1,
-          }),
-        });
-      });
-    }, scopeRef);
+    let cancelled = false;
 
-    return () => ctx.revert();
+    const init = () => {
+      if (cancelled) return;
+
+      const ctx = gsap.context(() => {
+        missionElements.forEach((el, index) => {
+          gsap.set(el, { opacity: 0, y: 16 });
+          ScrollTrigger.create({
+            trigger: missionWrapRef.current || el,
+            start: "top 75%",
+            animation: gsap.to(el, {
+              opacity: 1,
+              y: 0,
+              duration: 0.6,
+              delay: index * 0.1,
+            }),
+          });
+        });
+      }, scopeRef);
+
+      return () => ctx.revert();
+    };
+
+    let cleanup: (() => void) | undefined;
+    if (typeof requestIdleCallback !== "undefined") {
+      requestIdleCallback(() => {
+        cleanup = init() || undefined;
+      }, { timeout: 120 });
+    } else {
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          cleanup = init() || undefined;
+        }, 0);
+      });
+    }
+
+    return () => {
+      cancelled = true;
+      cleanup?.();
+    };
   }, [scopeRef, prefersReducedMotion]);
 
   return (
