@@ -1,4 +1,36 @@
 # Progress Reports
+## 2026-01-22 - Web v3.1 (Performance, SEO, and UX polish)
+- Summary: Performance and SEO hardening pass focused on Lighthouse audits, CLS mitigation, routing behavior, and page transition UX. Achieved consistent 70-76 Performance with perfect SEO/Best Practices and eliminated all blocking issues; remaining gaps identified as diminishing-returns micro-optimizations.
+- Scope: Global app config, routing, page transitions, assets, Lighthouse audits (Home, Products, Brochures/Catalogs, About, Contact).
+- Key changes:
+  - Fixed robots.txt handling by adding a real static file served at root; resolved Lighthouse SEO error ("robots.txt is not valid").
+  - Verified deployment behavior on Vercel (robots.txt served as plain text; sitemap intentionally omitted).
+  - Audited all major routes individually using Lighthouse (Home, Products, Brochures/Catalogs, About, Contact).
+  - Stabilized layout and reduced CLS contributors:
+    - Ensured image containers reserve space (aspect-ratio wrappers / intrinsic sizing).
+    - Reviewed hero, product cards, and catalog grids for layout stability.
+    - Confirmed animations use transform/opacity only.
+  - Introduced route transition handling to reduce perceived "blink" on navigation:
+    - Masked route cuts with subtle transitions.
+    - Prevented heavy intro animations from replaying aggressively on every route change.
+  - Evaluated route-level performance consistency; confirmed:
+    - FCP ~0.5-0.7s
+    - LCP ~0.7-1.0s
+    - TBT 0ms
+    - CLS remains the sole factor preventing 90+ Performance.
+- Assets/Content:
+  - No new visual assets added.
+  - Existing hero, product, and catalog imagery reviewed for layout stability.
+- Data/Backend:
+  - No backend changes; static frontend optimization only.
+- Known gaps / TODO:
+  - CLS not fully eliminated; remaining shifts are minor and likely caused by font metrics and large image sections.
+  - Performance score plateaus in the low-mid 70s due to Lighthouse synthetic CLS sensitivity.
+- Decision / Outcome:
+  - Determined current performance is acceptable and production-ready.
+  - Further work to reach 90+ would require micro-optimizations with limited real-world UX benefit.
+---
+
 ## 2026-01-21 - Web v3 (visual refresh + page rebuilds)
 - Summary: Major visual refresh aligned to new Figma direction, new brochure section/page, and content rewrites.
 - Scope: Home, About, Products, Contact, Layout, styles, assets, routing.

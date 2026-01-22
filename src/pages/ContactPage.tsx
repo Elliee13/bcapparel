@@ -23,15 +23,60 @@ export default function ContactPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
-  const [sent, setSent] = useState(false);
+  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+  const [error, setError] = useState("");
+  const [botcheck, setBotcheck] = useState(false);
 
-  function submit(e: React.FormEvent) {
+  async function submit(e: React.FormEvent) {
     e.preventDefault();
-    setSent(true);
-    window.setTimeout(() => setSent(false), 1500);
-    setName("");
-    setEmail("");
-    setMessage("");
+    if (status === "sending") return;
+    if (botcheck) return;
+
+    const accessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY as string | undefined;
+    if (!accessKey) {
+      setError("Missing form configuration. Please try again later.");
+      setStatus("error");
+      return;
+    }
+
+    setStatus("sending");
+    setError("");
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          access_key: accessKey,
+          name,
+          email,
+          message,
+          botcheck,
+          subject: "BC Apparel - Contact Form",
+          from_name: "BC Apparel Website",
+        }),
+      });
+
+      const result: { success?: boolean; message?: string } | null = await response
+        .json()
+        .catch(() => null);
+
+      if (!response.ok || !result?.success) {
+        throw new Error(result?.message || "Unable to send message.");
+      }
+
+      setStatus("success");
+      setName("");
+      setEmail("");
+      setMessage("");
+      window.setTimeout(() => setStatus("idle"), 2000);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unable to send message.");
+      setStatus("error");
+    }
   }
 
   return (
@@ -96,6 +141,14 @@ export default function ContactPage() {
               </div>
 
               <form className="mt-6 space-y-5" onSubmit={submit}>
+                <input
+                  type="checkbox"
+                  name="botcheck"
+                  checked={botcheck}
+                  onChange={(e) => setBotcheck(e.target.checked)}
+                  className="hidden"
+                  tabIndex={-1}
+                />
                 <label className="block">
                   <span className="text-[11px] uppercase tracking-[0.18em] text-white/70">
                     Name
@@ -139,9 +192,16 @@ export default function ContactPage() {
                 <Button
                   type="submit"
                   className="h-12 w-full rounded-full bg-[rgb(var(--navy-700))] text-xs uppercase tracking-[0.18em] text-white hover:bg-[rgb(var(--navy-800))]"
+                  disabled={status === "sending"}
                 >
-                  {sent ? "Sent" : "Send Message"}
+                  {status === "sending" ? "Sending..." : status === "success" ? "Sent" : "Send Message"}
                 </Button>
+
+                {status === "error" ? (
+                  <div className="text-xs text-rose-100/90" role="status">
+                    {error}
+                  </div>
+                ) : null}
               </form>
             </div>
           </div>

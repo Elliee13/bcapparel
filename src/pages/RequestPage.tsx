@@ -62,7 +62,9 @@ export default function RequestPage() {
     notes: "",
   }));
 
-  const [status, setStatus] = useState<"idle" | "success">("idle");
+  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+  const [error, setError] = useState("");
+  const [botcheck, setBotcheck] = useState(false);
 
   useEffect(() => {
     if (!productId || form.product) return;
@@ -91,13 +93,59 @@ export default function RequestPage() {
     });
   }
 
-  function submit(e: React.FormEvent) {
+  async function submit(e: React.FormEvent) {
     e.preventDefault();
-    if (!isValid) return;
+    if (!isValid || status === "sending") return;
+    if (botcheck) return;
 
-    setStatus("success");
-    resetForm();
-    window.setTimeout(() => setStatus("idle"), 2000);
+    const accessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY as string | undefined;
+    if (!accessKey) {
+      setError("Missing form configuration. Please try again later.");
+      setStatus("error");
+      return;
+    }
+
+    setStatus("sending");
+    setError("");
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          access_key: accessKey,
+          subject: "BC Apparel - Quote Request",
+          from_name: "BC Apparel Website",
+          name: form.name,
+          email: form.email,
+          phone: form.phone,
+          organization: form.organization,
+          category: form.category,
+          product: form.product,
+          quantity: form.quantity,
+          notes: form.notes,
+          botcheck,
+        }),
+      });
+
+      const result: { success?: boolean; message?: string } | null = await response
+        .json()
+        .catch(() => null);
+
+      if (!response.ok || !result?.success) {
+        throw new Error(result?.message || "Unable to submit request.");
+      }
+
+      setStatus("success");
+      resetForm();
+      window.setTimeout(() => setStatus("idle"), 2000);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unable to submit request.");
+      setStatus("error");
+    }
   }
 
   return (
@@ -133,6 +181,14 @@ export default function RequestPage() {
             </div>
 
             <form className="mt-6 space-y-4" onSubmit={submit}>
+              <input
+                type="checkbox"
+                name="botcheck"
+                checked={botcheck}
+                onChange={(e) => setBotcheck(e.target.checked)}
+                className="hidden"
+                tabIndex={-1}
+              />
               <div className="grid gap-4 md:grid-cols-2">
                 <div>
                   <div className="mb-1 text-[11px] uppercase tracking-[0.18em] text-slate-500">
@@ -240,14 +296,24 @@ export default function RequestPage() {
               <Button
                 className="w-full py-3 text-xs uppercase tracking-[0.18em]"
                 type="submit"
-                disabled={!isValid}
+                disabled={!isValid || status === "sending"}
               >
-                {status === "success" ? "Request received (demo)" : "Submit request"}
+                {status === "sending"
+                  ? "Submitting..."
+                  : status === "success"
+                  ? "Request received"
+                  : "Submit request"}
               </Button>
 
-              <p className="text-xs text-slate-600">
-                Demo note: no data is stored or sent from this form.
-              </p>
+              {status === "error" ? (
+                <p className="text-xs text-rose-700" role="status">
+                  {error}
+                </p>
+              ) : (
+                <p className="text-xs text-slate-600">
+                  We respond within 1-2 business days.
+                </p>
+              )}
             </form>
           </Card>
         </div>
