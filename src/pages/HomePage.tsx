@@ -218,25 +218,6 @@ const HOW_IT_WORKS = [
   },
 ];
 
-const WHY_CHOOSE_US = [
-  {
-    title: "Dedicated support",
-    description: "A single point of contact to keep your project clear and on track.",
-  },
-  {
-    title: "Artwork & proofing",
-    description: "We refine your logo and send proofs before production begins.",
-  },
-  {
-    title: "Reliable delivery",
-    description: "Consistent production timelines and nationwide shipping.",
-  },
-  {
-    title: "Quality partners",
-    description: "Trusted suppliers and vetted materials across every category.",
-  },
-];
-
 const BRAND_LOGOS = [
   { name: "Hilton", src: brandHilton, width: 400, height: 180 },
   { name: "Team 365", src: brandTeam365, width: 228, height: 110 },
@@ -789,34 +770,6 @@ export default function HomePage() {
         </Container>
       </section>
 
-      {/* WHY CHOOSE US */}
-      <section className="bg-white">
-        <Container className="py-24">
-          <div className="reveal-on-scroll-fast text-center">
-            <h2 className="text-3xl md:text-5xl font-semibold text-slate-800">
-              Why Teams Choose Us
-            </h2>
-            <p className="mx-auto mt-3 max-w-2xl text-sm md:text-base text-slate-600">
-              A clear process, dependable partners, and a focus on brand consistency.
-            </p>
-          </div>
-
-          <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {WHY_CHOOSE_US.map((item) => (
-              <div
-                key={item.title}
-                className="reveal-on-scroll-fast rounded-[22px] border border-slate-200 bg-white p-6 text-slate-900 transition-shadow duration-300 hover:shadow-[0_18px_50px_rgba(2,6,23,0.08)]"
-              >
-                <div className="text-base font-semibold">{item.title}</div>
-                <p className="mt-3 text-sm leading-relaxed text-slate-600">
-                  {item.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </Container>
-      </section>
-
       {/* TRUSTED BRANDS */}
       <section className="bg-white">
         <Container className="py-24">
@@ -870,3 +823,4 @@ export default function HomePage() {
     </div>
   );
 }
+
