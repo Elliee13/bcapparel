@@ -1,10 +1,10 @@
 import Container from "../components/Container";
 import { useReveal } from "../motion";
-import catalogApparel from "../assets/hero/collection/apparel.jpg";
-import catalogBags from "../assets/hero/collection/bags.jpg";
-import catalogDrinkware from "../assets/hero/collection/drinkWares.jpg";
-import catalogTech from "../assets/hero/collection/techProducts.jpg";
-import catalogWriting from "../assets/hero/collection/writingInstruments.jpg";
+import catalogApparel from "../assets/hero/collection/apparelProduct.png";
+import catalogBags from "../assets/hero/collection/bagsProduct.png";
+import catalogDrinkware from "../assets/hero/collection/drinkwareProd.png";
+import catalogTech from "../assets/hero/collection/techPro.png";
+import catalogWriting from "../assets/hero/collection/writingsProd.png";
 import apparelAvif400 from "../assets/optimized/collection/apparel-400.avif";
 import apparelAvif800 from "../assets/optimized/collection/apparel-800.avif";
 import apparelWebp400 from "../assets/optimized/collection/apparel-400.webp";
@@ -30,6 +30,8 @@ const PRODUCTS: Array<{
   title: string;
   href: string;
   imageUrl: string;
+  objectPosition?: string;
+  alt: string;
   avif400: string;
   avif800: string;
   webp400: string;
@@ -39,6 +41,8 @@ const PRODUCTS: Array<{
     title: "Apparel",
     href: "https://bcapparel.espwebsite.com/ProductResults/?SearchTerms=apparel",
     imageUrl: catalogApparel,
+    objectPosition: "50% 20%",
+    alt: "Man wearing a black polo shirt outdoors",
     avif400: apparelAvif400,
     avif800: apparelAvif800,
     webp400: apparelWebp400,
@@ -48,6 +52,7 @@ const PRODUCTS: Array<{
     title: "Bags",
     href: "https://bcapparel.espwebsite.com/ProductResults/?SearchTerms=bags",
     imageUrl: catalogBags,
+    alt: "Black tote bag with custom logo",
     avif400: bagsAvif400,
     avif800: bagsAvif800,
     webp400: bagsWebp400,
@@ -57,6 +62,7 @@ const PRODUCTS: Array<{
     title: "Writing instruments",
     href: "https://bcapparel.espwebsite.com/ProductResults/?SearchTerms=writing+instruments",
     imageUrl: catalogWriting,
+    alt: "Branded pen on a notebook",
     avif400: writingAvif400,
     avif800: writingAvif800,
     webp400: writingWebp400,
@@ -66,6 +72,7 @@ const PRODUCTS: Array<{
     title: "Tech Products",
     href: "https://bcapparel.espwebsite.com/ProductResults/?SearchTerms=tech",
     imageUrl: catalogTech,
+    alt: "Phone charging on a wooden wireless charger",
     avif400: techAvif400,
     avif800: techAvif800,
     webp400: techWebp400,
@@ -75,6 +82,7 @@ const PRODUCTS: Array<{
     title: "Drinkware",
     href: "https://bcapparel.espwebsite.com/ProductResults/?SearchTerms=drinkware",
     imageUrl: catalogDrinkware,
+    alt: "Person holding a branded tumbler",
     avif400: drinkwareAvif400,
     avif800: drinkwareAvif800,
     webp400: drinkwareWebp400,
@@ -105,7 +113,7 @@ export default function ProductsPage() {
             </h1>
             <p className="mx-auto mt-4 max-w-2xl text-sm md:text-base text-slate-600">
               Browse curated product categories from trusted suppliers. Click a product
-              group to view the full collection and request a quote.
+              group to view the full collection.
             </p>
           </div>
 
@@ -119,28 +127,29 @@ export default function ProductsPage() {
                 className="reveal-on-scroll product-card group relative overflow-hidden rounded-[26px] bg-slate-100 text-left"
               >
                 <div className="relative h-[260px] w-full bg-slate-100 md:h-[320px] aspect-[4/3]">
-                  <picture className="block h-full w-full">
-                    <source
-                      type="image/avif"
-                      srcSet={`${item.avif400} 400w, ${item.avif800} 800w`}
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                    />
-                    <source
-                      type="image/webp"
-                      srcSet={`${item.webp400} 400w, ${item.webp800} 800w`}
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                    />
-                    <img
-                      src={item.imageUrl}
-                      alt=""
-                      width={800}
-                      height={600}
-                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                      loading={index === 0 ? "eager" : "lazy"}
-                      decoding="async"
-                      fetchPriority={index === 0 ? "high" : "auto"}
-                    />
-                  </picture>
+                <picture className="block h-full w-full">
+                  <source
+                    type="image/avif"
+                    srcSet={`${item.avif400} 400w, ${item.avif800} 800w`}
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                  />
+                  <source
+                    type="image/webp"
+                    srcSet={`${item.webp400} 400w, ${item.webp800} 800w`}
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                  />
+                  <img
+                    src={item.imageUrl}
+                    alt={item.alt}
+                    width={800}
+                    height={600}
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                    style={item.objectPosition ? { objectPosition: item.objectPosition } : undefined}
+                    loading={index === 0 ? "eager" : "lazy"}
+                    decoding="async"
+                    fetchPriority={index === 0 ? "high" : "auto"}
+                  />
+                </picture>
                 </div>
                 <div className="absolute inset-0 bg-black/10 transition-colors duration-300 group-hover:bg-black/20" />
                 <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between gap-4">
@@ -175,27 +184,28 @@ export default function ProductsPage() {
                 className="reveal-on-scroll product-card group relative overflow-hidden rounded-[26px] bg-slate-100 text-left"
               >
                 <div className="relative h-[300px] w-full bg-slate-100 md:h-[360px] aspect-[4/3]">
-                  <picture className="block h-full w-full">
-                    <source
-                      type="image/avif"
-                      srcSet={`${item.avif400} 400w, ${item.avif800} 800w`}
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                    />
-                    <source
-                      type="image/webp"
-                      srcSet={`${item.webp400} 400w, ${item.webp800} 800w`}
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                    />
-                    <img
-                      src={item.imageUrl}
-                      alt=""
-                      width={800}
-                      height={600}
-                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  </picture>
+                <picture className="block h-full w-full">
+                  <source
+                    type="image/avif"
+                    srcSet={`${item.avif400} 400w, ${item.avif800} 800w`}
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
+                  <source
+                    type="image/webp"
+                    srcSet={`${item.webp400} 400w, ${item.webp800} 800w`}
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
+                  <img
+                    src={item.imageUrl}
+                    alt={item.alt}
+                    width={800}
+                    height={600}
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                    style={item.objectPosition ? { objectPosition: item.objectPosition } : undefined}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </picture>
                 </div>
                 <div className="absolute inset-0 bg-black/10 transition-colors duration-300 group-hover:bg-black/20" />
                 <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between gap-4">

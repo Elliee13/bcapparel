@@ -1,4 +1,21 @@
 # Progress Reports
+## 2026-01-22 - Web v3.2 (Web3Forms email integration)
+- Summary: Added live email form submission via Web3Forms for Contact + Request flows, with client-side status handling and spam honeypot. Verified end-to-end delivery in Gmail and Web3Forms after Vercel deployment.
+- Scope: Contact page, Request page, environment config.
+- Key changes:
+  - Wired Contact form to Web3Forms API with async submit, status states, and error messaging.
+  - Wired Request Quote form to Web3Forms API with async submit and success/error states.
+  - Added botcheck honeypot field and disabled double-submit while sending.
+  - Added `.env.example` entry for `VITE_WEB3FORMS_ACCESS_KEY`.
+- Assets/Content:
+  - No new assets.
+- Data/Backend:
+  - No backend changes; client-side submission to Web3Forms only.
+- Decision / Outcome:
+  - Confirmed submissions delivered to Gmail and visible in Web3Forms after Vercel deploy.
+
+---
+
 ## 2026-01-22 - Web v3.1 (Performance, SEO, and UX polish)
 - Summary: Performance and SEO hardening pass focused on Lighthouse audits, CLS mitigation, routing behavior, and page transition UX. Achieved consistent 70-76 Performance with perfect SEO/Best Practices and eliminated all blocking issues; remaining gaps identified as diminishing-returns micro-optimizations.
 - Scope: Global app config, routing, page transitions, assets, Lighthouse audits (Home, Products, Brochures/Catalogs, About, Contact).
@@ -117,4 +134,6 @@
   - Iterate on visuals and feature depth.
 - Links/Refs:
   - Commit: e935c6e
+
+
 

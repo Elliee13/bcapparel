@@ -6,7 +6,6 @@ import Layout from "./components/Layout";
 const HomePage = lazy(() => import("./pages/HomePage"));
 const AboutPage = lazy(() => import("./pages/AboutPage"));
 const ContactPage = lazy(() => import("./pages/ContactPage"));
-const RequestPage = lazy(() => import("./pages/RequestPage"));
 const ProductsPage = lazy(() => import("./pages/ProductsPage"));
 const BrochuresCatalogsPage = lazy(() => import("./pages/BrochuresCatalogsPage"));
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
@@ -43,15 +42,6 @@ export default function App() {
             element={
               <Suspense fallback={<Loading />}>
                 <ContactPage />
-              </Suspense>
-            }
-          />
-
-          <Route
-            path="/request"
-            element={
-              <Suspense fallback={<Loading />}>
-                <RequestPage />
               </Suspense>
             }
           />

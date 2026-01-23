@@ -1,5 +1,4 @@
 import { ExternalLink } from "lucide-react";
-import { Link } from "react-router-dom";
 import type { Product } from "../data/products";
 
 export default function ProductCard({ product }: { product: Product }) {
@@ -47,13 +46,7 @@ export default function ProductCard({ product }: { product: Product }) {
       </a>
 
       <div className="px-4 pb-4">
-        <div className="flex items-center justify-between gap-2">
-          <Link
-            to={`/request?product=${encodeURIComponent(product.id)}`}
-            className="inline-flex h-9 items-center justify-center rounded-full border border-slate-200 px-4 text-[11px] uppercase tracking-[0.18em] text-slate-700 transition hover:border-slate-300 hover:text-slate-900"
-          >
-            Request Quote
-          </Link>
+        <div className="flex items-center justify-end">
           <a
             href={product.externalUrl}
             target="_blank"

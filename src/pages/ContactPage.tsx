@@ -209,7 +209,7 @@ export default function ContactPage() {
           <div className="mt-16 rounded-[28px] border border-slate-200 bg-white px-6 py-10 md:px-12">
             <div className="text-center">
               <div className="text-xl font-semibold text-slate-900">
-                For business enquires
+                For business inquiries
               </div>
             </div>
 

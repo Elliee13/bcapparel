@@ -16,11 +16,11 @@ import vendorRicha from "../assets/hero/vendor/richa.png";
 import vendorSS from "../assets/hero/vendor/s&s.png";
 import vendorSanmar from "../assets/hero/vendor/sanmar.png";
 import vendorStaton from "../assets/hero/vendor/staton.png";
-import catalogApparel from "../assets/hero/collection/apparel.jpg";
-import catalogBags from "../assets/hero/collection/bags.jpg";
-import catalogDrinkware from "../assets/hero/collection/drinkWares.jpg";
-import catalogTech from "../assets/hero/collection/techProducts.jpg";
-import catalogWriting from "../assets/hero/collection/writingInstruments.jpg";
+import catalogApparel from "../assets/hero/collection/apparelProduct.png";
+import catalogBags from "../assets/hero/collection/bagsProduct.png";
+import catalogDrinkware from "../assets/hero/collection/drinkwareProd.png";
+import catalogTech from "../assets/hero/collection/techPro.png";
+import catalogWriting from "../assets/hero/collection/writingsProd.png";
 import apparelAvif400 from "../assets/optimized/collection/apparel-400.avif";
 import apparelAvif800 from "../assets/optimized/collection/apparel-800.avif";
 import apparelWebp400 from "../assets/optimized/collection/apparel-400.webp";
@@ -98,6 +98,8 @@ const CATALOGS: Array<{
   title: string;
   imageUrl: string;
   href: string;
+  objectPosition?: string;
+  alt: string;
   avif400: string;
   avif800: string;
   webp400: string;
@@ -107,6 +109,8 @@ const CATALOGS: Array<{
     title: "Apparel",
     imageUrl: catalogApparel,
     href: "https://bcapparel.espwebsite.com/ProductResults/?SearchTerms=apparel",
+    objectPosition: "50% 20%",
+    alt: "Man wearing a black polo shirt outdoors",
     avif400: apparelAvif400,
     avif800: apparelAvif800,
     webp400: apparelWebp400,
@@ -116,6 +120,7 @@ const CATALOGS: Array<{
     title: "Bags",
     imageUrl: catalogBags,
     href: "https://bcapparel.espwebsite.com/ProductResults/?SearchTerms=bags",
+    alt: "Black tote bag with custom logo",
     avif400: bagsAvif400,
     avif800: bagsAvif800,
     webp400: bagsWebp400,
@@ -125,6 +130,7 @@ const CATALOGS: Array<{
     title: "Writing instruments",
     imageUrl: catalogWriting,
     href: "https://bcapparel.espwebsite.com/ProductResults/?SearchTerms=writing+instruments",
+    alt: "Branded pen on a notebook",
     avif400: writingAvif400,
     avif800: writingAvif800,
     webp400: writingWebp400,
@@ -134,6 +140,7 @@ const CATALOGS: Array<{
     title: "Tech Products",
     imageUrl: catalogTech,
     href: "https://bcapparel.espwebsite.com/ProductResults/?SearchTerms=tech",
+    alt: "Phone charging on a wooden wireless charger",
     avif400: techAvif400,
     avif800: techAvif800,
     webp400: techWebp400,
@@ -143,6 +150,7 @@ const CATALOGS: Array<{
     title: "Drinkware",
     imageUrl: catalogDrinkware,
     href: "https://bcapparel.espwebsite.com/ProductResults/?SearchTerms=drinkware",
+    alt: "Person holding a branded tumbler",
     avif400: drinkwareAvif400,
     avif800: drinkwareAvif800,
     webp400: drinkwareWebp400,
@@ -195,7 +203,7 @@ const HOW_IT_WORKS = [
   },
   {
     step: "02",
-    title: "Request a quote",
+    title: "Start your project",
     description: "Share sizes, quantities, and timelines.",
   },
   {
@@ -207,6 +215,25 @@ const HOW_IT_WORKS = [
     step: "04",
     title: "Production & delivery",
     description: "Reliable production and on-time delivery.",
+  },
+];
+
+const WHY_CHOOSE_US = [
+  {
+    title: "Dedicated support",
+    description: "A single point of contact to keep your project clear and on track.",
+  },
+  {
+    title: "Artwork & proofing",
+    description: "We refine your logo and send proofs before production begins.",
+  },
+  {
+    title: "Reliable delivery",
+    description: "Consistent production timelines and nationwide shipping.",
+  },
+  {
+    title: "Quality partners",
+    description: "Trusted suppliers and vetted materials across every category.",
   },
 ];
 
@@ -496,7 +523,7 @@ export default function HomePage() {
       <Container className="py-20">
         {/* Header */}
         <div className="reveal-on-scroll-fast text-center">
-          <h2 className="text-3xl md:text-4xl font-semibold tracking-[-0.01em] text-slate-900">
+          <h2 className="text-3xl md:text-4xl tracking-[-0.01em] text-slate-900 font-medium">
             What We Do
           </h2>
           <p className="mx-auto mt-4 max-w-md text-sm leading-relaxed text-slate-600">
@@ -593,28 +620,31 @@ export default function HomePage() {
                 className="reveal-on-scroll-fast catalog-card group relative overflow-hidden rounded-[26px] bg-slate-100 text-left"
               >
                 <div className="relative h-[260px] w-full bg-slate-100 md:h-[320px] aspect-[4/3]">
-                  <picture className="block h-full w-full">
-                    <source
-                      type="image/avif"
-                      srcSet={`${item.avif400} 400w, ${item.avif800} 800w`}
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                    />
-                    <source
-                      type="image/webp"
-                      srcSet={`${item.webp400} 400w, ${item.webp800} 800w`}
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                    />
-                    <img
-                      src={item.imageUrl}
-                      alt=""
-                      width={800}
-                      height={600}
-                      style={{ aspectRatio: "800 / 600" }}
-                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  </picture>
+                <picture className="block h-full w-full">
+                  <source
+                    type="image/avif"
+                    srcSet={`${item.avif400} 400w, ${item.avif800} 800w`}
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                  />
+                  <source
+                    type="image/webp"
+                    srcSet={`${item.webp400} 400w, ${item.webp800} 800w`}
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                  />
+                  <img
+                    src={item.imageUrl}
+                    alt={item.alt}
+                    width={800}
+                    height={600}
+                    style={{
+                      aspectRatio: "800 / 600",
+                      objectPosition: item.objectPosition,
+                    }}
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </picture>
                 </div>
                 <div className="absolute inset-0 bg-black/10 transition-colors duration-300 group-hover:bg-black/20" />
                 <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between gap-4">
@@ -646,27 +676,28 @@ export default function HomePage() {
                 className="reveal-on-scroll-fast catalog-card group relative overflow-hidden rounded-[26px] bg-slate-100 text-left"
               >
                 <div className="relative h-[300px] w-full bg-slate-100 md:h-[360px] aspect-[4/3]">
-                  <picture className="block h-full w-full">
-                    <source
-                      type="image/avif"
-                      srcSet={`${item.avif400} 400w, ${item.avif800} 800w`}
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                    />
-                    <source
-                      type="image/webp"
-                      srcSet={`${item.webp400} 400w, ${item.webp800} 800w`}
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                    />
-                    <img
-                      src={item.imageUrl}
-                      alt=""
-                      width={800}
-                      height={600}
-                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  </picture>
+                <picture className="block h-full w-full">
+                  <source
+                    type="image/avif"
+                    srcSet={`${item.avif400} 400w, ${item.avif800} 800w`}
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
+                  <source
+                    type="image/webp"
+                    srcSet={`${item.webp400} 400w, ${item.webp800} 800w`}
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
+                  <img
+                    src={item.imageUrl}
+                    alt={item.alt}
+                    width={800}
+                    height={600}
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                    style={item.objectPosition ? { objectPosition: item.objectPosition } : undefined}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </picture>
                 </div>
                 <div className="absolute inset-0 bg-black/10 transition-colors duration-300 group-hover:bg-black/20" />
                 <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between gap-4">
@@ -752,6 +783,34 @@ export default function HomePage() {
                     </p>
                   </div>
                 </div>
+              </div>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      {/* WHY CHOOSE US */}
+      <section className="bg-white">
+        <Container className="py-24">
+          <div className="reveal-on-scroll-fast text-center">
+            <h2 className="text-3xl md:text-5xl font-semibold text-slate-800">
+              Why Teams Choose Us
+            </h2>
+            <p className="mx-auto mt-3 max-w-2xl text-sm md:text-base text-slate-600">
+              A clear process, dependable partners, and a focus on brand consistency.
+            </p>
+          </div>
+
+          <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {WHY_CHOOSE_US.map((item) => (
+              <div
+                key={item.title}
+                className="reveal-on-scroll-fast rounded-[22px] border border-slate-200 bg-white p-6 text-slate-900 transition-shadow duration-300 hover:shadow-[0_18px_50px_rgba(2,6,23,0.08)]"
+              >
+                <div className="text-base font-semibold">{item.title}</div>
+                <p className="mt-3 text-sm leading-relaxed text-slate-600">
+                  {item.description}
+                </p>
               </div>
             ))}
           </div>
