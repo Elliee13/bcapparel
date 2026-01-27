@@ -19,6 +19,24 @@ A modern, responsive demo storefront built with React, TypeScript, Vite, and Tai
 - 🎭 Smooth page transitions
 - ♿ Respects `prefers-reduced-motion`
 - 🚀 Optimized for performance
+- ?? Featured Picks landing page at `/featured`
+
+## Pages / Routes
+
+- `/` Home
+- `/featured` Featured Picks (curated gallery)
+- `/about` About
+- `/products` Products
+- `/brochures-catalogs` Brochures/Catalog
+- `/contact` Contact
+
+## SEO
+
+- JSON-LD ItemList structured data on Home Featured Picks and `/featured`
+- `robots.txt` and `sitemap.xml` in `public/`
+- Canonical, Open Graph, and Twitter meta tags in `index.html`
+- Featured page updates its title/description/OG/Twitter/canonical at runtime
+
 
 ## Getting Started
 

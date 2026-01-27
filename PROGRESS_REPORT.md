@@ -1,4 +1,21 @@
-ï»¿# Progress Reports
+# Progress Reports
+## 2026-01-27 - Web v3.4 (Featured Picks + SEO improvements)
+- Summary: Added Featured page and refined Featured Picks on Home, centralized featured data, and improved SEO metadata/structured data.
+- Scope: Home page, Featured page, routing/nav, data module, SEO assets.
+- Key changes:
+  - Added `/featured` page with curated category sections, anchor chips, and back-to-top.
+  - Centralized featured product data in `src/data/featuredProducts.ts`.
+  - Updated Home "Featured Picks" section (tabs, carousel responsiveness, category nav, and layout).
+  - Added JSON-LD ItemList to Home Featured Picks and Featured page.
+  - Added `sitemap.xml` and updated `robots.txt` with sitemap URL.
+  - Added per-page meta updates on Featured page (title, description, OG/Twitter, canonical).
+- Assets/Content:
+  - Added new product imagery for Drinkware, Writing Instruments, Bags, and Tech categories.
+- Data/Backend:
+  - No backend changes.
+- Decision / Outcome:
+  - Featured content now has a dedicated landing page and SEO-friendly metadata for indexing.
+
 ## 2026-01-23 - Web v3.3 (Marketing cleanup + asset refresh)
 - Summary: Removed Request Quote flow, refreshed product category imagery with optimized formats, added SEO/meta polish, and tightened copy/alt text.
 - Scope: Home page, Products page, App routing, SEO metadata, assets pipeline.
@@ -92,7 +109,7 @@
 
 ---
 
-## 2026-01-20 â€” Web v2 (incomplete)
+## 2026-01-20 — Web v2 (incomplete)
 - Summary: Refactor toward a more visual, asset-rich storefront with updated layout and simplified data flow.
 - Scope: Home page overhaul, layout refresh, product data migration, routing updates.
 - Key changes:
@@ -116,7 +133,7 @@
 
 ---
 
-## 2026-01-17 â€” Cleanup
+## 2026-01-17 — Cleanup
 - Summary: Small cleanup pass.
 - Scope: App entry.
 - Key changes:
@@ -134,7 +151,7 @@
 
 ---
 
-## 2026-01-17 â€” Sample demo website v1
+## 2026-01-17 — Sample demo website v1
 - Summary: Initial full demo website with full page set, UI system, and Supabase-backed catalog.
 - Scope: Project bootstrap, UI components, pages, data layer, assets, and configuration.
 - Key changes:

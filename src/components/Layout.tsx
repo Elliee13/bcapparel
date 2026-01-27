@@ -177,6 +177,9 @@ export default function Layout() {
               <Link to="/products" className="hover:text-slate-900">
                 Products
               </Link>
+              <Link to="/featured" className="hover:text-slate-900">
+                Featured
+              </Link>
               <Link to="/brochures-catalogs" className="hover:text-slate-900">
                 Brochures/Catalog
               </Link>
