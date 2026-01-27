@@ -1,2 +1,3 @@
 User-agent: *
 Allow: /
+Sitemap: https://bcapparel.com/sitemap.xml

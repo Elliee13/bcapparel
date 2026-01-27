@@ -1,8 +1,9 @@
-import { useRef } from "react";
+import { useLayoutEffect, useMemo, useRef, useState } from "react";
 import Container from "../components/Container";
 import Button from "../components/Button";
 import { useHeroIntro, useReveal, useGsapScope } from "../motion";
 import { useLcpInstrumentation } from "../hooks/useLcpInstrumentation";
+import { gsap } from "gsap";
 import heroImage from "../assets/hero/hero.jpeg";
 import heroAvif800 from "../assets/optimized/hero/hero-800.avif";
 import heroAvif1200 from "../assets/optimized/hero/hero-1200.avif";
@@ -89,6 +90,8 @@ import brandTeam365 from "../assets/hero/brands/team365.png";
 import brandTieDye from "../assets/hero/brands/Tie-Dye.png";
 import brandUnderArmor from "../assets/hero/brands/underArmor.png";
 import brandYupoong from "../assets/hero/brands/yupoong.png";
+import { FEATURED_CATEGORIES, FEATURED_PRODUCTS } from "../data/featuredProducts";
+import type { TrendingCategory } from "../data/featuredProducts";
 
 import { Brush, Gift, Shirt, Sticker } from "lucide-react";
 
@@ -283,6 +286,209 @@ const BROCHURES = [
     webp800: bcWinterstyleWebp800,
   },
 ];
+
+const ITEMS_PER_PAGE = 4;
+
+function TrendingProductsSection() {
+  const [activeTab, setActiveTab] = useState<TrendingCategory>("Drinkware");
+  const [page, setPage] = useState(0);
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+
+  const filteredProducts = useMemo(
+    () => FEATURED_PRODUCTS.filter((product) => product.category === activeTab),
+    [activeTab]
+  );
+
+  const pages = useMemo(() => {
+    const totalPages = Math.max(1, Math.ceil(filteredProducts.length / ITEMS_PER_PAGE));
+    return Array.from({ length: totalPages }, (_, index) =>
+      filteredProducts.slice(index * ITEMS_PER_PAGE, index * ITEMS_PER_PAGE + ITEMS_PER_PAGE)
+    );
+  }, [filteredProducts]);
+
+  const maxPage = pages.length - 1;
+  const canGoPrev = page > 0;
+  const canGoNext = page < maxPage;
+  const activeIndex = FEATURED_CATEGORIES.indexOf(activeTab);
+  const hasPrevCategory = activeIndex > 0;
+  const hasNextCategory = activeIndex < FEATURED_CATEGORIES.length - 1;
+
+  const goPrevCategory = () => {
+    if (!hasPrevCategory) return;
+    setActiveTab(FEATURED_CATEGORIES[activeIndex - 1]);
+    setPage(0);
+  };
+
+  const goNextCategory = () => {
+    if (!hasNextCategory) return;
+    setActiveTab(FEATURED_CATEGORIES[activeIndex + 1]);
+    setPage(0);
+  };
+
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Featured Picks",
+    itemListElement: FEATURED_PRODUCTS.map((product, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: product.name,
+      image: product.imageUrl,
+    })),
+  };
+
+  useLayoutEffect(() => {
+    const viewport = viewportRef.current;
+    const track = trackRef.current;
+    if (!viewport || !track) return;
+
+    const measureAndAnimate = () => {
+      const width = viewport.clientWidth;
+      gsap.to(track, {
+        x: -page * width,
+        duration: 0.55,
+        ease: "power2.out",
+        overwrite: "auto",
+      });
+    };
+
+    measureAndAnimate();
+    window.addEventListener("resize", measureAndAnimate);
+    return () => window.removeEventListener("resize", measureAndAnimate);
+  }, [page, pages.length]);
+
+
+  return (
+    <section className="bg-white">
+      <Container className="py-24">
+        <script
+          type="application/ld+json"
+          // JSON-LD for featured picks
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
+        <div className="reveal-on-scroll-fast text-center">
+          <h2 className="text-3xl md:text-5xl font-semibold text-slate-800">
+            Featured Picks
+          </h2>
+          <p className="mx-auto mt-4 max-w-2xl text-sm md:text-base text-slate-600">
+            Quick inspiration from our most-requested items for teams, schools, and events.
+          </p>
+        </div>
+
+        <div className="mt-8 w-full">
+          <div className="flex items-center justify-start md:justify-center gap-4 sm:gap-6 md:gap-16 overflow-x-auto md:overflow-visible px-3 sm:px-4 md:px-0">
+            {FEATURED_CATEGORIES.map((tab) => (
+              <button
+                key={tab}
+                type="button"
+                onClick={() => {
+                  setActiveTab(tab);
+                  setPage(0);
+                }}
+                className={[
+                  "shrink-0 whitespace-nowrap transition-colors duration-200 ease-out",
+                  tab === activeTab
+                    ? "text-[18px] sm:text-[20px] md:text-[28px] lg:text-[32px] font-semibold text-slate-900"
+                    : "text-[14px] sm:text-[16px] md:text-[18px] font-normal text-slate-400 hover:text-slate-600",
+                ].join(" ")}
+              >
+                {tab}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-8 md:mt-10 w-full">
+          <div className="flex items-center gap-3 md:gap-4">
+            {canGoPrev ? (
+            <button
+              type="button"
+              onClick={() => setPage((prev) => Math.max(0, prev - 1))}
+              aria-label="Previous products"
+              className="inline-flex h-9 w-9 md:h-10 md:w-10 items-center justify-center rounded-full border border-slate-200 text-slate-700 transition-all hover:border-slate-300 hover:text-slate-900"
+            >
+              <span aria-hidden="true">←</span>
+            </button>
+          ) : (
+            <div className="h-9 w-9 md:h-10 md:w-10" />
+          )}
+
+          <div ref={viewportRef} className="relative w-full overflow-hidden">
+            <div ref={trackRef} className="flex w-full">
+              {pages.map((pageItems, pageIndex) => (
+                <div
+                  key={`page-${pageIndex}`}
+                  className="w-full shrink-0"
+                >
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10">
+                    {pageItems.map((item, itemIndex) => (
+                      <div key={item.id} className="text-center">
+                        <div className="mx-auto flex h-[140px] w-[140px] items-center justify-center md:h-[240px] md:w-[240px]">
+                          <img
+                            src={item.imageUrl}
+                            alt={item.name}
+                            className="h-[96px] w-[96px] md:h-[160px] md:w-[160px] object-contain"
+                            loading="lazy"
+                            decoding="async"
+                            width={240}
+                            height={240}
+                            fetchPriority={
+                              pageIndex === 0 && itemIndex === 0 ? "high" : "low"
+                            }
+                          />
+                        </div>
+                        <div className="mt-4 text-sm font-semibold text-slate-900">
+                          {item.name}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="mt-8 md:mt-10 flex flex-wrap items-center justify-center gap-3 md:gap-6">
+                    {hasPrevCategory && (
+                      <button
+                        type="button"
+                        onClick={goPrevCategory}
+                        aria-label="Previous category"
+                        className="inline-flex items-center gap-2 rounded-full border border-slate-200 px-4 py-2 text-xs font-medium text-slate-700 transition hover:border-slate-300 hover:text-slate-900"
+                      >
+                        ← Prev
+                      </button>
+                    )}
+
+                    {hasNextCategory && (
+                      <button
+                        type="button"
+                        onClick={goNextCategory}
+                        aria-label="Next category"
+                        className="inline-flex items-center gap-2 rounded-full border border-slate-200 px-4 py-2 text-xs font-medium text-slate-700 transition hover:border-slate-300 hover:text-slate-900"
+                      >
+                        Next →
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+            {canGoNext ? (
+            <button
+              type="button"
+              onClick={() => setPage((prev) => Math.min(maxPage, prev + 1))}
+              aria-label="Next products"
+            className="inline-flex h-9 w-9 md:h-10 md:w-10 items-center justify-center rounded-full border border-slate-200 text-slate-700 transition-all hover:border-slate-300 hover:text-slate-900"
+            >
+              <span aria-hidden="true">→</span>
+            </button>
+          ) : (
+            <div className="h-9 w-9 md:h-10 md:w-10" />
+          )}
+          </div>
+        </div>
+      </Container>
+    </section>
+  );
+}
 function Card({
   children,
   className = "",
@@ -577,17 +783,17 @@ export default function HomePage() {
     </section>
 
 
+      <TrendingProductsSection />
 
       {/* COLLECTIONS */}
       <section className="bg-white">
         <Container className="py-24">
           <div className="reveal-on-scroll-fast text-center">
             <h2 className="text-3xl md:text-5xl font-semibold text-slate-800">
-              Our Popular Products
+              Browse by Category
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-sm md:text-base text-slate-600">
-              Explore some of the most requested apparel and product options our customers
-              love.
+              Explore our most popular product categories and view the full range of options.
             </p>
           </div>
 

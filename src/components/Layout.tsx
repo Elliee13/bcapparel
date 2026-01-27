@@ -78,6 +78,7 @@ export default function Layout() {
 
               <nav className="hidden items-center gap-6 md:flex">
                 <NavItem to="/">Home</NavItem>
+                <NavItem to="/featured">Featured</NavItem>
                 <NavItem to="/about">About</NavItem>
                 <NavItem to="/products">Products</NavItem>
                 <NavItem to="/brochures-catalogs">Brochures/Catalog</NavItem>
@@ -127,6 +128,7 @@ export default function Layout() {
             >
               <div className="mt-4 grid gap-3 rounded-[16px] border border-slate-200 bg-white p-4">
                 <NavItem to="/">Home</NavItem>
+                <NavItem to="/featured">Featured</NavItem>
                 <NavItem to="/about">About</NavItem>
                 <NavItem to="/products">Products</NavItem>
                 <NavItem to="/brochures-catalogs">Brochures/Catalog</NavItem>

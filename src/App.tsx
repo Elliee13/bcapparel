@@ -4,6 +4,7 @@ import Layout from "./components/Layout";
 
 
 const HomePage = lazy(() => import("./pages/HomePage"));
+const FeaturedPage = lazy(() => import("./pages/FeaturedPage"));
 const AboutPage = lazy(() => import("./pages/AboutPage"));
 const ContactPage = lazy(() => import("./pages/ContactPage"));
 const ProductsPage = lazy(() => import("./pages/ProductsPage"));
@@ -24,6 +25,15 @@ export default function App() {
             element={
               <Suspense fallback={<Loading />}>
                 <HomePage />
+              </Suspense>
+            }
+          />
+
+          <Route
+            path="/featured"
+            element={
+              <Suspense fallback={<Loading />}>
+                <FeaturedPage />
               </Suspense>
             }
           />

@@ -1,4 +1,23 @@
-# Progress Reports
+ï»¿# Progress Reports
+## 2026-01-23 - Web v3.3 (Marketing cleanup + asset refresh)
+- Summary: Removed Request Quote flow, refreshed product category imagery with optimized formats, added SEO/meta polish, and tightened copy/alt text.
+- Scope: Home page, Products page, App routing, SEO metadata, assets pipeline.
+- Key changes:
+  - Removed Request Quote page/route and related CTAs.
+  - Replaced product category images with new real-product assets.
+  - Generated optimized AVIF/WebP variants (400w/800w) for new collection images and restored responsive `picture` usage.
+  - Added descriptive alt text for product category images (Home + Products).
+  - Added canonical + Open Graph/Twitter meta tags in `index.html`.
+  - Fixed copy polish (e.g., "enquiries" -> "inquiries") and removed the "Why Teams Choose Us" section.
+- Assets/Content:
+  - New collection images in `src/assets/hero/collection/`.
+  - New optimized variants in `src/assets/optimized/collection/`.
+- Data/Backend:
+  - No backend changes.
+- Decision / Outcome:
+  - Marketing site aligned to non-ecommerce flow; product cards now point to external storefront with updated imagery and SEO-ready metadata.
+
+---
 ## 2026-01-22 - Web v3.2 (Web3Forms email integration)
 - Summary: Added live email form submission via Web3Forms for Contact + Request flows, with client-side status handling and spam honeypot. Verified end-to-end delivery in Gmail and Web3Forms after Vercel deployment.
 - Scope: Contact page, Request page, environment config.
@@ -73,7 +92,7 @@
 
 ---
 
-## 2026-01-20 — Web v2 (incomplete)
+## 2026-01-20 â€” Web v2 (incomplete)
 - Summary: Refactor toward a more visual, asset-rich storefront with updated layout and simplified data flow.
 - Scope: Home page overhaul, layout refresh, product data migration, routing updates.
 - Key changes:
@@ -97,7 +116,7 @@
 
 ---
 
-## 2026-01-17 — Cleanup
+## 2026-01-17 â€” Cleanup
 - Summary: Small cleanup pass.
 - Scope: App entry.
 - Key changes:
@@ -115,7 +134,7 @@
 
 ---
 
-## 2026-01-17 — Sample demo website v1
+## 2026-01-17 â€” Sample demo website v1
 - Summary: Initial full demo website with full page set, UI system, and Supabase-backed catalog.
 - Scope: Project bootstrap, UI components, pages, data layer, assets, and configuration.
 - Key changes:
@@ -134,6 +153,7 @@
   - Iterate on visuals and feature depth.
 - Links/Refs:
   - Commit: e935c6e
+
 
 
 
